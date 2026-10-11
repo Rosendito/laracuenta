@@ -1,0 +1,186 @@
+/* Comments (static mockup). */
+
+/* comments: the conversation itself */
+.comments {
+  margin-top: var(--space-12);
+}
+
+.comments__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-7);
+  padding-bottom: var(--space-7);
+  border-bottom: var(--border-medium) solid var(--color-line);
+}
+
+.comments__head h2 {
+  font-size: var(--text-h3);
+}
+
+.comments__head h2 span {
+  --comments-head-h2-span-font-size: 0.8em;
+  color: var(--color-text-soft);
+  font-size: var(--comments-head-h2-span-font-size);
+}
+
+.avatar-stack {
+  display: flex;
+}
+
+.avatar-stack .avatar {
+  --avatar-stack-avatar-margin-left: -8px;
+  margin-left: var(--avatar-stack-avatar-margin-left);
+  border: var(--border-medium) solid var(--color-page);
+}
+
+.avatar-stack .avatar:first-child {
+  margin-left: 0;
+}
+
+.comment-list {
+  list-style: none;
+  margin: var(--space-9) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-8);
+}
+
+.comment {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-6);
+  align-items: flex-start;
+}
+
+.comment .avatar {
+  width: var(--size-avatar-lg);
+  height: var(--size-avatar-lg);
+  font-size: var(--text-ui-lg);
+  margin-top: var(--space-1);
+}
+
+.comment__bubble {
+  padding: var(--space-7) var(--space-8);
+  background: var(--color-card);
+  border-radius: var(--shape-bubble-top);
+}
+
+.comment__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-4);
+  font-size: var(--text-label-lg);
+  color: var(--color-text-soft);
+  margin-bottom: var(--space-2);
+}
+
+.comment__meta strong {
+  color: var(--color-text);
+  font-size: var(--text-sm);
+}
+
+.comment__meta .badge {
+  --comment-meta-badge-padding: 0.15em var(--space-em-4);
+  font-size: var(--text-label-2xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-caps-tight);
+  text-transform: uppercase;
+  padding: var(--comment-meta-badge-padding);
+  border-radius: var(--radius-pill);
+  background: var(--color-sun);
+  color: var(--color-text);
+}
+
+.comment__bubble p {
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+}
+
+.comment__actions {
+  display: flex;
+  gap: var(--space-7);
+  margin-top: var(--space-5);
+  font-size: var(--text-label);
+}
+
+.comment__actions button {
+  border: 0;
+  padding: 0;
+  background: none;
+  font-weight: var(--weight-bold);
+  color: var(--color-text-soft);
+}
+
+.comment__actions button:hover {
+  color: var(--color-accent-text);
+}
+
+.comment--reply {
+  margin-left: var(--space-12);
+}
+
+.comment--reply .comment__bubble {
+  background: var(--color-sun-tint);
+}
+
+.comment--mine .comment__bubble {
+  --comment-mine-comment-bubble-background: color-mix(
+    in srgb,
+    var(--col-hue, var(--color-orange)) 18%,
+    var(--color-page)
+  );
+  background: var(--comment-mine-comment-bubble-background);
+}
+
+.comment-form {
+  margin-top: var(--space-10);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-6);
+  align-items: flex-start;
+}
+
+.comment-form .avatar {
+  width: var(--size-avatar-lg);
+  height: var(--size-avatar-lg);
+  margin-top: var(--space-1);
+  background: var(--color-line);
+  color: var(--color-text-soft);
+}
+
+.comment-form__box {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.comment-form textarea {
+  --comment-form-textarea-min-height: 6.5rem;
+  width: 100%;
+  min-height: var(--comment-form-textarea-min-height);
+  padding: var(--space-7) var(--space-8);
+  border: var(--border-thin) solid var(--color-line);
+  border-radius: var(--shape-bubble-top);
+  background: var(--color-card);
+  resize: vertical;
+}
+
+.comment-form textarea:focus-visible {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: var(--ring-sun);
+}
+
+.comment-form__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+.comment-form__row small {
+  font-size: var(--text-label);
+  color: var(--color-text-soft);
+}

@@ -1,0 +1,41 @@
+/* Article body typography. */
+
+/* body typography */
+.article__body {
+  --article-body-font-size: clamp(1.05rem, 1rem + 0.3vw, 1.2rem);
+  margin-top: var(--space-11);
+  font-size: var(--article-body-font-size);
+  line-height: var(--leading-relaxed);
+}
+
+.article__body > * + * {
+  margin-top: var(--space-em-8);
+}
+
+.article__body h2 {
+  --article-body-h2-margin-top: 2.4em;
+  font-size: var(--text-h3);
+  margin-top: var(--article-body-h2-margin-top);
+  padding-top: var(--space-em-5);
+  border-top: var(--border-medium) solid var(--color-line);
+}
+
+.article__body h2 + p {
+  margin-top: var(--space-em-5);
+}
+
+.article__body > p:first-of-type::first-letter {
+  --article-body-p-first-letter-padding: 0.08em 0.12em 0 0;
+  --article-body-p-first-letter-leading: 0.85;
+  --article-body-p-first-letter-font-size: 3.4em;
+  font-family: var(--font-serif);
+  font-size: var(--article-body-p-first-letter-font-size);
+  line-height: var(--article-body-p-first-letter-leading);
+  float: left;
+  padding: var(--article-body-p-first-letter-padding);
+  color: var(--col-deep, var(--color-accent));
+}
+
+.article__body a {
+  font-weight: var(--weight-semibold);
+}

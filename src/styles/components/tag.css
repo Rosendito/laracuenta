@@ -1,0 +1,39 @@
+/* Collection tag: a tiny speech bubble. */
+
+/* collection tag: a tiny speech bubble (one tight corner = the tail) */
+.tag {
+  --tag-leading: 1.1;
+  --tag-padding: 0.38em var(--space-em-6) var(--space-em-1);
+  --tag-gap: 0.45em;
+  --tag-bg: var(--color-text);
+  --tag-fg: var(--color-text-inverse);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tag-gap);
+  padding: var(--tag-padding);
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) var(--radius-tail);
+  background: var(--tag-bg);
+  color: var(--tag-fg);
+  font-size: var(--text-label-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tag);
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: var(--tag-leading);
+  white-space: nowrap;
+}
+
+.tag::before {
+  --tag-before-height: 0.5em;
+  --tag-before-width: 0.5em;
+  content: "";
+  width: var(--tag-before-width);
+  height: var(--tag-before-height);
+  border-radius: var(--radius-round);
+  background: currentColor;
+  opacity: 0.8;
+}
+
+a.tag:hover {
+  filter: brightness(1.12);
+}

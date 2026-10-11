@@ -1,0 +1,28 @@
+/* Shape: the speech-bubble language. A bubble is round on three corners and tight
+   on the fourth (the tail). */
+:root {
+  --radius-hair: 2px;
+  --radius-xs: 4px;
+  --radius-tail: 6px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+  --radius-xl: 16px;
+  --radius-2xl: 18px;
+  --radius-bubble: 28px;
+  --radius-pill: 999px;
+  --radius-round: 50%;
+
+  /* where the tail sits */
+  --shape-bubble: var(--radius-bubble) var(--radius-bubble) var(--radius-bubble) var(--radius-tail);
+  --shape-bubble-right: var(--radius-bubble) var(--radius-bubble) var(--radius-tail)
+    var(--radius-bubble);
+  --shape-bubble-top: var(--radius-tail) var(--radius-bubble) var(--radius-bubble)
+    var(--radius-bubble);
+
+  --border-hair: 1px;
+  --border-thin: 1.5px;
+  --border-medium: 2px;
+  --border-thick: 3px;
+  --border-accent: 6px;
+}

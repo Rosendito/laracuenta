@@ -1,0 +1,63 @@
+/* Article: the more-options menu. */
+
+.overflow {
+  position: relative;
+  margin-left: auto;
+}
+
+.overflow > button {
+  width: var(--size-control-sm);
+  height: var(--size-control-sm);
+  border: 0;
+  border-radius: var(--radius-round);
+  background: transparent;
+  color: var(--color-text);
+  display: grid;
+  place-items: center;
+}
+
+.overflow > button:hover,
+.overflow > button[aria-expanded="true"] {
+  background: var(--color-card);
+}
+
+.overflow__menu {
+  --overflow-menu-min-width: 220px;
+  --overflow-menu-top: calc(100% + 6px);
+  position: absolute;
+  right: 0;
+  top: var(--overflow-menu-top);
+  min-width: var(--overflow-menu-min-width);
+  margin: 0;
+  padding: var(--space-3);
+  list-style: none;
+  white-space: nowrap;
+  background: var(--color-page);
+  border: var(--border-hair) solid var(--color-line);
+  border-radius: var(--radius-xl) var(--radius-xs) var(--radius-xl) var(--radius-xl);
+  box-shadow: var(--shadow-lift);
+  z-index: var(--z-popover);
+}
+
+.overflow__menu[hidden] {
+  display: none;
+}
+
+.overflow__menu button {
+  --overflow-menu-button-padding: 0.55rem var(--space-6);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--overflow-menu-button-padding);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  text-align: left;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.overflow__menu button:hover {
+  background: var(--color-card);
+}

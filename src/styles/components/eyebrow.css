@@ -1,0 +1,22 @@
+/* Small caps label above headings. */
+
+/* eyebrow: small caps label above headings */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-em-4);
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-caps-wide);
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+}
+
+.eyebrow::before {
+  --eyebrow-before-width: 1.6em;
+  content: "";
+  width: var(--eyebrow-before-width);
+  height: var(--size-line);
+  border-radius: var(--radius-hair);
+  background: var(--color-orange);
+}

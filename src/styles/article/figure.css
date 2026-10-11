@@ -1,0 +1,17 @@
+/* Photo inside the body. */
+
+/* image inside the body */
+.article__figure {
+  margin: var(--space-11) 0;
+}
+
+.article__figure .photo-bubble {
+  aspect-ratio: 3 / 2;
+}
+
+.article__figure--bleed {
+  --article-figure-bleed-margin-inline: calc(50% - min(100vw - 2 * var(--gutter), 60rem) / 2);
+  --article-figure-bleed-width: min(100vw - 2 * var(--gutter), 60rem);
+  width: var(--article-figure-bleed-width);
+  margin-inline: var(--article-figure-bleed-margin-inline);
+}

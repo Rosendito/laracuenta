@@ -1,0 +1,29 @@
+/* Bubble surfaces and photos clipped to a bubble with a tail. */
+
+/* bubble: the generic rounded surface with a tail corner */
+.bubble {
+  background: var(--color-card);
+  border-radius: var(--shape-bubble);
+}
+
+.bubble--right {
+  border-radius: var(--shape-bubble-right);
+}
+
+.bubble--top {
+  border-radius: var(--shape-bubble-top);
+}
+
+/* photo frame: picture clipped to the bubble, tail is a real SVG clip-path */
+.photo-bubble {
+  position: relative;
+  overflow: hidden;
+  clip-path: url(#clip-bubble);
+  background: var(--color-line);
+}
+
+.photo-bubble img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

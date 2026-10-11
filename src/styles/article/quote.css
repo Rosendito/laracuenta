@@ -1,0 +1,71 @@
+/* Pull quote and testimony. */
+
+/* pull quote and testimony: real speech bubbles */
+.quote {
+  --quote-padding: clamp(1.5rem, 4vw, 2.25rem) clamp(1.5rem, 4vw, 2.5rem);
+  margin: var(--space-11) 0;
+  padding: var(--quote-padding);
+  background: var(--color-card);
+  border-radius: var(--shape-bubble);
+  position: relative;
+}
+
+.quote::before {
+  --quote-before-font-size: 5rem;
+  --quote-before-top: -0.2em;
+  content: "“";
+  position: absolute;
+  top: var(--quote-before-top);
+  left: var(--space-7);
+  font-family: var(--font-serif);
+  font-size: var(--quote-before-font-size);
+  line-height: var(--leading-none);
+  color: var(--col-hue, var(--color-orange));
+  opacity: 0.8;
+}
+
+.quote p {
+  --quote-p-leading: 1.3;
+  --quote-p-font-size: clamp(1.3rem, 1.15rem + 0.9vw, 1.8rem);
+  font-family: var(--font-serif);
+  font-size: var(--quote-p-font-size);
+  line-height: var(--quote-p-leading);
+  text-wrap: pretty;
+}
+
+.quote footer {
+  margin-top: var(--space-7);
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--color-text-soft);
+}
+
+.quote footer strong {
+  color: var(--color-text);
+}
+
+.quote--testimony {
+  --quote-testimony-margin-left: clamp(0rem, 6vw, 3rem);
+  --quote-testimony-background: color-mix(
+    in srgb,
+    var(--col-hue, var(--color-orange)) 18%,
+    var(--color-page)
+  );
+  background: var(--quote-testimony-background);
+  border-radius: var(--shape-bubble-right);
+  margin-left: var(--quote-testimony-margin-left);
+}
+
+.quote--testimony::before {
+  display: none;
+}
+
+.quote--testimony p {
+  --quote-testimony-p-leading: 1.55;
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+  line-height: var(--quote-testimony-p-leading);
+}

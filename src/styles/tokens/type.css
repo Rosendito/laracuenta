@@ -1,0 +1,43 @@
+/* Typography: DM Serif Display for headings, Montserrat for everything else. */
+:root {
+  --font-serif: "DM Serif Display", Georgia, serif;
+  --font-sans: "Montserrat", system-ui, sans-serif;
+
+  /* fluid scale */
+  --text-sm: clamp(0.8rem, 0.76rem + 0.2vw, 0.875rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.0625rem);
+  --text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem);
+  --text-h3: clamp(1.35rem, 1.2rem + 0.7vw, 1.75rem);
+  --text-h2: clamp(1.9rem, 1.5rem + 1.8vw, 2.9rem);
+  --text-h1: clamp(2.4rem, 1.7rem + 3.4vw, 4.4rem);
+
+  /* fixed sizes for labels and UI */
+  --text-label-2xs: 0.68rem;
+  --text-label-xs: 0.74rem;
+  --text-label: 0.78rem;
+  --text-label-lg: 0.8rem;
+  --text-ui: 1rem;
+  --text-ui-lg: 1.1rem;
+  --text-display-sm: 1.6rem;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --leading-none: 1;
+  --leading-heading: 1.08;
+  --leading-tight: 1.2;
+  --leading-snug: 1.4;
+  --leading-body: 1.6;
+  --leading-relaxed: 1.75;
+
+  --tracking-tight: -0.02em;
+  --tracking-heading: -0.005em;
+  --tracking-ui: 0.01em;
+  --tracking-label: 0.02em;
+  --tracking-tag: 0.06em;
+  --tracking-caps-tight: 0.08em;
+  --tracking-caps: 0.12em;
+  --tracking-caps-wide: 0.14em;
+}

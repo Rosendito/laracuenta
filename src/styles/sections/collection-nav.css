@@ -1,0 +1,28 @@
+/* Archive: sticky collection switcher. */
+
+/* collection switcher: sticky row of bubble pills */
+.collection-nav {
+  position: sticky;
+  top: var(--header-height);
+  z-index: var(--z-sticky-nav);
+  margin-top: var(--space-9);
+  padding-block: var(--space-6);
+  background: var(--color-nav-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.collection-nav ul {
+  display: flex;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.collection-nav ul::-webkit-scrollbar {
+  display: none;
+}

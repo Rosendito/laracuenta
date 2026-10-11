@@ -16,8 +16,9 @@ reviews every task; Haiku agents implement components from self-contained task c
 | Styling | **No Tailwind.** Plain CSS with BEM class names kept **identical** to the concept, split by semantics in `src/styles/`, no component-scoped `<style>`. |
 | Tokens | Every raw value lives in `src/styles/tokens/`. Values used once live as a local custom property at the top of their block. A stylelint rule rejects raw values anywhere else. |
 | Cascade | `src/styles/main.css` imports files in the **same order as the concept sections 1–14**. No `@layer` (it would change how the cascade resolves vs. the concept). |
-| Breakpoints | `@custom-media` tokens, compiled by Lightning CSS (`vite.css.transformer = "lightningcss"`). |
+| Breakpoints | `@custom-media` tokens, compiled by Lightning CSS (`vite.css.transformer = "lightningcss"`; it only resolves them when `targets` are set, which Vite does). |
 | Photos | Committed next to each story (`src/content/stories/<slug>/`) or in `src/assets/photos/` for site-wide ones, optimized by `astro:assets`. Cloudflare limits (20k files, 25 MiB/file) are far away; no R2 needed. Source files are re-encoded without metadata (EXIF/GPS) before commit. |
+| Markdown | Astro 7 uses the Sätteri processor: no remark/rehype plugins. `src/lib/unwrap-images.mjs` (an mdast plugin) removes the `<p>` around standalone images so they can render as `<figure>`. |
 | JS | No framework islands. Each `main.js` block becomes a `<script>` inside its component (Astro bundles and dedupes it). Every page works without JS. |
 | Comments | Static mockup, as in the concept. |
 | Forms | Post to an external endpoint configured in `src/config/site.ts`. |
@@ -27,289 +28,60 @@ reviews every task; Haiku agents implement components from self-contained task c
 
 ```
 src/styles/
-  main.css                  imports, in concept order
-  tokens/
-    color.css  type.css  space.css  shape.css  elevation.css  motion.css  layout.css  media.css
-  base/
-    reset.css  elements.css  accessibility.css     (focus, selection, skip link, visually-hidden, reduced motion)
-  layout/
-    wrap.css  site-header.css  site-footer.css
-  components/
-    icon.css  button.css  eyebrow.css  tag.css  collection.css  bubble.css  avatar.css
-    card.css  card-grid.css  section-head.css  form.css  chip.css
-  sections/
-    hero.css  recent.css  about.css  contact.css
-    archive-banner.css  collection-nav.css  collection-group.css  load-more.css
-  article/
-    article.css  prose.css  figure.css  carousel.css  timeline.css  quote.css
-    share.css  comments.css  overflow-menu.css
-  utilities/
-    mockup-note.css
+  main.css          imports in the concept's cascade order (do not reorder)
+  tokens/           color · type · space · shape · elevation · motion · layout · media
+  base/             reset · accessibility
+  layout/           wrap · site-header · site-footer
+  components/       icon · button · eyebrow · tag · collection · bubble · social · card ·
+                    avatar · card-grid · section-head · arrow-btn · form · chip
+  sections/         hero · recent · about · contact · archive-banner · collection-nav ·
+                    collection-group
+  article/          article · overflow-menu · prose · quote · carousel · timeline · figure ·
+                    share · comments
+  utilities/        mockup-note
 ```
+
+The files were generated from the concept stylesheet by line ranges (order kept) with
+every value replaced by a token holding the same value. `npm run visual:port` renders
+the concept HTML with the compiled `src/styles` and compares it with the concept: it
+reports 0 geometry deltas and 0.00 % pixel mismatch on every page at 1440/390/360 and in
+every interaction state. Run it after any CSS change.
 
 Rules for anyone editing CSS (enforced by `npm run lint:css`):
 
-1. Outside `tokens/`, `color`, `background`, `border*`, `font-size`, `font-weight`,
-   `line-height`, `letter-spacing`, `gap`, `margin*`, `padding*`, `inset*`, `border-radius`,
-   `box-shadow`, `z-index`, `transition*` and `animation*` accept only `var(--…)`,
-   `0`, `auto`, `inherit`, `currentColor`, `transparent`, `100%`, `none`.
-2. A value that exists only once in the design is declared as a local token at the top
-   of its block: `.hero { --hero-min-h: clamp(560px, 92svh, 860px); min-height: var(--hero-min-h); }`.
-3. Never invent a value. If the concept doesn't have it, ask (the reviewer decides
-   whether it becomes a token).
-4. Class names are copied from the concept verbatim. Don't rename, don't merge.
+1. Outside `tokens/`, colors, font sizes/weights, line heights, letter spacing, spacing
+   (gap, margin, padding, inset, offsets), radii, borders, shadows, z-index, durations and
+   sizes (width/height) accept only `var(--…)`, `0`, keywords, and relative units
+   (`%`, `vw`, `vh`, `svh`, `fr`, `deg`).
+2. A value that exists only once in the design is a local custom property declared at
+   the top of its rule (`--hero-min-height: clamp(…)`). Variants (`:nth-child`, `@media`)
+   redefine that property instead of the declaration.
+3. Never invent a value. If the concept doesn't have it, ask; the reviewer decides
+   whether it becomes a token.
+4. Class names are the concept's, verbatim. Don't rename, don't merge.
+
+Known concept quirk kept on purpose: `.collection .card { --col-deep: var(--col-deep) }`
+is a self-reference, so archive cards fall back to `--color-accent-text` for the CTA
+and hover color.
 
 ## 3. Tokens
 
-All values are taken from `styles.css` as they are (pixel-perfect first). Names say
-what a value is for, not what it looks like, except for the raw brand palette.
+See `src/styles/tokens/`. Naming:
 
-### color.css
-
-```css
-:root {
-  /* brand palette (logo/build_logo.py) */
-  --color-orange: #cf7739;
-  --color-sun: #eeb33f;
-  --color-terracotta: #bd6a42;
-  --color-brown: #54331c;
-  --color-ink: #422818;
-  --color-cream: #f8e9d2;
-  --color-white: #fff;
-
-  /* surfaces */
-  --surface-page: #fdf6ea;          /* paper, lighter than the brand cream */
-  --surface-card: var(--color-cream);
-  --surface-line: #f1dcbb;          /* cream-deep: borders, dividers, image placeholders */
-  --surface-night: #2d1a0f;         /* footer, overlays */
-
-  /* text (contrast measured on --surface-page) */
-  --text-strong: var(--color-ink);  /* 12.4:1 */
-  --text-soft: #6b4a33;             /* 6.6:1 */
-  --text-on-dark: var(--color-cream);
-
-  /* interactive */
-  --accent: #a85820;                /* white text 5.1:1 */
-  --accent-hover: #8f4421;
-  --accent-text: #8f4421;           /* small text on cream 5.8:1 */
-  --sun-hover: #e7a62a;
-  --focus: #1f5fa6;
-
-  /* collections: hue = decorative, deep = text/tag on cream (≥ 4.5:1) */
-  --col-antes-hue: var(--color-sun);
-  --col-antes-deep: #7a4f06;
-  --col-patrimonio-hue: var(--color-terracotta);
-  --col-patrimonio-deep: #9a4a26;
-  --col-gente-hue: var(--color-orange);
-  --col-gente-deep: #9a4f1c;
-  --col-costumbres-hue: var(--color-brown);
-  --col-costumbres-deep: #54331c;
-
-  /* translucent: night (45 26 15) */
-  --night-a0: rgb(45 26 15 / 0);
-  --night-a05: rgb(45 26 15 / 0.05);
-  --night-a25: rgb(45 26 15 / 0.25);
-  --night-a35: rgb(45 26 15 / 0.35);
-  --night-a40: rgb(45 26 15 / 0.4);
-  --night-a45: rgb(45 26 15 / 0.45);
-  --night-a72: rgb(45 26 15 / 0.72);
-  --night-a75: rgb(45 26 15 / 0.75);
-  --night-a80: rgb(45 26 15 / 0.8);
-  --night-a82: rgb(45 26 15 / 0.82);
-  --night-a85: rgb(45 26 15 / 0.85);
-  /* translucent: cream (248 233 210) */
-  --cream-a15: rgb(248 233 210 / 0.15);
-  --cream-a20: rgb(248 233 210 / 0.2);
-  --cream-a25: rgb(248 233 210 / 0.25);
-  --cream-a70: rgb(248 233 210 / 0.7);
-  --cream-a92: rgb(248 233 210 / 0.92);
-  /* translucent: ink (66 40 24), white, black */
-  --ink-a15: rgb(66 40 24 / 0.15);
-  --white-a06: rgb(255 255 255 / 0.06);
-  --white-a90: rgb(255 255 255 / 0.9);
-  --black-a30: rgb(0 0 0 / 0.3);
-  --black-a35: rgb(0 0 0 / 0.35);
-  --black-a40: rgb(0 0 0 / 0.4);
-
-  /* mixes used in more than one place */
-  --text-on-dark-80: color-mix(in srgb, var(--text-on-dark) 80%, transparent);
-  --text-on-dark-65: color-mix(in srgb, var(--text-on-dark) 65%, transparent);
-  --text-on-dark-55: color-mix(in srgb, var(--text-on-dark) 55%, transparent);
-  --sun-55: color-mix(in srgb, var(--color-sun) 55%, transparent);
-  --sun-60: color-mix(in srgb, var(--color-sun) 60%, transparent);
-  --header-glass: color-mix(in srgb, var(--surface-page) 88%, transparent);
-}
-```
-
-### type.css
-
-```css
-:root {
-  --font-serif: "DM Serif Display", Georgia, serif;
-  --font-sans: "Montserrat", system-ui, sans-serif;
-
-  /* fluid scale */
-  --text-sm: clamp(0.8rem, 0.76rem + 0.2vw, 0.875rem);
-  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.0625rem);
-  --text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem);
-  --text-h3: clamp(1.35rem, 1.2rem + 0.7vw, 1.75rem);
-  --text-h2: clamp(1.9rem, 1.5rem + 1.8vw, 2.9rem);
-  --text-h1: clamp(2.4rem, 1.7rem + 3.4vw, 4.4rem);
-
-  /* fixed label sizes (all used 2+ times) */
-  --text-label-2xs: 0.68rem;
-  --text-label-xs: 0.74rem;
-  --text-label: 0.78rem;
-  --text-label-lg: 0.8rem;
-  --text-ui: 1rem;
-  --text-ui-lg: 1.1rem;
-  --text-brand: 1.6rem;
-
-  --weight-regular: 400;
-  --weight-medium: 500;
-  --weight-semibold: 600;
-  --weight-bold: 700;
-
-  --leading-none: 1;
-  --leading-heading: 1.08;
-  --leading-tight: 1.2;
-  --leading-snug: 1.4;
-  --leading-body: 1.6;
-  --leading-relaxed: 1.75;
-
-  --tracking-tight: -0.02em;
-  --tracking-heading: -0.005em;
-  --tracking-ui: 0.01em;
-  --tracking-tag: 0.06em;
-  --tracking-caps: 0.12em;
-  --tracking-caps-wide: 0.14em;
-}
-```
-
-### space.css
-
-```css
-:root {
-  --space-1: 0.25rem;
-  --space-2: 0.35rem;
-  --space-3: 0.4rem;
-  --space-4: 0.5rem;
-  --space-5: 0.6rem;
-  --space-6: 0.75rem;
-  --space-7: 1rem;
-  --space-8: 1.25rem;
-  --space-9: 1.5rem;
-  --space-10: 2rem;
-  --space-11: 2.5rem;
-  --space-12: 3rem;
-  --space-13: 3.5rem;
-  --space-14: 4rem;
-
-  /* em-based, scale with the element's font size (buttons, tags, icons in text) */
-  --space-em-1: 0.4em;
-  --space-em-2: 0.55em;
-  --space-em-3: 0.6em;
-  --space-em-4: 0.8em;
-  --space-em-5: 0.85em;
-  --space-em-6: 1.5em;
-
-  /* rhythm */
-  --gutter: clamp(1rem, 4vw, 3.5rem);
-  --section: clamp(3.5rem, 8vw, 7rem);
-}
-```
-
-### shape.css
-
-```css
-:root {
-  --radius-tail: 6px;          /* the tight corner that reads as a speech-bubble tail */
-  --radius-bubble: 28px;
-  --radius-bubble-md: 18px;
-  --radius-bubble-sm: 16px;
-  --radius-chip: 14px;
-  --radius-xs: 4px;
-  --radius-hair: 2px;
-  --radius-pill: 999px;
-  --radius-round: 50%;
-
-  /* bubble shapes: where the tail corner sits */
-  --shape-bubble: var(--radius-bubble) var(--radius-bubble) var(--radius-bubble) var(--radius-tail); /* tail bottom-left */
-  --shape-bubble-right: var(--radius-bubble) var(--radius-bubble) var(--radius-tail) var(--radius-bubble);
-  --shape-bubble-top: var(--radius-tail) var(--radius-bubble) var(--radius-bubble) var(--radius-bubble);
-
-  --border-hair: 1px;
-  --border-thin: 1.5px;
-  --border-medium: 2px;
-  --border-thick: 3px;
-  --border-accent: 6px;
-}
-```
-
-### elevation.css
-
-```css
-:root {
-  --shadow-soft: 0 10px 30px -14px rgb(66 40 24 / 0.35);
-  --shadow-lift: 0 18px 44px -18px rgb(66 40 24 / 0.45);
-  --ring-sun: 0 0 0 3px var(--sun-55);
-
-  --z-under: -2;
-  --z-behind: -1;
-  --z-base: 0;
-  --z-raised: 1;
-  --z-above: 2;
-  --z-popover: 20;
-  --z-sticky-nav: 40;
-  --z-header: 50;
-  --z-skip-link: 100;
-}
-```
-
-### motion.css
-
-```css
-:root {
-  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --duration-fast: 0.2s;
-  --duration-card: 0.25s;
-  --duration-fade: 0.3s;
-  --duration-slow: 0.6s;
-  --duration-hero: 0.7s;
-  --duration-rise: 800ms;
-  --delay-step-1: 110ms;
-  --delay-step-2: 220ms;
-}
-```
-
-### layout.css and media.css
-
-```css
-:root {
-  --wrap: 1240px;
-  --measure: 42rem;           /* reading column */
-  --bleed: 60rem;             /* figures and carousel in the article */
-  --header-height: 76px;
-  --size-logo: 52px;
-  --size-control: 44px;       /* nav toggle, hit areas */
-  --size-control-sm: 38px;    /* social icons */
-  --size-avatar: 28px;
-  --size-icon: 1.25em;
-}
-
-@custom-media --upto-xs (max-width: 480px);
-@custom-media --upto-sm (max-width: 600px);
-@custom-media --upto-md (max-width: 700px);
-@custom-media --upto-lg (max-width: 860px);
-@custom-media --from-lg (min-width: 861px);
-@custom-media --upto-xl (max-width: 960px);
-@custom-media --upto-2xl (max-width: 1100px);
-@custom-media --reduced-motion (prefers-reduced-motion: reduce);
-```
-
-The remaining one-off values (hero display size, drop cap size, about scatter widths,
-banner heights, hero veil gradients…) become local tokens of their block during the
-CSS port in phase 1.
+- `--color-*` for every color: brand palette (`--color-orange`…), surfaces
+  (`--color-page`, `--color-card`, `--color-line`, `--color-night`), text
+  (`--color-text`, `--color-text-soft`, `--color-text-inverse`), interactive
+  (`--color-accent`…), translucent steps (`--color-night-a45`) and mixes.
+  Collections keep `--col-<id>-hue` / `--col-<id>-deep`; `.col-<id>` sets the
+  contextual `--col-hue` / `--col-deep`.
+- `--text-*` font sizes, `--weight-*`, `--leading-*`, `--tracking-*`, `--font-serif|sans`.
+- `--space-1…15` (rem), `--space-em-1…8` (em), `--gutter`, `--section`.
+- `--radius-*`, `--shape-bubble[-right|-top]`, `--border-*`.
+- `--shadow-*`, `--ring-sun`, `--text-shadow-*`, `--z-*`.
+- `--ease`, `--duration-*`, `--delay-step-*`.
+- `--wrap`, `--measure`, `--wide`, `--size-*`; breakpoints as `@custom-media`
+  (`--upto-xs` 480 · `--upto-sm` 600 · `--upto-md` 700 · `--upto-lg` 860 · `--from-lg`
+  861 · `--upto-xl` 960 · `--upto-2xl` 1100 · `--reduced-motion`).
 
 ## 4. Components
 

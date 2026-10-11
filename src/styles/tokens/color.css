@@ -1,0 +1,87 @@
+/* Colors. The logo palette (logo/build_logo.py) is the source of truth; every text
+   color is checked for AA on the surface it sits on. */
+:root {
+  /* brand palette */
+  --color-orange: #cf7739;
+  --color-sun: #eeb33f;
+  --color-terracotta: #bd6a42;
+  --color-brown: #54331c;
+  --color-ink: #422818;
+  --color-cream: #f8e9d2;
+  --color-white: #fff;
+
+  /* surfaces */
+  --color-page: #fdf6ea; /* lighter than the brand cream */
+  --color-card: var(--color-cream); /* cards and section bands */
+  --color-line: #f1dcbb; /* borders, dividers, image placeholders */
+  --color-night: #2d1a0f; /* footer, overlays */
+
+  /* text (contrast on --color-page) */
+  --color-text: var(--color-ink); /* 12.4:1 */
+  --color-text-soft: #6b4a33; /* 6.6:1 */
+  --color-text-inverse: var(--color-cream);
+
+  /* interactive */
+  --color-accent: #a85820; /* white text 5.1:1 */
+  --color-accent-hover: #8f4421;
+  --color-accent-text: #8f4421; /* small text on cream 5.8:1 */
+  --color-sun-hover: #e7a62a;
+  --color-focus: #1f5fa6; /* cool ring, visible on every warm surface */
+
+  /* collections: hue = decorative, deep = text and tags on cream (>= 4.5:1) */
+  --col-antes-hue: var(--color-sun);
+  --col-antes-deep: #7a4f06;
+  --col-patrimonio-hue: var(--color-terracotta);
+  --col-patrimonio-deep: #9a4a26;
+  --col-gente-hue: var(--color-orange);
+  --col-gente-deep: #9a4f1c;
+  --col-costumbres-hue: var(--color-brown);
+  --col-costumbres-deep: #54331c;
+
+  /* translucent night (45 26 15) */
+  --color-night-a0: rgba(45, 26, 15, 0);
+  --color-night-a05: rgba(45, 26, 15, 0.05);
+  --color-night-a25: rgba(45, 26, 15, 0.25);
+  --color-night-a35: rgba(45, 26, 15, 0.35);
+  --color-night-a40: rgba(45, 26, 15, 0.4);
+  --color-night-a45: rgba(45, 26, 15, 0.45);
+  --color-night-a72: rgba(45, 26, 15, 0.72);
+  --color-night-a75: rgba(45, 26, 15, 0.75);
+  --color-night-a80: rgba(45, 26, 15, 0.8);
+  --color-night-a82: rgba(45, 26, 15, 0.82);
+  --color-night-a85: rgba(45, 26, 15, 0.85);
+
+  /* translucent cream (248 233 210) */
+  --color-cream-a15: rgba(248, 233, 210, 0.15);
+  --color-cream-a20: rgba(248, 233, 210, 0.2);
+  --color-cream-a25: rgba(248, 233, 210, 0.25);
+  --color-cream-a70: rgba(248, 233, 210, 0.7);
+  --color-cream-a92: rgba(248, 233, 210, 0.92);
+
+  /* translucent ink (66 40 24), white and black */
+  --color-ink-a15: rgba(66, 40, 24, 0.15);
+  --color-ink-a35: rgba(66, 40, 24, 0.35);
+  --color-ink-a45: rgba(66, 40, 24, 0.45);
+  --color-white-a06: rgba(255, 255, 255, 0.06);
+  --color-white-a90: rgba(255, 255, 255, 0.9);
+  --color-black-a30: rgba(0, 0, 0, 0.3);
+  --color-black-a35: rgba(0, 0, 0, 0.35);
+  --color-black-a40: rgba(0, 0, 0, 0.4);
+
+  /* mixes */
+  --color-text-inverse-80: color-mix(in srgb, var(--color-text-inverse) 80%, transparent);
+  --color-text-inverse-65: color-mix(in srgb, var(--color-text-inverse) 65%, transparent);
+  --color-text-inverse-55: color-mix(in srgb, var(--color-text-inverse) 55%, transparent);
+  --color-sun-55: color-mix(in srgb, var(--color-sun) 55%, transparent);
+  --color-sun-60: color-mix(in srgb, var(--color-sun) 60%, transparent);
+  --color-sun-tint: color-mix(in srgb, var(--color-sun) 22%, var(--color-page));
+  --color-header-glass: color-mix(in srgb, var(--color-page) 88%, transparent);
+  --color-nav-glass: color-mix(in srgb, var(--color-page) 92%, transparent);
+  --gradient-sunset: linear-gradient(
+    90deg,
+    var(--color-brown),
+    var(--color-terracotta),
+    var(--color-orange),
+    var(--color-sun)
+  );
+}

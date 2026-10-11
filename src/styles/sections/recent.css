@@ -1,0 +1,5 @@
+/* Home: recent stories. */
+
+.recent {
+  padding-block: 0 var(--section);
+}

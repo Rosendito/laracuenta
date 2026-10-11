@@ -1,0 +1,60 @@
+/* Focus, selection, skip link, visually hidden, reduced motion. */
+
+:focus-visible {
+  outline: var(--border-thick) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-xs);
+}
+
+::selection {
+  background: var(--color-sun);
+  color: var(--color-text);
+}
+
+.visually-hidden {
+  --visually-hidden-margin: -1px;
+  --visually-hidden-height: 1px;
+  --visually-hidden-width: 1px;
+  position: absolute !important;
+  width: var(--visually-hidden-width);
+  height: var(--visually-hidden-height);
+  padding: 0;
+  margin: var(--visually-hidden-margin);
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  z-index: var(--z-skip-link);
+  padding: var(--space-5) var(--space-7);
+  background: var(--color-text);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-pill);
+  transform: translateY(-200%);
+  transition: transform var(--duration-fast) var(--ease);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* reduced motion: keep every transition, drop their duration */
+@media (--reduced-motion) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: var(--duration-instant) !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: var(--duration-instant) !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,6 @@
+/* Page width container. */
+
+.wrap {
+  width: min(100% - 2 * var(--gutter), var(--wrap));
+  margin-inline: auto;
+}

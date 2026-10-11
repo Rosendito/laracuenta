@@ -1,0 +1,9 @@
+/* Breakpoints (compiled by Lightning CSS, see astro.config.mjs). */
+@custom-media --upto-xs (max-width: 480px);
+@custom-media --upto-sm (max-width: 600px);
+@custom-media --upto-md (max-width: 700px);
+@custom-media --upto-lg (max-width: 860px);
+@custom-media --from-lg (min-width: 861px);
+@custom-media --upto-xl (max-width: 960px);
+@custom-media --upto-2xl (max-width: 1100px);
+@custom-media --reduced-motion (prefers-reduced-motion: reduce);

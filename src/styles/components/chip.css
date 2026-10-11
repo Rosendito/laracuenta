@@ -1,0 +1,59 @@
+/* Collection chips. */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-em-2);
+  padding: var(--space-em-3) var(--space-em-7) var(--space-em-3) var(--space-em-5);
+  border: var(--border-thin) solid var(--color-line);
+  border-radius: var(--radius-2xl) var(--radius-2xl) var(--radius-2xl) var(--radius-tail);
+  background: var(--color-card);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+  text-decoration: none;
+  transition:
+    background-color var(--duration-fast) var(--ease),
+    border-color var(--duration-fast) var(--ease),
+    color var(--duration-fast) var(--ease);
+}
+
+.chip::before {
+  --chip-before-height: 0.7em;
+  --chip-before-width: 0.7em;
+  content: "";
+  width: var(--chip-before-width);
+  height: var(--chip-before-height);
+  border-radius: var(--radius-round);
+  background: var(--col-hue, var(--color-text));
+  border: var(--border-thin) solid var(--color-ink-a15);
+}
+
+.chip:hover {
+  border-color: var(--col-deep, var(--color-text));
+}
+
+.chip[aria-current="true"] {
+  background: var(--col-deep, var(--color-text));
+  border-color: var(--col-deep, var(--color-text));
+  color: var(--color-white);
+}
+
+.chip[aria-current="true"]::before {
+  background: var(--color-white);
+  border-color: transparent;
+}
+
+.chip--all[aria-current="true"] {
+  background: var(--color-text);
+  border-color: var(--color-text);
+  color: var(--color-text-inverse);
+}
+
+.chip .count {
+  --chip-count-font-size: 0.75em;
+  font-size: var(--chip-count-font-size);
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}

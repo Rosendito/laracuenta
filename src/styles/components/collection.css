@@ -1,0 +1,30 @@
+/* Collection modifiers (col-*): usable on tags, sections and cards. */
+
+/* collection modifiers: usable on tags, sections and cards */
+.col-antes {
+  --col-hue: var(--col-antes-hue);
+  --col-deep: var(--col-antes-deep);
+  --tag-bg: var(--col-antes-hue);
+  --tag-fg: var(--color-text);
+}
+
+.col-patrimonio {
+  --col-hue: var(--col-patrimonio-hue);
+  --col-deep: var(--col-patrimonio-deep);
+  --tag-bg: var(--col-patrimonio-deep);
+  --tag-fg: var(--color-white);
+}
+
+.col-gente {
+  --col-hue: var(--col-gente-hue);
+  --col-deep: var(--col-gente-deep);
+  --tag-bg: var(--col-gente-deep);
+  --tag-fg: var(--color-white);
+}
+
+.col-costumbres {
+  --col-hue: var(--col-costumbres-hue);
+  --col-deep: var(--col-costumbres-deep);
+  --tag-bg: var(--col-costumbres-deep);
+  --tag-fg: var(--color-text-inverse);
+}

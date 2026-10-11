@@ -1,0 +1,175 @@
+/* Story card (home and archive). */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-card);
+  border-radius: var(--shape-bubble);
+  overflow: hidden;
+  transition:
+    transform var(--duration-card) var(--ease),
+    box-shadow var(--duration-card) var(--ease);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
+}
+
+.card:focus-within {
+  box-shadow: var(--shadow-lift);
+}
+
+.card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--color-line);
+}
+
+.card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease);
+}
+
+.card:hover .card__media img {
+  transform: scale(1.04);
+}
+
+/* the "bite": the tag sits in a cream notch cut from the photo's corner,
+   echoing how the wordmark bites the mark in the logo */
+.card__tag {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: var(--space-4) var(--space-5) 0 0;
+  background: var(--color-card);
+  border-top-right-radius: var(--radius-xl);
+}
+
+.card__tag::before,
+.card__tag::after {
+  --card-tag-before-background: radial-gradient(
+    circle at 100% 0,
+    transparent 13px,
+    var(--color-card) 14px
+  );
+  --card-tag-before-height: 14px;
+  --card-tag-before-width: 14px;
+  /* inverted corners so the notch flows into the photo */
+  content: "";
+  position: absolute;
+  width: var(--card-tag-before-width);
+  height: var(--card-tag-before-height);
+  background: var(--card-tag-before-background);
+}
+
+.card__tag::before {
+  --card-tag-before-top: -14px;
+  left: 0;
+  top: var(--card-tag-before-top);
+}
+
+.card__tag::after {
+  --card-tag-after-right: -14px;
+  right: var(--card-tag-after-right);
+  bottom: 0;
+}
+
+.card__body {
+  --card-body-padding: 1.1rem 1.4rem var(--space-9);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--space-5);
+  padding: var(--card-body-padding);
+}
+
+.card__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-soft);
+}
+
+.card__meta time {
+  font-variant-numeric: tabular-nums;
+}
+
+.card__meta .dot {
+  width: var(--size-dot);
+  height: var(--size-dot);
+  border-radius: var(--radius-round);
+  background: var(--color-orange);
+}
+
+.card h3 {
+  font-size: var(--text-h3);
+}
+
+.card h3 a {
+  text-decoration: none;
+}
+
+.card h3 a::after {
+  /* stretch the link over the whole card */
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-raised);
+}
+
+.card h3 a:hover {
+  color: var(--col-deep, var(--color-accent-text));
+}
+
+.card p {
+  color: var(--color-text-soft);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+}
+
+.card__foot {
+  margin-top: auto;
+  padding-top: var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+.card__foot .btn {
+  position: relative;
+  z-index: var(--z-above);
+}
+
+.card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-em-1);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-sm);
+  color: var(--col-deep, var(--color-accent-text));
+}
+
+.card__cta .icon {
+  transition: transform var(--duration-fast) var(--ease);
+}
+
+.card:hover .card__cta .icon {
+  transform: translateX(4px);
+}
+
+/* interaction row (archive): author avatar + meta */
+.byline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  font-size: var(--text-label);
+  color: var(--color-text-soft);
+}

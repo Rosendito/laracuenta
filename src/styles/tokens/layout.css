@@ -1,0 +1,30 @@
+/* Layout widths and component sizes. */
+:root {
+  --wrap: 1240px;
+  --measure: 42rem; /* reading column */
+  --wide: 60rem; /* article figures and carousel */
+  --header-height: 76px;
+  --measure-narrow: 36ch; /* short intro paragraphs */
+  --width-panel: 30rem; /* hero gallery, contact note */
+
+  --size-logo: 52px;
+  --size-control: 44px;
+  --size-control-md: 38px;
+  --size-control-sm: 36px;
+  --size-avatar: 28px;
+  --size-avatar-lg: 40px;
+  --size-thumb: 96px;
+  --size-brand-mark: 64px;
+  --size-dot: 4px;
+  --size-dot-lg: 10px;
+  --size-node: 16px;
+  --size-line: 2px; /* thin decorative rules */
+
+  --size-icon: 1.25em;
+  --size-icon-sm: 1rem;
+  --size-icon-md: 1.1rem;
+  --size-icon-lg: 1.15rem;
+  --size-icon-xl: 1.4rem;
+
+  --focus-offset: 3px;
+}

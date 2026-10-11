@@ -1,0 +1,41 @@
+/* Section header: title + aside link. */
+
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-9);
+  margin-bottom: var(--space-10);
+}
+
+.section-head h2 {
+  font-size: var(--text-h2);
+  margin-top: var(--space-4);
+}
+
+.section-head .link-more {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-em-1);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  padding-bottom: var(--space-2);
+}
+
+.section-head .link-more .icon {
+  transition: transform var(--duration-fast) var(--ease);
+}
+
+.section-head .link-more:hover .icon {
+  transform: translateX(4px);
+}
+
+@media (--upto-sm) {
+  .section-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+}

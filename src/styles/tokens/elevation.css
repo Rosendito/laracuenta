@@ -1,0 +1,19 @@
+/* Shadows and stacking. */
+:root {
+  --shadow-soft: 0 10px 30px -14px var(--color-ink-a35);
+  --shadow-lift: 0 18px 44px -18px var(--color-ink-a45);
+  --ring-sun: 0 0 0 3px var(--color-sun-55);
+  --text-shadow-photo: 0 2px 30px var(--color-black-a30);
+  --text-shadow-photo-strong: 0 2px 30px var(--color-black-a35);
+  --text-shadow-caption: 0 1px 2px var(--color-black-a40);
+
+  --z-under: -2;
+  --z-behind: -1;
+  --z-base: 0;
+  --z-raised: 1;
+  --z-above: 2;
+  --z-popover: 20;
+  --z-sticky-nav: 40;
+  --z-header: 50;
+  --z-skip-link: 100;
+}

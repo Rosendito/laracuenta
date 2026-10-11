@@ -1,0 +1,86 @@
+/* Photo carousel. */
+
+/* carousel: horizontal scroll-snap strip, wider than the text column */
+.carousel {
+  /* breaks out of the reading column up to the wide column */
+  --bleed: min(100vw - 2 * var(--gutter), 60rem);
+  width: var(--bleed);
+  margin: var(--space-11) 0 var(--space-11) calc(50% - var(--bleed) / 2);
+}
+
+.carousel__head {
+  width: min(100%, var(--measure));
+  margin-inline: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-7);
+  margin-bottom: var(--space-7);
+}
+
+.carousel__head h3 {
+  font-size: var(--text-h3);
+}
+
+.carousel__head p {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--color-text-soft);
+}
+
+.carousel__track {
+  display: flex;
+  gap: var(--space-7);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  padding-inline: var(--gutter);
+  padding-bottom: var(--space-4);
+  margin-inline: calc(-1 * var(--gutter));
+  scrollbar-width: none;
+}
+
+.carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel__item {
+  flex: 0 0 min(78vw, 400px);
+  scroll-snap-align: start;
+  margin: 0;
+}
+
+.carousel__item .photo-bubble {
+  aspect-ratio: 4 / 5;
+}
+
+.carousel__item--wide .photo-bubble {
+  aspect-ratio: 4 / 3;
+}
+
+.carousel__item figcaption {
+  padding-inline: var(--space-1);
+}
+
+.carousel__dots {
+  width: min(100%, var(--measure));
+  margin-inline: auto;
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.carousel__dots button {
+  width: var(--size-dot-lg);
+  height: var(--size-dot-lg);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-round);
+  background: var(--color-line);
+  transition: background-color var(--duration-fast) var(--ease);
+}
+
+.carousel__dots button[aria-current="true"] {
+  background: var(--color-accent);
+}

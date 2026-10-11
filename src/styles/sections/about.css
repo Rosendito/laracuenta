@@ -1,0 +1,132 @@
+/* Home: about, framed by scattered photos. */
+
+.about {
+  position: relative;
+  padding-block: var(--section);
+  background: var(--color-card);
+  overflow: hidden;
+}
+
+.about__inner {
+  position: relative;
+  z-index: var(--z-raised);
+  max-width: var(--measure);
+  margin-inline: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.about__inner h2 {
+  font-size: var(--text-h2);
+}
+
+.about__inner p {
+  font-size: var(--text-lg);
+  color: var(--color-text-soft);
+  text-wrap: pretty;
+}
+
+.about__inner .eyebrow {
+  justify-content: center;
+}
+
+.about__inner .eyebrow::before {
+  display: none;
+}
+
+/* the scattered photos: six bubbles floating left and right */
+.about__scatter {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.about__scatter li {
+  --about-scatter-li-width: clamp(110px, 12vw, 190px);
+  position: absolute;
+  width: var(--about-scatter-li-width);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--shape-bubble);
+  box-shadow: var(--shadow-soft);
+  transform: rotate(var(--tilt, 0deg));
+  opacity: 0.95;
+}
+
+.about__scatter li:nth-child(even) {
+  border-radius: var(--shape-bubble-right);
+}
+
+.about__scatter img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about__scatter li:nth-child(1) {
+  top: 10%;
+  left: 4%;
+  --tilt: -6deg;
+}
+.about__scatter li:nth-child(2) {
+  top: 46%;
+  left: 13%;
+  --tilt: 4deg;
+}
+.about__scatter li:nth-child(3) {
+  top: 72%;
+  left: 3%;
+  --tilt: -3deg;
+  --about-scatter-li-width: clamp(90px, 9vw, 140px);
+}
+.about__scatter li:nth-child(4) {
+  top: 8%;
+  right: 4%;
+  --tilt: 5deg;
+}
+.about__scatter li:nth-child(5) {
+  top: 44%;
+  right: 12%;
+  --tilt: -4deg;
+}
+.about__scatter li:nth-child(6) {
+  top: 70%;
+  right: 3%;
+  --tilt: 3deg;
+  --about-scatter-li-width: clamp(90px, 9vw, 140px);
+}
+
+@media (--upto-2xl) {
+  .about__scatter li {
+    --about-scatter-li-width: clamp(90px, 10vw, 140px);
+  }
+}
+
+@media (--upto-lg) {
+  /* on small screens the frame becomes a strip above the text */
+  .about__scatter {
+    position: static;
+    display: flex;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-10);
+    flex-wrap: wrap;
+  }
+
+  .about__scatter li {
+    position: static;
+    --about-scatter-li-width: clamp(64px, 15vw, 96px) !important;
+    opacity: 1;
+  }
+
+  .about__scatter li:nth-child(3),
+  .about__scatter li:nth-child(6) {
+    display: none;
+  }
+}

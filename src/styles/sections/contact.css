@@ -1,0 +1,63 @@
+/* Home: contact. */
+
+.contact {
+  padding-block: var(--section) 0;
+}
+
+.contact__grid {
+  --contact-grid-gap: clamp(2rem, 5vw, 5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: var(--contact-grid-gap);
+  align-items: start;
+}
+
+.contact__copy h2 {
+  font-size: var(--text-h2);
+  margin-top: var(--space-4);
+}
+
+.contact__copy p {
+  margin-top: var(--space-7);
+  color: var(--color-text-soft);
+  font-size: var(--text-lg);
+  max-width: var(--measure-narrow);
+  text-wrap: pretty;
+}
+
+.contact__note {
+  display: flex;
+  gap: var(--space-7);
+  align-items: center;
+  margin-top: var(--space-10);
+  padding: var(--space-7);
+  background: var(--color-card);
+  border-radius: var(--shape-bubble);
+  max-width: var(--width-panel);
+}
+
+.contact__note img {
+  width: var(--size-thumb);
+  height: var(--size-thumb);
+  object-fit: cover;
+  border-radius: var(--radius-2xl) var(--radius-2xl) var(--radius-2xl) var(--radius-tail);
+  flex: none;
+}
+
+.contact__note p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-soft);
+}
+
+.contact__note strong {
+  display: block;
+  color: var(--color-text);
+  font-weight: var(--weight-bold);
+}
+
+@media (--upto-lg) {
+  .contact__grid {
+    grid-template-columns: 1fr;
+  }
+}

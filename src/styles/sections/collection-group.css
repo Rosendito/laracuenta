@@ -1,0 +1,88 @@
+/* Archive: collection group and load more. */
+
+/* a collection group: header strip + grid */
+.collection {
+  padding-block: var(--space-12) 0;
+  scroll-margin-top: 150px;
+}
+
+.collection[hidden] {
+  display: none;
+}
+
+.collection__head {
+  --collection-head-background: color-mix(in srgb, var(--col-hue) 16%, var(--color-page));
+  --collection-head-margin-bottom: 1.75rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-8);
+  margin-bottom: var(--collection-head-margin-bottom);
+  padding: var(--space-8) var(--space-9);
+  background: var(--collection-head-background);
+  border-left: var(--border-accent) solid var(--col-hue);
+  border-radius: var(--radius-tail) var(--radius-bubble) var(--radius-bubble) var(--radius-tail);
+}
+
+.collection__num {
+  --collection-num-font-size: 2.4rem;
+  font-family: var(--font-serif);
+  font-size: var(--collection-num-font-size);
+  line-height: var(--leading-none);
+  color: var(--col-deep);
+}
+
+.collection__head h2 {
+  --collection-head-h2-font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.2rem);
+  font-size: var(--collection-head-h2-font-size);
+}
+
+.collection__head p {
+  --collection-head-p-max-width: 60ch;
+  --collection-head-p-margin-top: 0.3rem;
+  margin-top: var(--collection-head-p-margin-top);
+  font-size: var(--text-sm);
+  color: var(--color-text-soft);
+  max-width: var(--collection-head-p-max-width);
+}
+
+.collection__count {
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-caps-tight);
+  text-transform: uppercase;
+  color: var(--col-deep);
+  white-space: nowrap;
+}
+
+.collection .card {
+  --col-deep: var(--col-deep);
+}
+
+.card.is-extra[hidden] {
+  display: none;
+}
+
+.load-more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  padding-top: var(--space-13);
+  text-align: center;
+}
+
+.load-more small {
+  color: var(--color-text-soft);
+  font-size: var(--text-label-lg);
+}
+
+@media (--upto-sm) {
+  .collection__head {
+    grid-template-columns: auto 1fr;
+  }
+
+  .collection__count {
+    grid-column: 1 / -1;
+  }
+}

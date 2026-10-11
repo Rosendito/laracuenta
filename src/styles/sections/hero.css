@@ -1,0 +1,280 @@
+/* Home hero: full-bleed photo + bubble panel with featured stories. */
+
+.hero {
+  --hero-min-height: clamp(560px, 92svh, 860px);
+  position: relative;
+  isolation: isolate;
+  min-height: var(--hero-min-height);
+  display: grid;
+  align-items: end;
+  color: var(--color-text-inverse);
+  margin-bottom: var(--section);
+}
+
+.hero__bg,
+.hero__bg picture,
+.hero__bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero__bg {
+  z-index: var(--z-under);
+  overflow: hidden;
+  background: var(--color-night);
+}
+
+.hero__bg img {
+  object-fit: cover;
+  object-position: center 35%;
+}
+
+.hero__bg picture {
+  transition: opacity var(--duration-hero) var(--ease);
+}
+
+.hero__bg picture[data-active="false"] {
+  opacity: 0;
+}
+
+.hero::after {
+  /* legibility veil: dusk rising from the bottom, like concept 1 */
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-behind);
+  background:
+    linear-gradient(
+      to top,
+      var(--color-night-a82) 0%,
+      var(--color-night-a45) 40%,
+      var(--color-night-a05) 72%
+    ),
+    linear-gradient(to right, var(--color-night-a35), transparent 55%);
+}
+
+.hero__credit {
+  --hero-credit-font-size: 0.66rem;
+  position: absolute;
+  left: calc(var(--gutter) / 2);
+  top: var(--space-10);
+  font-size: var(--hero-credit-font-size);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-caps-wide);
+  text-transform: uppercase;
+  opacity: 0.8;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.hero__grid {
+  --hero-grid-padding-block: var(--space-15) clamp(2.5rem, 6vh, 4.5rem);
+  --hero-grid-gap: clamp(1.5rem, 4vw, 4rem);
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--hero-grid-gap);
+  align-items: end;
+  padding-block: var(--hero-grid-padding-block);
+}
+
+.hero__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-8);
+}
+
+.hero__copy .eyebrow {
+  color: var(--color-sun);
+}
+
+.hero__copy .eyebrow::before {
+  background: var(--color-sun);
+}
+
+.hero__copy h1 {
+  --hero-copy-h1-leading: 0.95;
+  --hero-copy-h1-font-size: clamp(3rem, 7.2vw, 6.6rem);
+  font-size: var(--hero-copy-h1-font-size);
+  line-height: var(--hero-copy-h1-leading);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-inverse);
+  text-shadow: var(--text-shadow-photo);
+}
+
+.hero__copy h1 em {
+  font-style: italic;
+  color: var(--color-sun);
+}
+
+.hero__copy .lead {
+  font-size: var(--text-lg);
+  color: var(--color-cream-a92);
+  max-width: var(--measure-narrow);
+  text-wrap: pretty;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+
+/* title lines rise on load */
+.rise > span {
+  display: block;
+  opacity: 0;
+  transform: translateY(0.35em);
+  animation: rise var(--duration-rise) var(--ease) forwards;
+}
+
+.rise > span:nth-child(2) {
+  animation-delay: var(--delay-step-1);
+}
+.rise > span:nth-child(3) {
+  animation-delay: var(--delay-step-2);
+}
+
+@keyframes rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* the strip of featured stories lives in a bubble "spoken" from the photo */
+.hero__gallery {
+  --hero-gallery-padding: var(--space-8) var(--space-8) 1.4rem;
+  color: var(--color-text);
+  padding: var(--hero-gallery-padding);
+  box-shadow: var(--shadow-lift);
+  max-width: var(--width-panel);
+  justify-self: end;
+  width: 100%;
+}
+
+.hero__gallery-head {
+  --hero-gallery-head-margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--hero-gallery-head-margin-bottom);
+}
+
+.hero__gallery-head span {
+  font-size: var(--text-label-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+}
+
+.hero__thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  aspect-ratio: 1;
+  border-radius: var(--radius-xl) var(--radius-xl) var(--radius-xl) var(--radius-tail);
+  overflow: hidden;
+  outline-offset: var(--focus-offset);
+  transition: transform var(--duration-fast) var(--ease);
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    transform var(--duration-medium) var(--ease),
+    filter var(--duration-fade) var(--ease);
+  filter: saturate(0.6) brightness(0.9);
+}
+
+.thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: var(--border-thick) solid transparent;
+  transition: border-color var(--duration-fast) var(--ease);
+}
+
+.thumb:hover img,
+.thumb[aria-pressed="true"] img {
+  filter: none;
+}
+
+.thumb[aria-pressed="true"]::after {
+  border-color: var(--color-sun);
+}
+
+.thumb[aria-pressed="true"] {
+  transform: translateY(-3px);
+}
+
+.hero__current {
+  margin-top: var(--space-7);
+  padding-top: var(--space-7);
+  border-top: var(--border-hair) solid var(--color-line);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.hero__current h2 {
+  --hero-current-h2-font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.7rem);
+  font-size: var(--hero-current-h2-font-size);
+}
+
+.hero__current h2 a {
+  text-decoration: none;
+}
+
+.hero__current h2 a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--color-orange);
+}
+
+@media (--upto-xl) {
+  .hero {
+    min-height: 0;
+  }
+
+  .hero__grid {
+    --hero-grid-padding-top: clamp(14rem, 50vh, 24rem);
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: var(--hero-grid-padding-top);
+  }
+
+  .hero__gallery {
+    max-width: none;
+    justify-self: stretch;
+  }
+
+  .hero__credit {
+    display: none;
+  }
+}
+
+@media (--upto-xs) {
+  .hero__copy h1 {
+    --hero-copy-h1-font-size: clamp(2.6rem, 12vw, 3.4rem);
+  }
+}

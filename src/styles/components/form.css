@@ -1,0 +1,79 @@
+/* Form fields. */
+
+.form {
+  --form-padding: clamp(1.25rem, 3vw, 2rem);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-7);
+  padding: var(--form-padding);
+  background: var(--color-card);
+  border-radius: var(--shape-bubble-top);
+}
+
+.form .field--full {
+  grid-column: 1 / -1;
+}
+
+.field {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.field label {
+  font-size: var(--text-label-lg);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-label);
+}
+
+.field input,
+.field textarea,
+.field select {
+  --field-input-padding: 0.8rem var(--space-7);
+  width: 100%;
+  padding: var(--field-input-padding);
+  border: var(--border-thin) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-page);
+  transition:
+    border-color var(--duration-fast) var(--ease),
+    box-shadow var(--duration-fast) var(--ease);
+}
+
+.field textarea {
+  --field-textarea-min-height: 9rem;
+  min-height: var(--field-textarea-min-height);
+  resize: vertical;
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible,
+.field select:focus-visible {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: var(--ring-sun);
+}
+
+.field__hint {
+  font-size: var(--text-label);
+  color: var(--color-text-soft);
+}
+
+.form__submit {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-7);
+}
+
+.form__submit small {
+  font-size: var(--text-label);
+  color: var(--color-text-soft);
+}
+
+@media (--upto-xs) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,109 @@
+/* Timeline. */
+
+/* timeline: horizontal on wide screens, vertical on narrow */
+.timeline {
+  --timeline-padding: clamp(1.5rem, 3vw, 2.25rem);
+  margin: var(--space-11) 0;
+  padding: var(--timeline-padding);
+  background: var(--color-card);
+  border-radius: var(--shape-bubble-top);
+}
+
+.timeline h3 {
+  font-size: var(--text-h3);
+}
+
+.timeline > p {
+  --timeline-p-margin-top: 0.3rem;
+  margin-top: var(--timeline-p-margin-top);
+  font-size: var(--text-sm);
+  color: var(--color-text-soft);
+}
+
+.timeline ol {
+  --line: var(--col-hue, var(--color-orange));
+  list-style: none;
+  margin: var(--space-9) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-7);
+  position: relative;
+}
+
+.timeline ol::before {
+  --timeline-ol-before-top: 7px;
+  content: "";
+  position: absolute;
+  top: var(--timeline-ol-before-top);
+  left: 0;
+  right: 0;
+  height: var(--size-line);
+  background: var(--line);
+  opacity: 0.6;
+}
+
+.timeline li {
+  position: relative;
+  padding-top: var(--space-9);
+  font-size: var(--text-sm);
+}
+
+.timeline li::before {
+  --timeline-li-before-box-shadow: 0 0 0 2px var(--line);
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--size-node);
+  height: var(--size-node);
+  border-radius: var(--radius-round);
+  background: var(--line);
+  border: var(--border-thick) solid var(--color-card);
+  box-shadow: var(--timeline-li-before-box-shadow);
+}
+
+.timeline time {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: var(--text-display-sm);
+  line-height: var(--leading-none);
+  margin-bottom: var(--space-3);
+  color: var(--col-deep, var(--color-text));
+}
+
+.timeline li p {
+  --timeline-li-p-leading: 1.5;
+  color: var(--color-text-soft);
+  line-height: var(--timeline-li-p-leading);
+}
+
+@media (--upto-md) {
+  .timeline ol {
+    --timeline-ol-padding-left: 1.75rem;
+    grid-template-columns: 1fr;
+    padding-left: var(--timeline-ol-padding-left);
+  }
+
+  .timeline ol::before {
+    --timeline-ol-before-width: 2px;
+    --timeline-ol-before-left: 7px;
+    top: 0;
+    bottom: 0;
+    left: var(--timeline-ol-before-left);
+    right: auto;
+    width: var(--timeline-ol-before-width);
+    height: auto;
+  }
+
+  .timeline li {
+    padding-top: 0;
+  }
+
+  .timeline li::before {
+    --timeline-li-before-top: 4px;
+    --timeline-li-before-left: -1.75rem;
+    left: var(--timeline-li-before-left);
+    top: var(--timeline-li-before-top);
+  }
+}
