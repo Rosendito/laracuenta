@@ -1,4 +1,5 @@
 ---
+import { archivePath } from "../data/collections";
 import { Image } from "astro:assets";
 
 import { strings } from "../config/strings";
@@ -26,7 +27,7 @@ const scatter = [photo8852, photo8876, photo8857, photo8843, photo8894, photo886
     <span class="eyebrow">{strings.about.eyebrow}</span>
     <h2 id="about-title">{strings.about.title}</h2>
     <p>{strings.about.text}</p>
-    <Button variant="sun" href="/archivo" icon="arrow-right">
+    <Button variant="sun" href={archivePath} icon="arrow-right">
       {strings.about.cta}
     </Button>
   </div>

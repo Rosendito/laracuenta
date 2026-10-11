@@ -41,7 +41,7 @@ const PAGES = {
   },
   archive: {
     concept: "archive.html",
-    route: "/archivo",
+    route: "/historias",
     sections: [
       "header.site-header",
       ".banner",

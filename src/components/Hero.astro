@@ -2,7 +2,7 @@
 import { getImage } from "astro:assets";
 
 import { strings } from "../config/strings";
-import { archiveHref, collections } from "../data/collections";
+import { archiveHref, archivePath, collections } from "../data/collections";
 import { getStories, storyHref } from "../lib/stories";
 import Button from "./Button.astro";
 import Icon from "./Icon.astro";
@@ -75,7 +75,7 @@ const first = slides[0];
       </h1>
       <p class="lead">{strings.hero.lead}</p>
       <div class="hero__actions">
-        <Button variant="sun" href="/archivo" icon="arrow-right">
+        <Button variant="sun" href={archivePath} icon="arrow-right">
           {strings.hero.primaryCta}
         </Button>
         <Button variant="ghost-light" href="#nosotros">

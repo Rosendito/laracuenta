@@ -26,7 +26,7 @@ reviews every task; Haiku agents implement components from self-contained task c
 | JS          | No framework islands. Each `main.js` block becomes a `<script>` inside its component (Astro bundles and dedupes it). Every page works without JS.                                                                                                                                      |
 | Comments    | Static mockup, as in the concept.                                                                                                                                                                                                                                                      |
 | Forms       | Post to an external endpoint configured in `src/config/site.ts`.                                                                                                                                                                                                                       |
-| Routes      | `/` · `/archivo` · `/historias/[slug]` · collection anchors `#antes`, `#patrimonio`, `#gente`, `#costumbres`.                                                                                                                                                                          |
+| Routes      | `/` · `/historias` (archive) · `/historias/[slug]` · collection anchors `#antes`, `#patrimonio`, `#gente`, `#costumbres`.                                                                                                                                                                          |
 
 ## 2. Styles architecture
 
@@ -128,7 +128,7 @@ Everything else is plain markup inside the section that uses it (for example
 
 ### Pages
 
-`pages/index.astro` · `pages/archivo.astro` · `pages/historias/[slug].astro` (prose
+`pages/index.astro` · `pages/historias/index.astro` · `pages/historias/[slug].astro` (prose
 wrapper with `col-*` lives here) · `pages/404.astro` (later).
 
 ## 5. Content model

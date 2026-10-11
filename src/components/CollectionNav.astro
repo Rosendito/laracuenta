@@ -67,7 +67,7 @@ const total = Object.values(counts).reduce((sum, n) => sum + n, 0);
       }),
     );
 
-    // Deep links from other pages (/archivo#gente) land on a filtered view.
+    // Deep links from other pages (/historias#gente) land on a filtered view.
     const initial = location.hash.replace("#", "");
     if (initial && Array.from(groups).some((group) => group.dataset.collection === initial)) {
       apply(initial);

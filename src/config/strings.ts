@@ -63,10 +63,10 @@ export const strings = {
   },
 
   archive: {
-    title: "Archivo",
+    title: "Historias",
     description:
       "Todas las historias de Lara Cuenta, organizadas en cuatro colecciones: antes y ahora, patrimonio, gente y costumbres.",
-    eyebrow: "Archivo",
+    eyebrow: "Historias",
     heading: "Todas las historias, en cuatro colecciones",
     intro:
       "Lo que Lara cuenta, ordenado por lo que recuerda: lugares que cambian, patrimonio que resiste, gente que se queda o se va, y costumbres que se repiten cada tarde.",

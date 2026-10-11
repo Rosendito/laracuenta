@@ -16,7 +16,7 @@ export const site = {
 
   nav: [
     { id: "home", label: "Inicio", href: "/" },
-    { id: "archive", label: "Archivo", href: "/archivo" },
+    { id: "archive", label: "Historias", href: "/historias" },
     { id: "about", label: "Nosotros", href: "/#nosotros" },
     { id: "contact", label: "Contacto", href: "/#contacto" },
   ],

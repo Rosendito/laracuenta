@@ -74,4 +74,7 @@ export const collections: Record<CollectionId, Collection> = {
 
 export const collectionList = collectionIds.map((id) => collections[id]);
 
-export const archiveHref = (id: CollectionId) => `/archivo#${id}`;
+/** The archive page lists every story, grouped by collection; stories live under it. */
+export const archivePath = "/historias";
+
+export const archiveHref = (id: CollectionId) => `${archivePath}#${id}`;

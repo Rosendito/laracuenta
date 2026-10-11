@@ -1,12 +1,12 @@
 ---
-import ArchiveBanner from "../components/ArchiveBanner.astro";
-import Button from "../components/Button.astro";
-import CollectionGroup from "../components/CollectionGroup.astro";
-import CollectionNav from "../components/CollectionNav.astro";
-import { strings } from "../config/strings";
-import { collectionList, type CollectionId } from "../data/collections";
-import { getStories } from "../lib/stories";
-import Base from "../layouts/Base.astro";
+import ArchiveBanner from "../../components/ArchiveBanner.astro";
+import Button from "../../components/Button.astro";
+import CollectionGroup from "../../components/CollectionGroup.astro";
+import CollectionNav from "../../components/CollectionNav.astro";
+import { strings } from "../../config/strings";
+import { collectionList, type CollectionId } from "../../data/collections";
+import { getStories } from "../../lib/stories";
+import Base from "../../layouts/Base.astro";
 
 const stories = await getStories();
 

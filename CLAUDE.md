@@ -30,7 +30,7 @@ npm run photo -- <slug> <files>   # import photos into a story (HEIC ok, strips 
 ## Layout
 
 ```
-src/pages/                 routes: /, /archivo, /historias/[slug]
+src/pages/                 routes: / · /historias (archive) · /historias/[slug]
 src/layouts/Base.astro     page shell (head, header, footer, SVG defs)
 src/components/            site components; src/components/mdx/ = the MDX kit for stories
 src/content/stories/<slug>/index.mdx + photos   stories (schema in src/content.config.ts)
