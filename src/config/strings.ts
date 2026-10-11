@@ -107,6 +107,7 @@ export const strings = {
   },
 
   comments: {
+    sampleNote: "Comentarios de muestra: la conversación con los lectores se abrirá pronto.",
     title: "La conversación",
     reply: "Responder",
     like: (n: number) => `Me gusta · ${n}`,
@@ -131,6 +132,5 @@ export const strings = {
     emailPlaceholder: "tu@correo.com",
     subscribe: "Suscribirme",
     copyright: "© 2026 Lara Cuenta · Barquisimeto, Venezuela",
-    mockupNote: "Maqueta de diseño (concepto «Conversación»). Textos y testimonios de muestra.",
   },
 } as const;

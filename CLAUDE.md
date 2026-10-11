@@ -32,7 +32,7 @@ src/content/stories/<slug>/index.mdx + photos   stories (schema in src/content.c
 src/data/collections.ts    the four collections
 src/config/site.ts         nav, social links, form endpoints, author
 src/config/strings.ts      UI copy (Spanish)
-src/styles/                tokens/ base/ layout/ components/ sections/ article/ utilities/
+src/styles/                tokens/ base/ layout/ components/ sections/ article/
 src/assets/photos/         site-wide photos
 scripts/                   CSS lint, photo import, logo generator (build-logo.py → public/)
 public/                    static files (logos)

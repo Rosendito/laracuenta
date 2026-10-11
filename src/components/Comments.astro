@@ -22,6 +22,8 @@ const count = commentsMockup.length;
     </div>
   </div>
 
+  <p class="comments__note">{strings.comments.sampleNote}</p>
+
   <ul class="comment-list">
     {commentsMockup.map((comment) => (
       <li class:list={["comment", comment.byAuthor && "comment--reply"]}>
