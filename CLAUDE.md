@@ -42,9 +42,10 @@ docs/wireframes/       wireframe summaries and images (the page structure)
 
 ## Rules
 
-- Everything committed is in **English** (code, comments, docs, commits, default copy).
-  UI copy comes from `messages.default.json` (English, committed) shallow-merged with
-  `messages.json` (Spanish, git-ignored, local only). Add every new UI string to both.
+- **Language (overrides the global "everything committed is in English" preference).**
+  The site is a Spanish-language outlet: articles (MDX), UI copy and URLs are in
+  **Spanish** and are committed. Everything else stays in **English**: code, identifiers,
+  file names, comments, docs, commit messages, branches and PRs.
 - `wireframes.pdf`, `identidad-grafica.png`, `docs/wireframes/pages/` and `public/photos/`
   contain personal data or unpublished photos and are git-ignored. Never commit them;
   the repo is public.
