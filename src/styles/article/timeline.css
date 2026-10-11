@@ -1,9 +1,12 @@
 /* Timeline. */
 
-/* timeline: horizontal on wide screens, vertical on narrow */
+/* timeline: horizontal on wide screens, vertical on narrow; breaks out of the reading
+   column up to the wide column, like the carousel */
 .timeline {
   --timeline-padding: clamp(1.5rem, 3vw, 2.25rem);
-  margin: var(--space-11) 0;
+  --bleed: min(100vw - 2 * var(--gutter), var(--wide));
+  width: var(--bleed);
+  margin: var(--space-11) 0 var(--space-11) calc(50% - var(--bleed) / 2);
   padding: var(--timeline-padding);
   background: var(--color-card);
   border-radius: var(--shape-bubble-top);
@@ -26,7 +29,9 @@
   margin: var(--space-9) 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* every moment on one line, however many there are */
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
   gap: var(--space-7);
   position: relative;
 }
@@ -81,6 +86,7 @@
 @media (--upto-md) {
   .timeline ol {
     --timeline-ol-padding-left: 1.75rem;
+    grid-auto-flow: row;
     grid-template-columns: 1fr;
     padding-left: var(--timeline-ol-padding-left);
   }
