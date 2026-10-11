@@ -2,6 +2,7 @@ node_modules/
 dist/
 .astro/
 .venv/
+__pycache__/
 .env
 .wrangler/
 
@@ -11,11 +12,8 @@ messages.json
 # Local work: design concepts, scratch files.
 .local/
 
-# Source assignment, identity sheet and raw photos contain personal data; keep them local.
-wireframes.pdf
+# Identity sheet and raw photos contain personal data; keep them local.
 identidad-grafica.png
-docs/wireframes/pages/
-docs/wireframes/images/fgu-logo.png
 public/photos/
 
 # Agent skills installed locally (npx skills add).

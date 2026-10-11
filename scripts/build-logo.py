@@ -1,6 +1,6 @@
 """Build the Lara Cuenta isotype and full logo as clean, font-independent SVGs.
 
-Outputs:
+Outputs (written to public/):
   laracuenta-isotipo.svg  the speech-bubble mark on its own
   laracuenta-logo.svg     wordmark + mark; the bubble's lower left is bitten
                           away like an apple: its left side drops beside the
@@ -15,7 +15,8 @@ The mark is drawn in "isotype space": pixel coordinates measured on the
 450x406 isotype mockup. All separations are real transparent gaps (masks),
 so both files work on any background.
 
-Usage: python build_logo.py <path-to-DMSerifDisplay-Regular.ttf>
+Usage: python scripts/build-logo.py <path-to-DMSerifDisplay-Regular.ttf>
+(needs fontTools: pip install -r scripts/requirements.txt)
 """
 
 import math
@@ -28,7 +29,7 @@ from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 from fontTools.ttLib import TTFont
 
-OUT_DIR = Path(__file__).parent
+OUT_DIR = Path(__file__).resolve().parent.parent / "public"
 
 COLORS = {
     "text": "#422818",

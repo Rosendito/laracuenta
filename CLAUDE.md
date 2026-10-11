@@ -8,8 +8,8 @@ MDX and plain CSS (BEM + design tokens, no Tailwind); it will be hosted on **Clo
 ## Status
 
 The design concept "Conversación" (`.local/design/2-conversacion/`, git-ignored) is
-migrated pixel-perfect: home, archive and article match it at 1440/390/360 px and in every
-interaction state. See `docs/migration-plan.md` for the decisions and the verification.
+migrated: home, archive and article. The site has since moved past the concept (UI and
+accessibility polish, a full-screen mobile menu), so it is no longer a pixel copy of it.
 
 ## Commands
 
@@ -19,13 +19,8 @@ npm run build          # astro check + static build into dist/
 npm run preview        # serve dist/
 npm run format         # prettier
 npm run lint:css       # rejects raw design values outside src/styles/tokens/
-npm run visual         # geometry + pixel diff against the concept (needs npm run dev)
-npm run visual:port    # concept HTML + compiled src/styles vs concept (CSS-only check)
 npm run photo -- <slug> <files>   # import photos into a story (HEIC ok, strips EXIF/GPS)
 ```
-
-`npm run visual` accepts `--page home|archive|post`, `--vp 1440|390|360`,
-`--state <name>` and `--base <url>`; reports and PNGs land in `.local/visual/`.
 
 ## Layout
 
@@ -39,15 +34,14 @@ src/config/site.ts         nav, social links, form endpoints, author
 src/config/strings.ts      UI copy (Spanish)
 src/styles/                tokens/ base/ layout/ components/ sections/ article/ utilities/
 src/assets/photos/         site-wide photos
-scripts/                   CSS lint, visual diff harness, photo import
-logo/                      logo sources (build_logo.py generates the SVGs)
+scripts/                   CSS lint, photo import, logo generator (build-logo.py → public/)
 public/                    static files (logos)
-docs/                      migration plan, writing guide, wireframes
+docs/                      writing guide
 ```
 
 ## Brand
 
-- Palette of the logo (source of truth, `logo/build_logo.py`): orange `#CF7739`, sun
+- Palette of the logo (source of truth, `scripts/build-logo.py`): orange `#CF7739`, sun
   `#EEB33F`, terracotta `#BD6A42`, brown `#54331C`, ink `#422818`. Cream `#F8E9D2`.
 - DM Serif Display for headings, Montserrat for everything else.
 - Content is organized in four **collections** (not categories), each with its own color
@@ -60,10 +54,10 @@ docs/                      migration plan, writing guide, wireframes
   The site is a Spanish-language outlet: articles (MDX), UI copy and URLs are in
   **Spanish** and are committed. Everything else stays in **English**: code, identifiers,
   file names, comments, docs, commit messages, branches and PRs.
-- `wireframes.pdf`, `identidad-grafica.png`, `docs/wireframes/pages/` and `public/photos/`
-  contain personal data or unpublished photos and are git-ignored. Never commit them;
+- `identidad-grafica.png` and `public/photos/` contain personal data or unpublished
+  photos and are git-ignored. Never commit them;
   the repo is public.
 - No server: forms post to an external endpoint (`site.forms`). Comments are undecided
   (static mockup).
 - CSS: never add raw values; use tokens or a local custom property (`npm run lint:css`).
-  Keep the concept's class names. After CSS changes run `npm run visual`.
+  Keep the concept's class names. Check CSS changes in the browser at 1440, 390 and 360 px.

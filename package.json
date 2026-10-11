@@ -10,8 +10,6 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint:css": "node scripts/lint-css.mjs",
-    "visual": "node scripts/visual/compare.mjs",
-    "visual:port": "node scripts/visual/build-port.mjs && node scripts/visual/compare.mjs --target port",
     "photo": "node scripts/import-photo.mjs"
   },
   "dependencies": {
@@ -24,9 +22,6 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "lightningcss": "^1.33.0",
-    "pixelmatch": "^8.0.0",
-    "playwright-core": "^1.64.0",
-    "pngjs": "^7.0.0",
     "postcss": "^8.5.29",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.1",

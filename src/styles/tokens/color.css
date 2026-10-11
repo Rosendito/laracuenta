@@ -1,4 +1,4 @@
-/* Colors. The logo palette (logo/build_logo.py) is the source of truth; every text
+/* Colors. The logo palette (scripts/build-logo.py) is the source of truth; every text
    color is checked for AA on the surface it sits on. */
 :root {
   /* brand palette */
