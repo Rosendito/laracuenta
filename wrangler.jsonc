@@ -1,0 +1,10 @@
+// Cloudflare Workers static assets: serves the prebuilt dist/ as is. With this file
+// present, `wrangler deploy` skips its auto-setup (which would add the Cloudflare
+// adapter and turn the static build into a server one).
+{
+  "name": "laracuenta",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+  },
+}
