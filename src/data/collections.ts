@@ -7,7 +7,7 @@ import costumbresBanner from "../assets/photos/img-8870.webp";
 import genteBanner from "../assets/photos/img-8852.webp";
 import patrimonioBanner from "../assets/photos/img-8854.webp";
 
-export const collectionIds = ["antes", "patrimonio", "gente", "costumbres"] as const;
+export const collectionIds = ["patrimonio", "gente", "costumbres", "antes"] as const;
 export type CollectionId = (typeof collectionIds)[number];
 
 export interface Collection {
@@ -28,7 +28,7 @@ export interface Collection {
 export const collections: Record<CollectionId, Collection> = {
   antes: {
     id: "antes",
-    number: 1,
+    number: 4,
     name: "Lara: antes y ahora",
     short: "Lara: antes y ahora",
     banner: "Antes y ahora",
@@ -39,7 +39,7 @@ export const collections: Record<CollectionId, Collection> = {
   },
   patrimonio: {
     id: "patrimonio",
-    number: 2,
+    number: 1,
     name: "Patrimonio y memoria de los lugares",
     short: "Patrimonio y memoria",
     banner: "Patrimonio",
@@ -50,7 +50,7 @@ export const collections: Record<CollectionId, Collection> = {
   },
   gente: {
     id: "gente",
-    number: 3,
+    number: 2,
     name: "Historias de nuestra gente",
     short: "Historias de nuestra gente",
     banner: "Nuestra gente",
@@ -61,7 +61,7 @@ export const collections: Record<CollectionId, Collection> = {
   },
   costumbres: {
     id: "costumbres",
-    number: 4,
+    number: 3,
     name: "Costumbres y memoria cultural",
     short: "Costumbres y memoria",
     banner: "Costumbres",

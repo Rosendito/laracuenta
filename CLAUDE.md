@@ -45,8 +45,8 @@ docs/                      writing guide
   `#EEB33F`, terracotta `#BD6A42`, brown `#54331C`, ink `#422818`. Cream `#F8E9D2`.
 - DM Serif Display for headings, Montserrat for everything else.
 - Content is organized in four **collections** (not categories), each with its own color
-  and style: Lara then and now · Heritage and memory of places · Stories of our people ·
-  Customs and cultural memory.
+  and style: Heritage and memory of places · Stories of our people · Customs and
+  cultural memory · Lara then and now.
 
 ## Rules
 
