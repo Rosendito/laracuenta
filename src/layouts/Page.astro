@@ -1,0 +1,15 @@
+---
+import Base from "./Base.astro";
+
+// Layout for plain Markdown pages in src/pages (policies, etc.).
+const { frontmatter } = Astro.props;
+---
+
+<Base title={frontmatter.title}>
+  <section class="section">
+    <div class="wrap" style="max-width: var(--read)">
+      <h1>{frontmatter.title}</h1>
+      <slot />
+    </div>
+  </section>
+</Base>

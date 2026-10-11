@@ -8,3 +8,5 @@ messages.json
 wireframes.pdf
 docs/wireframes/pages/
 docs/wireframes/images/fgu-logo.png
+.astro/
+dist-mcp-bundle.txt

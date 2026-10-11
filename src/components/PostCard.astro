@@ -1,0 +1,83 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import { mediaUrl } from "../lib/media";
+import { categoryName, formatDate, readingMinutes, t } from "../lib/messages";
+
+interface Props {
+  post: CollectionEntry<"posts">;
+  showButton?: boolean;
+}
+
+const { post, showButton = false } = Astro.props;
+const { title, date, category, excerpt, cover, coverAlt } = post.data;
+const href = `/blog/${post.id}.html`;
+---
+
+<article class="card" data-category={category}>
+  <a href={href} class="media" tabindex="-1" aria-hidden="true">
+    <img src={mediaUrl(post.id, cover)} alt={coverAlt} loading="lazy" width="800" height="560" />
+  </a>
+  <div class="body">
+    <a class="tag" href={`/blog.html?category=${category}`}>{categoryName(category)}</a>
+    <h3><a href={href}>{title}</a></h3>
+    <p class="excerpt">{excerpt}</p>
+    <p class="meta">
+      <time datetime={date.toISOString()}>{formatDate(date)}</time> · {readingMinutes(post.body)}
+      {t.post.minRead}
+    </p>
+    {showButton && <a class="btn btn--ghost" href={href}>{t.recent.read}</a>}
+  </div>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgb(84 51 28 / 0.1);
+  }
+  .media img {
+    width: 100%;
+    aspect-ratio: 10 / 7;
+    object-fit: cover;
+  }
+  .body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 20px 22px 24px;
+  }
+  h3 {
+    margin: 0;
+  }
+  h3 a {
+    color: inherit;
+    text-decoration: none;
+  }
+  h3 a:hover {
+    color: var(--orange);
+  }
+  .excerpt {
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .meta {
+    margin: auto 0 0;
+  }
+  .btn {
+    margin-top: 8px;
+  }
+</style>

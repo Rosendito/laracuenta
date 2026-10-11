@@ -1,0 +1,150 @@
+---
+import { render } from "astro:content";
+
+import Base from "../../layouts/Base.astro";
+import { mediaUrl } from "../../lib/media";
+import { categoryName, formatDate, readingMinutes, t } from "../../lib/messages";
+import { getPosts } from "../../lib/posts";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { title, date, category, excerpt, cover, coverAlt } = post.data;
+const { Content } = await render(post);
+const coverUrl = mediaUrl(post.id, cover);
+---
+
+<Base title={title} description={excerpt} image={coverUrl}>
+  <article class="post">
+    <header class="read">
+      <p class="meta">
+        <time datetime={date.toISOString()}>{formatDate(date)}</time> · {readingMinutes(post.body)}
+        {t.post.minRead}
+      </p>
+      <h1>{title}</h1>
+      <a class="tag" href={`/blog.html?category=${category}`}>{categoryName(category)}</a>
+      <p class="lead">{excerpt}</p>
+    </header>
+
+    <figure class="cover">
+      <img src={coverUrl} alt={coverAlt} width="1600" height="1000" />
+    </figure>
+
+    <div class="read prose">
+      <Content />
+    </div>
+
+    <footer class="read share" data-share>
+      <span class="meta">{t.post.share}</span>
+      <a data-net="whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp">WhatsApp</a>
+      <a data-net="facebook" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
+      <a data-net="x" target="_blank" rel="noopener" aria-label="X">X</a>
+      <button type="button" data-copy data-copied={t.post.copied}>{t.post.copyLink}</button>
+    </footer>
+
+    <p class="read back"><a href="/blog.html">← {t.post.back}</a></p>
+  </article>
+</Base>
+
+<script>
+  // Share links are built in the browser so they use whatever URL the site is served from.
+  const url = encodeURIComponent(location.href);
+  const text = encodeURIComponent(document.title);
+  const targets: Record<string, string> = {
+    whatsapp: `https://wa.me/?text=${text}%20${url}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+    x: `https://x.com/intent/post?url=${url}&text=${text}`,
+  };
+  document.querySelectorAll<HTMLAnchorElement>("[data-net]").forEach((a) => {
+    a.href = targets[a.dataset.net!];
+  });
+  const copy = document.querySelector<HTMLButtonElement>("[data-copy]")!;
+  copy.addEventListener("click", async () => {
+    await navigator.clipboard.writeText(location.href);
+    copy.textContent = copy.dataset.copied!;
+  });
+</script>
+
+<style>
+  .post {
+    padding-block: clamp(32px, 6vw, 64px);
+  }
+  .read {
+    width: min(var(--read), 100% - 2 * var(--gutter));
+    margin-inline: auto;
+  }
+  .lead {
+    margin-top: 16px;
+    font-size: 1.2rem;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .cover {
+    width: min(1000px, 100% - 2 * var(--gutter));
+    margin: 32px auto 40px;
+  }
+  .cover img {
+    width: 100%;
+    border-radius: var(--radius);
+  }
+  .prose {
+    font-size: 1.08rem;
+    line-height: 1.8;
+  }
+  .prose :global(h2) {
+    margin-top: 1.8em;
+    font-size: 1.7rem;
+  }
+  .prose :global(h3) {
+    margin-top: 1.5em;
+  }
+  .prose :global(img) {
+    margin: 2em 0 0.5em;
+    border-radius: var(--radius);
+  }
+  .prose :global(blockquote) {
+    margin: 2em 0;
+    padding: 0.2em 0 0.2em 1.2em;
+    border-left: 3px solid var(--orange);
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    line-height: 1.45;
+    color: var(--brown);
+  }
+  .prose :global(figcaption),
+  .prose :global(em:only-child) {
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  .share {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  .share a,
+  .share button {
+    padding: 0.45em 1em;
+    border: 0;
+    border-radius: 999px;
+    background: var(--cream-deep);
+    color: var(--brown);
+    font: 500 0.85rem var(--sans);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .share a:hover,
+  .share button:hover {
+    background: var(--orange);
+    color: #fff;
+  }
+  .back {
+    margin-top: 32px;
+  }
+</style>

@@ -1,0 +1,105 @@
+---
+import { t } from "../lib/messages";
+import { SITE } from "../site.config";
+import SocialIcons from "./SocialIcons.astro";
+---
+
+<footer class="footer">
+  <div class="wrap cols">
+    <div>
+      <img src="/laracuenta-logo.svg" alt={t.siteName} width="150" height="50" />
+      <p class="meta">{t.siteDescription}</p>
+    </div>
+    <nav aria-label={t.footer.links}>
+      <h4>{t.footer.links}</h4>
+      <a href="/">{t.nav.home}</a>
+      <a href="/blog.html">{t.nav.blog}</a>
+      <a href="/about.html">{t.nav.about}</a>
+      <a href="/contact.html">{t.nav.contact}</a>
+    </nav>
+    <nav aria-label={t.footer.policies}>
+      <h4>{t.footer.policies}</h4>
+      <a href="/privacy.html">{t.footer.privacy}</a>
+      <a href="/terms.html">{t.footer.terms}</a>
+    </nav>
+    <div>
+      {
+        SITE.newsletterFormEndpoint && (
+          <form class="subscribe" action={SITE.newsletterFormEndpoint} method="post">
+            <h4>{t.footer.newsletter}</h4>
+            <div class="row">
+              <label class="visually-hidden" for="nl-email">{t.contact.email}</label>
+              <input id="nl-email" type="email" name="email" placeholder={t.contact.email} required />
+              <button class="btn">{t.footer.subscribe}</button>
+            </div>
+          </form>
+        )
+      }
+      <SocialIcons />
+    </div>
+  </div>
+  <p class="wrap meta copy">© {new Date().getFullYear()} {t.siteName}. {t.footer.rights}</p>
+</footer>
+
+<style>
+  .footer {
+    background: var(--cream-deep);
+    border-top: 1px solid var(--line);
+    padding-top: 48px;
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr 1.6fr;
+    gap: 32px;
+  }
+  .cols > * + * {
+    border-left: 1px solid var(--line);
+    padding-left: 32px;
+  }
+  h4 {
+    margin: 0 0 12px;
+    font: 600 0.78rem/1 var(--sans);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--brown);
+  }
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  nav a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+  nav a:hover {
+    color: var(--orange);
+  }
+  .subscribe {
+    margin-bottom: 16px;
+  }
+  .row {
+    display: flex;
+    gap: 8px;
+  }
+  .copy {
+    margin-top: 40px;
+    padding-block: 20px;
+    border-top: 1px solid var(--line);
+  }
+  @media (max-width: 860px) {
+    .cols {
+      grid-template-columns: 1fr 1fr;
+    }
+    .cols > * + * {
+      border-left: 0;
+      padding-left: 0;
+    }
+  }
+  @media (max-width: 520px) {
+    .cols {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

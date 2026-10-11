@@ -1,0 +1,13 @@
+---
+import Base from "../layouts/Base.astro";
+import { t } from "../lib/messages";
+---
+
+<Base title={t.notFound.title}>
+  <section class="section">
+    <div class="wrap" style="text-align: center">
+      <h1>{t.notFound.title}</h1>
+      <a class="btn" href="/">{t.notFound.back}</a>
+    </div>
+  </section>
+</Base>
