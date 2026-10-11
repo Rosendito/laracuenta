@@ -2,7 +2,7 @@
 
 export const site = {
   name: "Lara Cuenta",
-  title: "Lara Cuenta — Memoria, patrimonio y gente de Lara",
+  title: "Lara Cuenta | Memoria, patrimonio y gente de Lara",
   description:
     "Un nano-medio digital sobre la memoria, el patrimonio y la gente de Lara, Venezuela. Fotografía y crónicas desde Barquisimeto.",
   locale: "es",
