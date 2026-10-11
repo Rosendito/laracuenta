@@ -1,0 +1,10 @@
+.venv/
+node_modules/
+dist/
+.env
+messages.json
+
+# Source assignment and raw text extracts contain personal data; keep them local.
+wireframes.pdf
+docs/wireframes/pages/
+docs/wireframes/images/fgu-logo.png
