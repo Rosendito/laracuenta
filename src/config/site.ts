@@ -9,7 +9,7 @@ export const site = {
   dateLocale: "es-VE",
 
   author: {
-    name: "Lara Cuenta",
+    name: "Mariangel León",
     initial: "M",
     role: "Texto y fotografías · Barquisimeto",
   },
