@@ -1,5 +1,6 @@
 ---
 // The sources consulted for a story, at its end. Put a Markdown list of links inside.
+// Long lists show the first few and a button to expand the rest (all show without JS).
 import { strings } from "../../config/strings";
 ---
 
@@ -7,3 +8,33 @@ import { strings } from "../../config/strings";
   <h2 id="sources-title">{strings.article.sources}</h2>
   <slot />
 </aside>
+
+<script>
+  import { strings } from "../../config/strings";
+
+  const VISIBLE = 4;
+
+  document.querySelectorAll<HTMLElement>(".sources").forEach((sources, index) => {
+    const list = sources.querySelector("ul, ol");
+    const total = list?.children.length ?? 0;
+    if (!list || total <= VISIBLE) return;
+
+    list.id ||= `sources-list-${index}`;
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "sources__toggle";
+    toggle.setAttribute("aria-controls", list.id);
+
+    const render = (expanded: boolean) => {
+      sources.toggleAttribute("data-collapsed", !expanded);
+      toggle.setAttribute("aria-expanded", String(expanded));
+      toggle.textContent = expanded
+        ? strings.article.sourcesShowLess
+        : strings.article.sourcesShowAll(total);
+    };
+
+    toggle.addEventListener("click", () => render(sources.hasAttribute("data-collapsed")));
+    list.after(toggle);
+    render(false);
+  });
+</script>

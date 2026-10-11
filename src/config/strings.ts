@@ -95,6 +95,8 @@ export const strings = {
     now: "Hoy",
     facts: "Ficha",
     sources: "Fuentes",
+    sourcesShowAll: (n: number) => `Ver las ${n} fuentes`,
+    sourcesShowLess: "Ver menos",
     zoomPhoto: (alt: string) => `Ampliar foto: ${alt}`,
     zoomedPhoto: "Foto ampliada",
   },

@@ -31,3 +31,23 @@
   font-weight: var(--weight-semibold);
   overflow-wrap: break-word;
 }
+
+/* long lists: only the first four until expanded (components/mdx/Sources.astro) */
+.sources[data-collapsed] li:nth-child(n + 5) {
+  display: none;
+}
+
+.sources__toggle {
+  margin-top: var(--space-6);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: var(--weight-semibold);
+  color: var(--color-accent-text);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--color-orange);
+  cursor: pointer;
+}
