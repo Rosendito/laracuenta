@@ -83,9 +83,6 @@ export const site = {
 
   social: [
     { id: "instagram", label: "Instagram", href: "#" },
-    { id: "facebook", label: "Facebook", href: "#" },
-    { id: "x", label: "X", href: "#" },
-    { id: "youtube", label: "YouTube", href: "#" },
   ],
 
   // No backend: forms post to an external service. Replace the placeholders.
