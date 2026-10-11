@@ -1,0 +1,17 @@
+---
+// A fact sheet: key data of the place in a short definition list. Put <Fact> inside.
+import { strings } from "../../config/strings";
+
+interface Props {
+  title?: string;
+}
+
+const { title = strings.article.facts } = Astro.props;
+---
+
+<aside class="facts">
+  <span class="eyebrow">{title}</span>
+  <dl>
+    <slot />
+  </dl>
+</aside>

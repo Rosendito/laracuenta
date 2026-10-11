@@ -1,0 +1,55 @@
+/* "Antes y ahora": an archive print next to a present-day photo. */
+
+.then-now {
+  /* breaks out of the reading column up to the wide column, like the carousel */
+  --bleed: min(100vw - 2 * var(--gutter), var(--wide));
+  width: var(--bleed);
+  margin: var(--space-11) 0 var(--space-11) calc(50% - var(--bleed) / 2);
+}
+
+.then-now__head {
+  width: min(100%, var(--measure));
+  margin: 0 auto var(--space-7);
+}
+
+.then-now__head h3 {
+  font-size: var(--text-h3);
+}
+
+.then-now__head p {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--color-text-soft);
+}
+
+.then-now__pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-9);
+  align-items: start;
+}
+
+/* both halves share one frame so the pair reads as a comparison */
+.then-now .article__figure {
+  margin: 0;
+}
+
+.then-now .photo-bubble {
+  aspect-ratio: var(--then-now-ratio);
+}
+
+.then-now .figure--archive .photo-bubble {
+  width: auto;
+}
+
+.then-now .figure--archive .photo-bubble img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+}
+
+@media (--upto-md) {
+  .then-now__pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

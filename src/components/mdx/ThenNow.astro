@@ -1,0 +1,24 @@
+---
+// "Antes y ahora": an <Archive> photo next to a <Now> photo, side by side on wide
+// screens and stacked on narrow ones. Both share one frame ratio.
+interface Props {
+  title?: string;
+  description?: string;
+  /** Frame ratio for both photos, as CSS aspect-ratio. */
+  ratio?: string;
+}
+
+const { title, description, ratio = "4 / 3" } = Astro.props;
+---
+
+<div class="then-now" style={`--then-now-ratio: ${ratio}`}>
+  {title && (
+    <div class="then-now__head">
+      <h3>{title}</h3>
+      {description && <p>{description}</p>}
+    </div>
+  )}
+  <div class="then-now__pair">
+    <slot />
+  </div>
+</div>

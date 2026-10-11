@@ -43,6 +43,9 @@
 @import "./article/carousel.css";
 @import "./article/timeline.css";
 @import "./article/figure.css";
+@import "./article/then-now.css";
+@import "./article/facts.css";
+@import "./article/sources.css";
 @import "./article/share.css";
 @import "./article/comments.css";
 @import "./utilities/mockup-note.css";

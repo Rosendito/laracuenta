@@ -90,6 +90,10 @@ export const strings = {
     previousPhoto: "Foto anterior",
     nextPhoto: "Foto siguiente",
     photoOf: (i: number, n: number) => `Foto ${i} de ${n}`,
+    archive: "Archivo",
+    now: "Hoy",
+    facts: "Ficha",
+    sources: "Fuentes",
   },
 
   comments: {

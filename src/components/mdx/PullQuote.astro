@@ -1,0 +1,10 @@
+---
+// A sentence lifted from the story itself and set large. It repeats the body text,
+// so it is hidden from screen readers to avoid reading it twice.
+const text = (await Astro.slots.render("default")).trim();
+const paragraph = text.startsWith("<p") ? text : `<p>${text}</p>`;
+---
+
+<aside class="quote quote--pull" aria-hidden="true">
+  <Fragment set:html={paragraph} />
+</aside>

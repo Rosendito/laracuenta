@@ -1,0 +1,18 @@
+---
+// A present-day photo with a corner label: the "now" half of <ThenNow>.
+import { strings } from "../../config/strings";
+import { addCredit, addStamp } from "./figure-html";
+
+interface Props {
+  year?: string;
+  credit?: string;
+}
+
+const { year, credit } = Astro.props;
+const label = year ? `${strings.article.now} · ${year}` : strings.article.now;
+
+let html = addStamp(await Astro.slots.render("default"), "figure--now", label);
+if (credit) html = addCredit(html, credit);
+---
+
+<Fragment set:html={html} />

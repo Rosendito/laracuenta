@@ -1,0 +1,15 @@
+---
+// One entry of a Facts sheet.
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<div class="facts__item">
+  <dt>{label}</dt>
+  <dd>
+    <slot />
+  </dd>
+</div>

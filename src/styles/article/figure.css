@@ -15,3 +15,59 @@
   width: var(--article-figure-bleed-width);
   margin-inline: var(--article-figure-bleed-margin-inline);
 }
+
+.article__figure figcaption {
+  margin-top: var(--space-5);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--color-text-soft);
+}
+
+.article__figure .credit {
+  font-weight: var(--weight-semibold);
+}
+
+/* corner label on the photo: "Archivo · 1956", "Hoy · 2026" */
+.figure__stamp {
+  position: absolute;
+  top: var(--space-8);
+  left: var(--space-8);
+  z-index: var(--z-raised);
+}
+
+.figure--now .figure__stamp {
+  --tag-bg: var(--color-sun);
+  --tag-fg: var(--color-text);
+}
+
+/* archive: a print on a mat, never cropped and never clipped to a bubble; tall
+   prints are capped and centered */
+.figure--archive .photo-bubble {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  aspect-ratio: auto;
+  clip-path: none;
+  padding: var(--space-4);
+  background: var(--color-card);
+  border: var(--border-hair) solid var(--color-line);
+  border-radius: var(--radius-xs);
+  box-shadow: var(--shadow-soft);
+}
+
+.figure--archive .photo-bubble img {
+  --archive-max-height: 70vh;
+  width: auto;
+  max-height: var(--archive-max-height);
+  height: auto;
+  object-fit: contain;
+}
+
+.figure--archive figcaption {
+  text-align: center;
+  text-wrap: balance;
+}
+
+.then-now .figure--archive figcaption {
+  text-align: start;
+}

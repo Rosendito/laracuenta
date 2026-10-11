@@ -1,0 +1,33 @@
+/* Sources consulted, at the end of the story. */
+
+.sources {
+  margin-top: var(--space-12);
+  padding-top: var(--space-8);
+  border-top: var(--border-medium) solid var(--color-line);
+  font-size: var(--text-sm);
+}
+
+.article__body .sources h2 {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+}
+
+.sources ul {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sources a {
+  font-weight: var(--weight-semibold);
+  overflow-wrap: break-word;
+}

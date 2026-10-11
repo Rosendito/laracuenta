@@ -1,0 +1,20 @@
+---
+// An archive photo: shown as a print (uncropped, on a mat) with a corner label and
+// an optional credit. Works on its own or as the "then" half of <ThenNow>.
+import { strings } from "../../config/strings";
+import { addCredit, addStamp } from "./figure-html";
+
+interface Props {
+  /** Visible date of the photo: "1956", "Años 80"… */
+  year?: string;
+  credit?: string;
+}
+
+const { year, credit } = Astro.props;
+const label = year ? `${strings.article.archive} · ${year}` : strings.article.archive;
+
+let html = addStamp(await Astro.slots.render("default"), "figure--archive", label);
+if (credit) html = addCredit(html, credit);
+---
+
+<Fragment set:html={html} />

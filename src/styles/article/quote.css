@@ -69,3 +69,19 @@
   font-weight: var(--weight-medium);
   line-height: var(--quote-testimony-p-leading);
 }
+
+/* pull quote: a line of the story itself, set large without a bubble */
+.quote--pull {
+  background: none;
+  padding-inline: 0;
+  text-align: center;
+}
+
+.quote--pull::before {
+  display: none;
+}
+
+.quote--pull p {
+  color: var(--col-deep, var(--color-accent-text));
+  text-wrap: balance;
+}
