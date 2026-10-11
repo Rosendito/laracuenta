@@ -75,14 +75,13 @@ export const site = {
   ],
 
   policies: [
-    { label: "Privacidad", href: "#" },
-    { label: "Cookies", href: "#" },
-    { label: "Créditos fotográficos", href: "#" },
-    { label: "Uso de las imágenes", href: "#" },
+    { label: "Privacidad", href: "/privacidad" },
+    { label: "Cookies", href: "/cookies" },
+    { label: "Uso de las imágenes", href: "/uso-de-las-imagenes" },
   ],
 
   social: [
-    { id: "instagram", label: "Instagram", href: "#" },
+    { id: "instagram", label: "Instagram", href: "https://www.instagram.com/laracuentamedio" },
   ],
 
   // No backend: forms post to an external service. Replace the placeholders.

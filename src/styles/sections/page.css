@@ -1,0 +1,47 @@
+/* Plain text pages (layouts/Prose.astro): privacy, cookies, image use. */
+
+.page-prose {
+  --page-prose-font-size: clamp(1.05rem, 1rem + 0.3vw, 1.2rem);
+  padding-block: var(--space-12) var(--section);
+  font-size: var(--page-prose-font-size);
+  line-height: var(--leading-relaxed);
+}
+
+.page-prose h1 {
+  font-size: var(--text-h1);
+  line-height: var(--leading-heading);
+}
+
+.page-prose__updated {
+  margin-top: var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--color-text-soft);
+}
+
+.page-prose > * + * {
+  margin-top: var(--space-em-8);
+}
+
+.page-prose h2 {
+  --page-prose-h2-margin-top: 2em;
+  margin-top: var(--page-prose-h2-margin-top);
+  padding-top: var(--space-em-5);
+  border-top: var(--border-medium) solid var(--color-line);
+  font-size: var(--text-h3);
+}
+
+.page-prose h2 + * {
+  margin-top: var(--space-em-5);
+}
+
+.page-prose ul {
+  padding-left: var(--space-em-8);
+}
+
+.page-prose li + li {
+  margin-top: var(--space-em-3);
+}
+
+.page-prose a {
+  font-weight: var(--weight-semibold);
+}

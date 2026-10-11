@@ -77,6 +77,10 @@ export const strings = {
     storyCount: (n: number) => (n === 1 ? "1 historia" : `${n} historias`),
   },
 
+  page: {
+    updated: (date: string) => `Última actualización: ${date}`,
+  },
+
   author: {
     eyebrow: "Autora",
     stories: "Sus historias",

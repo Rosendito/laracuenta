@@ -1,0 +1,20 @@
+---
+// Plain text pages (privacy, cookies, image use): a title, the last update and prose.
+// Used as the `layout` of the MDX pages in src/pages/.
+import { strings } from "../config/strings";
+import Base from "./Base.astro";
+
+interface Props {
+  frontmatter: { title: string; description: string; updated: string };
+}
+
+const { title, description, updated } = Astro.props.frontmatter;
+---
+
+<Base title={title} description={description}>
+  <article class="article__col page-prose">
+    <h1>{title}</h1>
+    <p class="page-prose__updated">{strings.page.updated(updated)}</p>
+    <slot />
+  </article>
+</Base>
