@@ -77,8 +77,8 @@
 }
 
 .article__byline .avatar {
-  width: var(--size-avatar-lg);
-  height: var(--size-avatar-lg);
+  width: var(--size-avatar-xl);
+  height: var(--size-avatar-xl);
   font-size: var(--text-ui-lg);
 }
 

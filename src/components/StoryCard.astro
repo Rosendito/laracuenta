@@ -55,7 +55,11 @@ const isArchive = variant === "archive";
     {isArchive ? (
       <div class="card__foot">
         <span class="byline">
-          <Avatar initials={site.author.initial} tone={collection.avatarTone} />
+          <Avatar
+            initials={site.author.initial}
+            image={site.author.photo}
+            tone={collection.avatarTone}
+          />
           <span>
             {site.author.name}
             {data.commentCount !== undefined && ` · ${strings.card.comments(data.commentCount)}`}

@@ -63,7 +63,7 @@ const collection = collections[data.collection];
   </div>
   <p class="article__lead">{data.lead}</p>
   <div class="article__byline">
-    <Avatar initials={site.author.initial} tone={collection.avatarTone} />
+    <Avatar initials={site.author.initial} image={site.author.photo} tone={collection.avatarTone} />
     <span>
       <strong>{site.author.name}</strong>
       {site.author.role}

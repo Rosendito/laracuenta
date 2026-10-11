@@ -1,14 +1,19 @@
 ---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
 interface Props {
   name?: string;
   initials?: string;
+  /** Portrait shown instead of the initials. */
+  image?: ImageMetadata;
   tone?: "sun" | "terracotta" | "orange" | "none";
   class?: string;
 }
 
 const TONES = ["sun", "terracotta", "orange"] as const;
 
-const { name, initials, tone, class: className } = Astro.props;
+const { name, initials, image, tone, class: className } = Astro.props;
 
 const firstLetter = (text: string) => [...text.trim()][0]?.toUpperCase() ?? "?";
 
@@ -28,5 +33,5 @@ const resolvedTone =
   class:list={["avatar", resolvedTone && `avatar--${resolvedTone}`, className]}
   aria-hidden="true"
 >
-  {resolvedInitials}
+  {image ? <Image src={image} alt="" width={128} height={128} /> : resolvedInitials}
 </span>

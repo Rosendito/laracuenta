@@ -1,4 +1,5 @@
 // Site-wide settings: identity, navigation, social links and form endpoints.
+import authorPhoto from "../assets/authors/mariangel-leon.webp";
 
 export const site = {
   name: "Lara Cuenta",
@@ -11,6 +12,7 @@ export const site = {
   author: {
     name: "Mariangel León",
     initial: "M",
+    photo: authorPhoto,
     role: "Texto y fotografías · Barquisimeto",
   },
 
