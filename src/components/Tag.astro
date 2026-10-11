@@ -1,0 +1,26 @@
+---
+import type { CollectionId } from "../data/collections";
+
+interface Props {
+  label: string;
+  href?: string;
+  collection?: CollectionId;
+  class?: string;
+  /** Other attributes (data-field, data-filter-link, ...) are passed to the element. */
+  [attr: string]: unknown;
+}
+
+const { label, href, collection, class: className, ...rest } = Astro.props;
+
+const classes = ["tag", collection ? `col-${collection}` : undefined, className];
+---
+
+{href ? (
+  <a class:list={classes} href={href} {...rest}>
+    {label}
+  </a>
+) : (
+  <span class:list={classes} {...rest}>
+    {label}
+  </span>
+)}

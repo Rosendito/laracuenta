@@ -1,0 +1,32 @@
+---
+interface Props {
+  name?: string;
+  initials?: string;
+  tone?: "sun" | "terracotta" | "orange" | "none";
+  class?: string;
+}
+
+const TONES = ["sun", "terracotta", "orange"] as const;
+
+const { name, initials, tone, class: className } = Astro.props;
+
+const firstLetter = (text: string) => [...text.trim()][0]?.toUpperCase() ?? "?";
+
+/** Same name, same tone: a simple checksum over the character codes. */
+const toneFromName = (text: string) => {
+  const sum = [...text].reduce((total, char) => total + char.charCodeAt(0), 0);
+  return TONES[sum % TONES.length];
+};
+
+const resolvedInitials = initials ?? (name ? firstLetter(name) : "?");
+
+const resolvedTone =
+  tone === "none" ? undefined : (tone ?? (name ? toneFromName(name) : undefined));
+---
+
+<span
+  class:list={["avatar", resolvedTone && `avatar--${resolvedTone}`, className]}
+  aria-hidden="true"
+>
+  {resolvedInitials}
+</span>

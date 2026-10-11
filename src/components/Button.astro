@@ -1,0 +1,42 @@
+---
+import Icon from "./Icon.astro";
+import type { IconName } from "../lib/ui";
+
+interface Props {
+  href?: string;
+  variant?: "sun" | "ghost" | "ghost-light";
+  size?: "sm";
+  icon?: IconName;
+  type?: "button" | "submit" | "reset";
+  class?: string;
+  /** Other attributes (data-*, disabled, ...) are passed to the element. */
+  [attr: string]: unknown;
+}
+
+const { href, variant, size, icon, type, class: className, ...rest } = Astro.props;
+
+const variantClass = {
+  sun: ["btn--sun"],
+  ghost: ["btn--ghost"],
+  "ghost-light": ["btn--ghost", "btn--ghost-light"],
+} as const;
+
+const classes = [
+  "btn",
+  variant ? variantClass[variant] : undefined,
+  size === "sm" ? "btn--sm" : undefined,
+  className,
+];
+---
+
+{href ? (
+  <a class:list={classes} href={href} {...rest}>
+    <slot />
+    {icon && <Icon name={icon} />}
+  </a>
+) : (
+  <button class:list={classes} type={type ?? "button"} {...rest}>
+    <slot />
+    {icon && <Icon name={icon} />}
+  </button>
+)}
