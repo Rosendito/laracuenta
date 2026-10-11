@@ -29,28 +29,60 @@ const PAGES = {
   home: {
     concept: "index.html",
     route: "/",
-    sections: ["header.site-header", ".hero", ".recent", ".about", ".contact", "footer.site-footer"],
+    sections: [
+      "header.site-header",
+      ".hero",
+      ".recent",
+      ".about",
+      ".contact",
+      "footer.site-footer",
+    ],
   },
   archive: {
     concept: "archive.html",
     route: "/archivo",
-    sections: ["header.site-header", ".banner", ".collection-nav", "#antes", "#patrimonio", "#gente", "#costumbres", ".load-more", "footer.site-footer"],
+    sections: [
+      "header.site-header",
+      ".banner",
+      ".collection-nav",
+      "#antes",
+      "#patrimonio",
+      "#gente",
+      "#costumbres",
+      ".load-more",
+      "footer.site-footer",
+    ],
   },
   post: {
     concept: "post.html",
     route: "/historias/el-obelisco",
-    sections: ["header.site-header", ".article > header", ".article__cover", ".article__body", ".share", ".comments", "footer.site-footer"],
+    sections: [
+      "header.site-header",
+      ".article > header",
+      ".article__cover",
+      ".article__body",
+      ".share",
+      ".comments",
+      "footer.site-footer",
+    ],
   },
 };
 
-const VIEWPORTS = { 1440: { width: 1440, height: 900 }, 390: { width: 390, height: 844 }, 360: { width: 360, height: 780 } };
+const VIEWPORTS = {
+  1440: { width: 1440, height: 900 },
+  390: { width: 390, height: 844 },
+  360: { width: 360, height: 780 },
+};
 
 // Interaction states, applied identically to both pages before capturing.
 const STATES = {
   "nav-open": { pages: ["home"], vps: ["390", "360"], run: (p) => p.click(".nav-toggle") },
   "hero-2": { pages: ["home"], run: (p) => p.click('.thumb[data-index="1"]') },
   "menu-open": { pages: ["post"], run: (p) => p.click(".overflow > button") },
-  "filter-patrimonio": { pages: ["archive"], run: (p) => p.click('.chip[data-filter="patrimonio"]') },
+  "filter-patrimonio": {
+    pages: ["archive"],
+    run: (p) => p.click('.chip[data-filter="patrimonio"]'),
+  },
   "load-more": { pages: ["archive"], run: (p) => p.click(".load-more button") },
   comment: {
     pages: ["post"],
@@ -89,7 +121,9 @@ async function prepare(browser, url, viewport, state) {
   await page.evaluate(async () => {
     document.querySelectorAll('img[loading="lazy"]').forEach((img) => (img.loading = "eager"));
     await document.fonts.ready;
-    await Promise.all([...document.images].map((img) => (img.complete ? null : img.decode().catch(() => null))));
+    await Promise.all(
+      [...document.images].map((img) => (img.complete ? null : img.decode().catch(() => null))),
+    );
   });
   if (state) {
     await STATES[state].run(page);
@@ -102,7 +136,19 @@ async function prepare(browser, url, viewport, state) {
 // Boxes of every element in <body>, keyed by tag + classes and occurrence.
 function collectBoxes(page) {
   return page.evaluate(() => {
-    const skip = new Set(["SCRIPT", "STYLE", "TEMPLATE", "USE", "PATH", "SYMBOL", "DEFS", "CLIPPATH", "RECT", "CIRCLE", "LINK"]);
+    const skip = new Set([
+      "SCRIPT",
+      "STYLE",
+      "TEMPLATE",
+      "USE",
+      "PATH",
+      "SYMBOL",
+      "DEFS",
+      "CLIPPATH",
+      "RECT",
+      "CIRCLE",
+      "LINK",
+    ]);
     const counts = new Map();
     const out = [];
     const describe = (el) => {
@@ -121,7 +167,15 @@ function collectBoxes(page) {
       counts.set(key, i + 1);
       const r = el.getBoundingClientRect();
       const visible = r.width > 0 || r.height > 0;
-      out.push({ id: `${key}#${i}`, path: describe(el), x: r.x + scrollX, y: r.y + scrollY, w: r.width, h: r.height, visible });
+      out.push({
+        id: `${key}#${i}`,
+        path: describe(el),
+        x: r.x + scrollX,
+        y: r.y + scrollY,
+        w: r.width,
+        h: r.height,
+        visible,
+      });
     }
     return out;
   });
@@ -180,7 +234,12 @@ for (const pageName of pages) {
     const dir = join(OUT, args.target, label);
     mkdirSync(dir, { recursive: true });
 
-    const ref = await prepare(browser, pathToFileURL(join(CONCEPT, conf.concept)).href, VIEWPORTS[vp], state);
+    const ref = await prepare(
+      browser,
+      pathToFileURL(join(CONCEPT, conf.concept)).href,
+      VIEWPORTS[vp],
+      state,
+    );
     const cand = await prepare(browser, candidateUrl(pageName), VIEWPORTS[vp], state);
 
     // geometry
@@ -203,7 +262,12 @@ for (const pageName of pages) {
         const el = document.querySelector(s);
         if (!el) return null;
         const r = el.getBoundingClientRect();
-        return { x: Math.max(0, Math.floor(r.x + scrollX)), y: Math.floor(r.y + scrollY), w: Math.floor(r.width), h: Math.floor(r.height) };
+        return {
+          x: Math.max(0, Math.floor(r.x + scrollX)),
+          y: Math.floor(r.y + scrollY),
+          w: Math.floor(r.width),
+          h: Math.floor(r.height),
+        };
       }, sel);
       if (!box || box.w === 0 || box.h === 0) continue;
       const w = Math.min(box.w, refShot.width - box.x, candShot.width - box.x);
@@ -212,7 +276,12 @@ for (const pageName of pages) {
         sections.push({ sel, pct: 100 });
         continue;
       }
-      const pct = diffImages(crop(refShot, box.x, box.y, w, h), crop(candShot, box.x, box.y, w, h), null, sel);
+      const pct = diffImages(
+        crop(refShot, box.x, box.y, w, h),
+        crop(candShot, box.x, box.y, w, h),
+        null,
+        sel,
+      );
       sections.push({ sel, pct });
     }
     await ref.close();
@@ -221,21 +290,30 @@ for (const pageName of pages) {
     // report
     const lines = [`## ${label} (${args.target})`, ""];
     lines.push(`Page height: concept ${refShot.height}px · candidate ${candShot.height}px`);
-    lines.push(`Geometry: ${deltas.length} moved/resized · ${missing.length} missing · ${extra.length} extra`);
+    lines.push(
+      `Geometry: ${deltas.length} moved/resized · ${missing.length} missing · ${extra.length} extra`,
+    );
     for (const b of deltas.slice(0, limit)) {
-      lines.push(`  Δ ${b.path}  x${fmt(b.d.x)} y${fmt(b.d.y)} w${fmt(b.d.w)} h${fmt(b.d.h)}  (${b.id})`);
+      lines.push(
+        `  Δ ${b.path}  x${fmt(b.d.x)} y${fmt(b.d.y)} w${fmt(b.d.w)} h${fmt(b.d.h)}  (${b.id})`,
+      );
     }
     if (deltas.length > limit) lines.push(`  … ${deltas.length - limit} more`);
     for (const b of missing.slice(0, limit)) lines.push(`  − missing ${b.path}  (${b.id})`);
     for (const b of extra.slice(0, limit)) lines.push(`  + extra   ${b.path}  (${b.id})`);
     lines.push(`Pixels: full page ${full.toFixed(2)}%`);
-    for (const s of sections) lines.push(`  ${s.pct < 0.5 ? "ok " : "!! "} ${s.sel}: ${s.pct.toFixed(2)}%`);
+    for (const s of sections)
+      lines.push(`  ${s.pct < 0.5 ? "ok " : "!! "} ${s.sel}: ${s.pct.toFixed(2)}%`);
     lines.push(`Images: ${dir}`);
     const report = lines.join("\n");
     writeFileSync(join(dir, "report.md"), report + "\n");
     console.log(report + "\n");
 
-    const pass = deltas.length === 0 && missing.length === 0 && extra.length === 0 && sections.every((s) => s.pct < 0.5);
+    const pass =
+      deltas.length === 0 &&
+      missing.length === 0 &&
+      extra.length === 0 &&
+      sections.every((s) => s.pct < 0.5);
     if (!pass) failed = true;
   }
 }

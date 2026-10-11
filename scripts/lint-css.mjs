@@ -53,12 +53,16 @@ for (const file of cssFiles(ROOT)) {
     if (bad.length) {
       errors++;
       const sel = decl.parent.selector ?? `@${decl.parent.name}`;
-      console.log(`${file}:${decl.source.start.line}  ${sel} { ${decl.prop}: ${decl.value} }  → ${bad.join(", ")}`);
+      console.log(
+        `${file}:${decl.source.start.line}  ${sel} { ${decl.prop}: ${decl.value} }  → ${bad.join(", ")}`,
+      );
     }
   });
 }
 if (errors) {
-  console.log(`\n${errors} raw value(s). Use a token from src/styles/tokens/ or a local custom property.`);
+  console.log(
+    `\n${errors} raw value(s). Use a token from src/styles/tokens/ or a local custom property.`,
+  );
   process.exit(1);
 }
 console.log("lint:css ok");
