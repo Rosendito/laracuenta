@@ -73,7 +73,7 @@ export const strings = {
       "Lo que Lara cuenta, ordenado por lo que recuerda: lugares que cambian, patrimonio que resiste, gente que se queda o se va, y costumbres que se repiten cada tarde.",
     collectionsNav: "Colecciones",
     all: "Todas",
-    storyCount: (n: number) => `${n} historias`,
+    storyCount: (n: number) => (n === 1 ? "1 historia" : `${n} historias`),
   },
 
   article: {
