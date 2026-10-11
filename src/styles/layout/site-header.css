@@ -58,12 +58,12 @@
   background: var(--color-card);
 }
 
-.site-nav a[aria-current="page"] {
+.site-nav a[aria-current] {
   background: var(--color-text);
   color: var(--color-text-inverse);
 }
 
-.site-nav a[aria-current="page"]::after {
+.site-nav a[aria-current]::after {
   --site-nav-a-after-bottom: -5px;
   --site-nav-a-after-left: 14px;
   /* little tail under the active item: the page is "speaking" */
@@ -140,7 +140,7 @@
     font-size: var(--text-ui);
   }
 
-  .site-nav a[aria-current="page"]::after {
+  .site-nav a[aria-current]::after {
     display: none;
   }
 

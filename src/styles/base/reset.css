@@ -76,3 +76,8 @@ button {
 figure {
   margin: 0;
 }
+
+/* anchors stop below the sticky header (zero specificity: components can override) */
+:where([id]) {
+  scroll-margin-top: var(--header-height);
+}

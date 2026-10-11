@@ -53,6 +53,58 @@ const { current } = Astro.props;
       nav.classList.toggle("is-open", !open);
     });
 
+    // Close the mobile menu after picking a link (anchors on the same page)
+    nav.querySelectorAll("a").forEach((link) =>
+      link.addEventListener("click", () => {
+        nav.classList.remove("is-open");
+        navToggle.setAttribute("aria-expanded", "false");
+      }),
+    );
+
+    // Home: mark the item of the section in view (Nosotros, Contacto), Inicio otherwise.
+    if (location.pathname === "/") {
+      const home = nav.querySelector<HTMLAnchorElement>('a[href="/"]');
+      const spots = Array.from(nav.querySelectorAll<HTMLAnchorElement>('a[href^="/#"]')).flatMap(
+        (link) => {
+          const section = document.getElementById(link.hash.slice(1));
+          return section ? [{ link, section }] : [];
+        },
+      );
+
+      if (home && spots.length) {
+        const update = () => {
+          const line = window.innerHeight * 0.4;
+          const atBottom =
+            window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+          let active = home;
+          for (const { link, section } of spots) {
+            if (section.getBoundingClientRect().top <= line) active = link;
+          }
+          if (atBottom) active = spots[spots.length - 1].link;
+          for (const link of [home, ...spots.map((spot) => spot.link)]) {
+            if (link === active)
+              link.setAttribute("aria-current", link === home ? "page" : "location");
+            else link.removeAttribute("aria-current");
+          }
+        };
+
+        let queued = false;
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (queued) return;
+            queued = true;
+            requestAnimationFrame(() => {
+              queued = false;
+              update();
+            });
+          },
+          { passive: true },
+        );
+        update();
+      }
+    }
+
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && nav.classList.contains("is-open")) {
         nav.classList.remove("is-open");
