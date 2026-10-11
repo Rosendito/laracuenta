@@ -1,0 +1,180 @@
+---
+// Zooms story photos without a modal overlay. With a mouse, resting the pointer on a
+// photo opens it; moving off the enlarged photo, scrolling or Esc closes it. On touch
+// and from the keyboard it opens and closes with a tap, Enter or Space.
+import { strings } from "../config/strings";
+---
+
+<div
+  class="lightbox"
+  popover="manual"
+  role="dialog"
+  aria-label={strings.article.zoomedPhoto}
+  tabindex="-1"
+>
+  <img class="lightbox__img" alt="" />
+</div>
+
+<script>
+  import { strings } from "../config/strings";
+
+  const HOVER_DELAY = 350; // ms the pointer must rest on a photo before it opens
+  const JITTER = 6; // px of movement that still counts as resting
+  const NAME = "lightbox-photo";
+
+  const lightbox = document.querySelector<HTMLElement>(".lightbox");
+  const zoomed = lightbox?.querySelector<HTMLImageElement>("img");
+  const frames = document.querySelectorAll<HTMLElement>(".article__body .photo-bubble");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (lightbox && zoomed) {
+    let source: HTMLImageElement | null = null;
+    let opener: HTMLElement | null = null;
+    let busy = false;
+    let timer = 0;
+    let restX = 0;
+    let restY = 0;
+    let pointer = { x: -1, y: -1 };
+
+    // runs a DOM update as a view transition when the browser supports it
+    const transition = (update: () => void) => {
+      if (!document.startViewTransition || reducedMotion.matches) {
+        update();
+        return Promise.resolve();
+      }
+      return document.startViewTransition(update).finished.catch(() => {});
+    };
+
+    const inside = (el: Element) => {
+      const r = el.getBoundingClientRect();
+      return (
+        pointer.x >= r.left && pointer.x <= r.right && pointer.y >= r.top && pointer.y <= r.bottom
+      );
+    };
+
+    const open = async (frame: HTMLElement, fromKeyboard = false) => {
+      const img = frame.querySelector("img");
+      if (busy || source || !img?.complete || !img.naturalWidth) return;
+      busy = true;
+      source = img;
+      opener = frame;
+      // a frame stays disarmed after it closes until the pointer leaves it
+      frame.dataset.zoom = "open";
+
+      // start from the file already on screen so the new snapshot is never blank
+      zoomed.removeAttribute("srcset");
+      zoomed.src = img.currentSrc || img.src;
+      zoomed.alt = img.alt;
+      lightbox.style.setProperty("--lightbox-ratio", String(img.naturalWidth / img.naturalHeight));
+      await zoomed.decode().catch(() => {});
+
+      img.style.viewTransitionName = NAME;
+      await transition(() => {
+        img.style.viewTransitionName = "";
+        zoomed.style.viewTransitionName = NAME;
+        lightbox.showPopover();
+      });
+      zoomed.style.viewTransitionName = "";
+
+      // then let the browser swap in a sharper file for the larger size
+      if (img.srcset) {
+        zoomed.sizes = `${Math.ceil(zoomed.getBoundingClientRect().width)}px`;
+        zoomed.srcset = img.srcset;
+      }
+      if (fromKeyboard) lightbox.focus({ preventScroll: true });
+      busy = false;
+
+      // the pointer may have left while the photo was growing
+      if (!fromKeyboard && pointer.x >= 0 && !inside(zoomed) && !inside(img)) close();
+    };
+
+    const close = async () => {
+      if (busy || !source) return;
+      busy = true;
+      const img = source;
+      const restoreFocus = lightbox.contains(document.activeElement);
+
+      zoomed.style.viewTransitionName = NAME;
+      await transition(() => {
+        zoomed.style.viewTransitionName = "";
+        img.style.viewTransitionName = NAME;
+        lightbox.hidePopover();
+      });
+      img.style.viewTransitionName = "";
+
+      if (restoreFocus) opener?.focus({ preventScroll: true });
+      if (opener && !inside(opener)) opener.dataset.zoom = "";
+      source = null;
+      busy = false;
+    };
+
+    frames.forEach((frame) => {
+      const img = frame.querySelector("img");
+      if (!img) return;
+      frame.dataset.zoom = "";
+      frame.tabIndex = 0;
+      frame.setAttribute("role", "button");
+      frame.setAttribute("aria-label", strings.article.zoomPhoto(img.alt));
+
+      // only real movement arms the timer: a photo scrolling under a still pointer
+      // fires synthetic moves with no movement, and those are ignored
+      frame.addEventListener("pointermove", (event) => {
+        if (event.pointerType !== "mouse" || frame.dataset.zoom === "open") return;
+        if (!event.movementX && !event.movementY) return;
+        if (timer && Math.hypot(event.clientX - restX, event.clientY - restY) < JITTER) return;
+        restX = event.clientX;
+        restY = event.clientY;
+        clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          timer = 0;
+          open(frame);
+        }, HOVER_DELAY);
+      });
+
+      frame.addEventListener("pointerleave", () => {
+        clearTimeout(timer);
+        timer = 0;
+        if (!source) frame.dataset.zoom = "";
+      });
+
+      frame.addEventListener("click", () => {
+        clearTimeout(timer);
+        timer = 0;
+        open(frame);
+      });
+
+      frame.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        open(frame, true);
+      });
+    });
+
+    // with a mouse, leaving both the enlarged photo and its original closes it
+    document.addEventListener("pointermove", (event) => {
+      pointer = { x: event.clientX, y: event.clientY };
+      if (event.pointerType !== "mouse" || !source || busy) return;
+      if (!inside(zoomed) && !inside(source)) close();
+    });
+
+    lightbox.addEventListener("click", close);
+    lightbox.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        close();
+      }
+    });
+    lightbox.addEventListener("focusout", close);
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") close();
+    });
+
+    const cancel = () => {
+      clearTimeout(timer);
+      timer = 0;
+      close();
+    };
+    window.addEventListener("scroll", cancel, { passive: true });
+    window.addEventListener("resize", cancel);
+  }
+</script>

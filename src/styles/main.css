@@ -46,6 +46,7 @@
 @import "./article/then-now.css";
 @import "./article/facts.css";
 @import "./article/sources.css";
+@import "./article/lightbox.css";
 @import "./article/share.css";
 @import "./article/comments.css";
 @import "./utilities/mockup-note.css";

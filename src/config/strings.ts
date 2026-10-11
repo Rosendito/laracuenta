@@ -94,6 +94,8 @@ export const strings = {
     now: "Hoy",
     facts: "Ficha",
     sources: "Fuentes",
+    zoomPhoto: (alt: string) => `Ampliar foto: ${alt}`,
+    zoomedPhoto: "Foto ampliada",
   },
 
   comments: {

@@ -5,6 +5,7 @@ import Base from "../../layouts/Base.astro";
 import ArticleCover from "../../components/ArticleCover.astro";
 import ArticleHeader from "../../components/ArticleHeader.astro";
 import Comments from "../../components/Comments.astro";
+import PhotoZoom from "../../components/PhotoZoom.astro";
 import Share from "../../components/Share.astro";
 import { mdxComponents } from "../../components/mdx";
 import { getStories, type Story } from "../../lib/stories";
@@ -34,4 +35,5 @@ const { Content } = await render(story);
       <Comments />
     </div>
   </article>
+  <PhotoZoom />
 </Base>

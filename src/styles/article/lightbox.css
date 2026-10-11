@@ -1,0 +1,79 @@
+/* Photo zoom: a story photo grows out of its own frame into a viewport-sized copy over
+   a light veil. No layout shift: the copy lives in the top layer and the original stays
+   in place. The grow animation is a view transition (components/PhotoZoom.astro). */
+
+.photo-bubble[data-zoom] {
+  cursor: zoom-in;
+}
+
+.lightbox {
+  --lightbox-ratio: 1.5;
+  --lightbox-max-width: calc(100vw - 2 * var(--gutter));
+  --lightbox-max-height: calc(100dvh - 2 * var(--gutter));
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  background: var(--color-ink-a35);
+  /* its own transition group, so the veil fades in and out with the photo */
+  view-transition-name: lightbox-veil;
+  border: 0;
+  cursor: zoom-out;
+}
+
+.lightbox:popover-open {
+  display: grid;
+  place-items: center;
+}
+
+.lightbox:focus-visible {
+  outline: none;
+}
+
+.lightbox:focus-visible .lightbox__img {
+  outline: var(--border-thick) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+
+/* the whole photo, as large as the viewport allows */
+.lightbox__img {
+  width: min(var(--lightbox-max-width), var(--lightbox-max-height) * var(--lightbox-ratio));
+  height: auto;
+  aspect-ratio: var(--lightbox-ratio);
+  object-fit: contain;
+  border-radius: var(--radius-xs);
+  box-shadow: var(--shadow-lift);
+}
+
+/* the frame morphs from the cropped photo to the full one: both snapshots fill the
+   moving box and crop to it, so the hidden edges are revealed as it grows */
+::view-transition-group(lightbox-photo) {
+  /* the photo always travels above the veil, opening and closing */
+  z-index: var(--z-raised);
+  animation-duration: var(--duration-medium);
+  animation-timing-function: var(--ease);
+}
+
+/* the veil only fades: it exists on one side of each transition */
+::view-transition-old(lightbox-veil),
+::view-transition-new(lightbox-veil) {
+  animation-duration: var(--duration-medium);
+}
+
+::view-transition-old(lightbox-photo),
+::view-transition-new(lightbox-photo) {
+  height: 100%;
+  object-fit: cover;
+  overflow: clip;
+}
+
+/* nothing else on the page changes, so skip the page cross-fade */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
