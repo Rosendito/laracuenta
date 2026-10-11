@@ -1,0 +1,110 @@
+/* Author page: portrait, bio and credentials (pages/autora/[slug].astro). */
+
+.author-page {
+  --author-photo-size: clamp(7.5rem, 6rem + 6vw, 10rem);
+  max-width: var(--measure);
+  padding-block: var(--space-12) var(--space-11);
+}
+
+.author-page__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-9);
+}
+
+.author-page__photo {
+  width: var(--author-photo-size);
+  height: var(--author-photo-size);
+  flex: none;
+  border-radius: var(--radius-round);
+  object-fit: cover;
+  background: var(--color-line);
+}
+
+.author-page h1 {
+  margin-top: var(--space-3);
+  font-size: var(--text-h1);
+  line-height: var(--leading-heading);
+}
+
+.author-page__role {
+  margin-top: var(--space-3);
+  font-size: var(--text-lg);
+  color: var(--color-text-soft);
+}
+
+.author-page__bio {
+  margin-top: var(--space-11);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+}
+
+/* same rhythm as the article body */
+.author-page__bio p + p {
+  margin-top: var(--space-em-8);
+}
+
+/* credentials: a short CV, label on the left and entries on the right */
+.credentials {
+  --credentials-label-width: 10rem;
+  margin: var(--space-11) 0 0;
+}
+
+.credentials__group {
+  display: grid;
+  grid-template-columns: var(--credentials-label-width) minmax(0, 1fr);
+  gap: var(--space-4) var(--space-9);
+  padding-block: var(--space-8);
+  border-top: var(--border-hair) solid var(--color-line);
+}
+
+.credentials__group:last-child {
+  border-bottom: var(--border-hair) solid var(--color-line);
+}
+
+.credentials dt {
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-accent-text);
+  line-height: var(--leading-snug);
+}
+
+.credentials dd {
+  margin: 0;
+}
+
+.credentials ul {
+  display: grid;
+  gap: var(--space-7);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.credentials strong {
+  display: block;
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  text-wrap: pretty;
+}
+
+.credentials span {
+  display: block;
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-soft);
+}
+
+@media (--upto-sm) {
+  .credentials__group {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .author-page__head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-7);
+  }
+}

@@ -1,0 +1,88 @@
+---
+// Author page: portrait, short bio, credentials and every story she wrote.
+import { Image } from "astro:assets";
+
+import StoryCard from "../../components/StoryCard.astro";
+import { site } from "../../config/site";
+import { strings } from "../../config/strings";
+import Base from "../../layouts/Base.astro";
+import { getStories } from "../../lib/stories";
+
+export function getStaticPaths() {
+  return [{ params: { slug: site.author.slug } }];
+}
+
+const { author } = site;
+const stories = await getStories();
+
+// structured data, so search engines can tie the stories to a real person
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: author.name.replace(/^Lic\.\s*/, ""),
+  honorificPrefix: "Lic.",
+  jobTitle: author.jobTitle,
+  url: new URL(Astro.url.pathname, Astro.site).href,
+  image: new URL(author.photo.src, Astro.site).href,
+  alumniOf: { "@type": "CollegeOrUniversity", name: "Universidad Fermín Toro" },
+  address: { "@type": "PostalAddress", addressLocality: "Barquisimeto", addressCountry: "VE" },
+};
+---
+
+<Base title={author.name} description={author.bio[0]} type="website">
+  <script type="application/ld+json" set:html={JSON.stringify(person)} />
+  <article class="author-page wrap">
+    <header class="author-page__head">
+      <Image
+        class="author-page__photo"
+        src={author.photo}
+        alt={`Retrato de ${author.name}`}
+        width={320}
+        height={320}
+        loading="eager"
+      />
+      <div>
+        <span class="eyebrow">{strings.author.eyebrow}</span>
+        <h1>{author.name}</h1>
+        <p class="author-page__role">{author.jobTitle}</p>
+      </div>
+    </header>
+
+    <div class="author-page__bio">
+      {author.bio.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+    </div>
+
+    <dl class="credentials">
+      {author.credentials.map(({ label, items }) => (
+        <div class="credentials__group">
+          <dt>{label}</dt>
+          <dd>
+            <ul>
+              {items.map(({ title, detail }) => (
+                <li>
+                  <strong>{title}</strong>
+                  <span>{detail}</span>
+                </li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </article>
+
+  <section class="recent" aria-labelledby="author-stories-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="author-stories-title">{strings.author.stories}</h2>
+      </div>
+      <div class="card-grid">
+        {stories.map((story) => (
+          <StoryCard story={story} variant="home" />
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

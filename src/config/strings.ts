@@ -77,6 +77,11 @@ export const strings = {
     storyCount: (n: number) => (n === 1 ? "1 historia" : `${n} historias`),
   },
 
+  author: {
+    eyebrow: "Autora",
+    stories: "Sus historias",
+  },
+
   article: {
     readingTime: (n: number) => `${n} min de lectura`,
     moreOptions: "Más opciones",

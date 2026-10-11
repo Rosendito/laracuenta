@@ -1,5 +1,5 @@
 ---
-import { site } from "../config/site";
+import { authorHref, site } from "../config/site";
 import { strings } from "../config/strings";
 import { archiveHref, collections } from "../data/collections";
 import { formatDate, isoDate, readingTime, type Story } from "../lib/stories";
@@ -65,7 +65,9 @@ const collection = collections[data.collection];
   <div class="article__byline">
     <Avatar initials={site.author.initial} image={site.author.photo} tone={collection.avatarTone} />
     <span>
-      <strong>{site.author.name}</strong>
+      <strong>
+        <a href={authorHref}>{site.author.name}</a>
+      </strong>
       {site.author.role}
     </span>
   </div>

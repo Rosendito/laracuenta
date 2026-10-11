@@ -36,6 +36,7 @@
 @import "./sections/collection-nav.css";
 @import "./components/chip.css";
 @import "./sections/collection-group.css";
+@import "./sections/author.css";
 @import "./article/article.css";
 @import "./article/overflow-menu.css";
 @import "./article/prose.css";
