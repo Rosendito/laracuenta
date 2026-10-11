@@ -18,13 +18,26 @@
 
 .article__figure figcaption {
   margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: var(--border-hair) solid var(--color-line);
   font-size: var(--text-sm);
   line-height: var(--leading-snug);
   color: var(--color-text-soft);
 }
 
+/* credit: a small uppercase label after the caption */
 .article__figure .credit {
+  font-size: var(--text-label-2xs);
   font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-caps-tight);
+  text-transform: uppercase;
+}
+
+/* standalone photos in the body break out of the reading column */
+.article__body > .article__figure:not(.figure--archive) {
+  --figure-wide: min(100vw - 2 * var(--gutter), var(--wide));
+  width: var(--figure-wide);
+  margin-inline: calc(50% - var(--figure-wide) / 2);
 }
 
 /* corner label on the photo: "Archivo · 1956", "Hoy · 2026" */
@@ -40,14 +53,12 @@
   --tag-fg: var(--color-text);
 }
 
-/* archive: a print on a mat, never cropped and never clipped to a bubble; tall
-   prints are capped and centered */
+/* archive: a print on a mat, never cropped; tall prints are capped and centered */
 .figure--archive .photo-bubble {
   width: fit-content;
   max-width: 100%;
   margin-inline: auto;
   aspect-ratio: auto;
-  clip-path: none;
   padding: var(--space-4);
   background: var(--color-card);
   border: var(--border-hair) solid var(--color-line);

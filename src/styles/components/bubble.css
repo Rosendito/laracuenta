@@ -1,4 +1,4 @@
-/* Bubble surfaces and photos clipped to a bubble with a tail. */
+/* Bubble surfaces and the photo frame. */
 
 /* bubble: the generic rounded surface with a tail corner */
 .bubble {
@@ -14,12 +14,13 @@
   border-radius: var(--shape-bubble-top);
 }
 
-/* photo frame: picture clipped to the bubble, tail is a real SVG clip-path */
+/* photo frame: a plain rectangle with a small radius (the class name is kept from
+   the concept, where photos were clipped to a speech bubble) */
 .photo-bubble {
   position: relative;
   overflow: hidden;
-  clip-path: url(#clip-bubble);
   background: var(--color-line);
+  border-radius: var(--radius-xs);
 }
 
 .photo-bubble img {
