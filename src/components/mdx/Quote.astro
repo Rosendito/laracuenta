@@ -1,5 +1,26 @@
 ---
-// Stub: replaced by the MDX kit (phase 5).
+// Pull quote with the speaker's avatar, name and detail.
+import Avatar from "../Avatar.astro";
+
+interface Props {
+  by: string;
+  detail?: string;
+  tone?: "sun" | "terracotta" | "orange" | "none";
+}
+
+const { by, detail, tone } = Astro.props;
+
+const text = (await Astro.slots.render("default")).trim();
+const paragraph = text.startsWith("<p") ? text : `<p>${text}</p>`;
 ---
 
-<div><slot /></div>
+<blockquote class="quote">
+  <Fragment set:html={paragraph} />
+  <footer>
+    <Avatar name={by} tone={tone} />
+    <span>
+      <strong>{by}</strong>
+      {detail && `, ${detail}`}
+    </span>
+  </footer>
+</blockquote>

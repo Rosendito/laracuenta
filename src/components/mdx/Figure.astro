@@ -1,5 +1,24 @@
 ---
-// Stub: replaced by the MDX kit (phase 5).
+// Wraps one Markdown image and adds a photo credit at the end of its caption.
+interface Props {
+  credit: string;
+}
+
+const { credit } = Astro.props;
+
+const escapeHtml = (text: string) =>
+  text
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+
+const creditHtml = ` <span class="credit">${escapeHtml(credit)}</span>`;
+
+let html = await Astro.slots.render("default");
+html = html.includes("</figcaption>")
+  ? html.replace("</figcaption>", `${creditHtml}</figcaption>`)
+  : html.replace("</figure>", `<figcaption>${creditHtml.trimStart()}</figcaption></figure>`);
 ---
 
-<div><slot /></div>
+<Fragment set:html={html} />

@@ -1,8 +1,20 @@
 ---
-// Stub: replaced by the MDX kit (phase 5).
-import { Image } from "astro:assets";
+// Renders every Markdown image in a story: a speech-bubble photo and an optional caption.
+import { figureSizes } from "./sizes";
+import type { ImageMetadata } from "astro";
+import PhotoBubble from "../PhotoBubble.astro";
 
-const { src, alt } = Astro.props;
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  /** Markdown image title, used as the caption. */
+  title?: string;
+}
+
+const { src, alt, title } = Astro.props;
 ---
 
-<Image src={src} alt={alt} />
+<figure class="article__figure">
+  <PhotoBubble src={src} alt={alt} sizes={figureSizes} widths={[700, 1400]} />
+  {title && <figcaption>{title}</figcaption>}
+</figure>

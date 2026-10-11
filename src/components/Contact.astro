@@ -1,0 +1,61 @@
+---
+import { Image } from "astro:assets";
+
+import { site } from "../config/site";
+import { strings } from "../config/strings";
+import noteImage from "../assets/photos/img-8862.webp";
+import Button from "./Button.astro";
+
+const { contact } = strings;
+---
+
+<section class="contact" id="contacto" aria-labelledby="contact-title">
+  <div class="wrap contact__grid">
+    <div class="contact__copy">
+      <span class="eyebrow">{contact.eyebrow}</span>
+      <h2 id="contact-title">{contact.title}</h2>
+      <p>{contact.text}</p>
+      <div class="contact__note">
+        <Image src={noteImage} alt={contact.noteImageAlt} width={200} loading="lazy" />
+        <p>
+          <strong>{contact.noteTitle}</strong> {contact.noteText}
+        </p>
+      </div>
+    </div>
+
+    <!-- No backend: the form posts to an external endpoint (see site.ts). -->
+    <form class="form" action={site.forms.contact} method="post">
+      <div class="field">
+        <label for="f-nombre">{contact.firstName}</label>
+        <input id="f-nombre" name="nombre" type="text" autocomplete="given-name" required />
+      </div>
+      <div class="field">
+        <label for="f-apellido">{contact.lastName}</label>
+        <input id="f-apellido" name="apellido" type="text" autocomplete="family-name" />
+      </div>
+      <div class="field field--full">
+        <label for="f-email">{contact.email}</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" required />
+      </div>
+      <div class="field field--full">
+        <label for="f-asunto">{contact.subject}</label>
+        <select id="f-asunto" name="asunto">
+          {contact.subjects.map((subject) => (
+            <option>{subject}</option>
+          ))}
+        </select>
+      </div>
+      <div class="field field--full">
+        <label for="f-mensaje">{contact.message}</label>
+        <textarea id="f-mensaje" name="mensaje" required></textarea>
+        <span class="field__hint">{contact.messageHint}</span>
+      </div>
+      <div class="form__submit">
+        <small>{contact.consent}</small>
+        <Button type="submit" icon="send">
+          {contact.send}
+        </Button>
+      </div>
+    </form>
+  </div>
+</section>

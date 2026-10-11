@@ -1,0 +1,28 @@
+---
+import { strings } from "../config/strings";
+import { getStories } from "../lib/stories";
+import Icon from "./Icon.astro";
+import StoryCard from "./StoryCard.astro";
+
+const latest = (await getStories()).slice(0, 3);
+---
+
+<section class="recent" aria-labelledby="recent-title">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">{strings.recent.eyebrow}</span>
+        <h2 id="recent-title">{strings.recent.title}</h2>
+      </div>
+      <a class="link-more" href="/archivo">
+        {strings.recent.seeAll} <Icon name="arrow-right" />
+      </a>
+    </div>
+
+    <div class="card-grid">
+      {latest.map((story) => (
+        <StoryCard story={story} variant="home" />
+      ))}
+    </div>
+  </div>
+</section>

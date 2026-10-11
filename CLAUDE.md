@@ -1,14 +1,15 @@
 # Lara Cuenta
 
 Static site for **Lara Cuenta**, a digital nano-outlet about the memory, heritage and
-people of Lara (Venezuela). University assignment (digital journalism). Built with Astro
-and Tailwind CSS v4; it will be hosted on **Cloudflare** (Pages or Workers static assets)
-with the domain bought through Cloudflare Registrar.
+people of Lara (Venezuela). University assignment (digital journalism). Built with Astro 7,
+MDX and plain CSS (BEM + design tokens, no Tailwind); it will be hosted on **Cloudflare**
+(Pages or Workers static assets) with the domain bought through Cloudflare Registrar.
 
 ## Status
 
-Clean scaffold. Design concepts are being explored as plain HTML in `.local/design/`
-(git-ignored); the chosen one will then be migrated into Astro.
+The design concept "Conversación" (`.local/design/2-conversacion/`, git-ignored) is
+migrated pixel-perfect: home, archive and article match it at 1440/390/360 px and in every
+interaction state. See `docs/migration-plan.md` for the decisions and the verification.
 
 ## Commands
 
@@ -16,19 +17,32 @@ Clean scaffold. Design concepts are being explored as plain HTML in `.local/desi
 npm run dev            # dev server at http://localhost:4321
 npm run build          # astro check + static build into dist/
 npm run preview        # serve dist/
-npm run format         # prettier (astro + tailwind class sorting)
+npm run format         # prettier
+npm run lint:css       # rejects raw design values outside src/styles/tokens/
+npm run visual         # geometry + pixel diff against the concept (needs npm run dev)
+npm run visual:port    # concept HTML + compiled src/styles vs concept (CSS-only check)
+npm run photo -- <slug> <files>   # import photos into a story (HEIC ok, strips EXIF/GPS)
 ```
+
+`npm run visual` accepts `--page home|archive|post`, `--vp 1440|390|360`,
+`--state <name>` and `--base <url>`; reports and PNGs land in `.local/visual/`.
 
 ## Layout
 
 ```
-src/pages/             routes
-src/layouts/           page shells
-src/styles/global.css  Tailwind entry + brand tokens (@theme)
-src/lib/messages.ts    UI copy loader
-logo/                  logo sources (build_logo.py generates the SVGs)
-public/                static files (logos)
-docs/wireframes/       wireframe summaries and images (the page structure)
+src/pages/                 routes: /, /archivo, /historias/[slug]
+src/layouts/Base.astro     page shell (head, header, footer, SVG defs)
+src/components/            site components; src/components/mdx/ = the MDX kit for stories
+src/content/stories/<slug>/index.mdx + photos   stories (schema in src/content.config.ts)
+src/data/collections.ts    the four collections
+src/config/site.ts         nav, social links, form endpoints, author
+src/config/strings.ts      UI copy (Spanish)
+src/styles/                tokens/ base/ layout/ components/ sections/ article/ utilities/
+src/assets/photos/         site-wide photos
+scripts/                   CSS lint, visual diff harness, photo import
+logo/                      logo sources (build_logo.py generates the SVGs)
+public/                    static files (logos)
+docs/                      migration plan, writing guide, wireframes
 ```
 
 ## Brand
@@ -49,4 +63,7 @@ docs/wireframes/       wireframe summaries and images (the page structure)
 - `wireframes.pdf`, `identidad-grafica.png`, `docs/wireframes/pages/` and `public/photos/`
   contain personal data or unpublished photos and are git-ignored. Never commit them;
   the repo is public.
-- No server: forms post to an external endpoint. Comments are undecided (mockups only).
+- No server: forms post to an external endpoint (`site.forms`). Comments are undecided
+  (static mockup).
+- CSS: never add raw values; use tokens or a local custom property (`npm run lint:css`).
+  Keep the concept's class names. After CSS changes run `npm run visual`.

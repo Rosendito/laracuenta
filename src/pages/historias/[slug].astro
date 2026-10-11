@@ -1,0 +1,37 @@
+---
+import { render } from "astro:content";
+
+import Base from "../../layouts/Base.astro";
+import ArticleCover from "../../components/ArticleCover.astro";
+import ArticleHeader from "../../components/ArticleHeader.astro";
+import Comments from "../../components/Comments.astro";
+import Share from "../../components/Share.astro";
+import { mdxComponents } from "../../components/mdx";
+import { getStories, type Story } from "../../lib/stories";
+
+export async function getStaticPaths() {
+  const stories = await getStories();
+  return stories.map((story) => ({ params: { slug: story.id }, props: { story } }));
+}
+
+interface Props {
+  story: Story;
+}
+
+const { story } = Astro.props;
+const { Content } = await render(story);
+---
+
+<Base title={story.data.title} description={story.data.description}>
+  <article class:list={["article", `col-${story.data.collection}`]}>
+    <ArticleHeader story={story} />
+    <ArticleCover story={story} />
+    <div class="article__col article__body">
+      <Content components={mdxComponents} />
+    </div>
+    <div class="article__col">
+      <Share title={story.data.title} />
+      <Comments />
+    </div>
+  </article>
+</Base>

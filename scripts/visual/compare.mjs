@@ -6,7 +6,8 @@
 // For every page × viewport it reports:
 //   1. Geometry: elements paired by (tag + classes, index) whose box moved or
 //      resized by more than 1px, in document order. The first one is the cause.
-//   2. Pixels: mismatch per section and full page, with concept/candidate/diff PNGs
+//   2. Pixels, with photos hidden: mismatch per section and full page (strict), plus
+//      one pass with photos visible (loose, re-encoding noise). PNGs and diffs
 //      in .local/visual/<target>/<page>-<vp>[-<state>]/.
 //
 // Targets: "astro" = the dev server (npm run dev); "port" = the concept HTML with
@@ -68,6 +69,9 @@ const PAGES = {
   },
 };
 
+// Photo noise allowed in pass 1 (re-encoding), as a share of the full page.
+const PHOTO_LIMIT = 2;
+
 const VIEWPORTS = {
   1440: { width: 1440, height: 900 },
   390: { width: 390, height: 844 },
@@ -116,7 +120,10 @@ function candidateUrl(page) {
 async function prepare(browser, url, viewport, state) {
   const page = await browser.newPage({ viewport, reducedMotion: "reduce", deviceScaleFactor: 1 });
   await page.goto(url, { waitUntil: "load" });
-  await page.addStyleTag({ content: "*{caret-color:transparent!important}" });
+  await page.addStyleTag({
+    // the Astro dev toolbar only exists on the dev server
+    content: "*{caret-color:transparent!important} astro-dev-toolbar{display:none!important}",
+  });
   // load every lazy image and wait for fonts, so both sides are complete
   await page.evaluate(async () => {
     document.querySelectorAll('img[loading="lazy"]').forEach((img) => (img.loading = "eager"));
@@ -130,9 +137,19 @@ async function prepare(browser, url, viewport, state) {
       ),
     );
     await document.fonts.ready;
+    // wait until every image has really loaded (lazy ones in scrollers load late)
     await Promise.all(
-      [...document.images].map((img) => (img.complete ? null : img.decode().catch(() => null))),
+      [...document.images].map((img) =>
+        img.complete && img.naturalWidth
+          ? null
+          : new Promise((done) => {
+              img.addEventListener("load", done, { once: true });
+              img.addEventListener("error", done, { once: true });
+              setTimeout(done, 10000);
+            }),
+      ),
     );
+    await Promise.all([...document.images].map((img) => img.decode().catch(() => null)));
   });
   if (state) {
     await STATES[state].run(page);
@@ -259,12 +276,23 @@ for (const pageName of pages) {
     const missing = geo.missing.filter((b) => !isAllowed(b));
     const extra = geo.extra.filter((b) => !isAllowed(b));
 
-    // pixels
+    // pixels, pass 1: photos visible. astro:assets re-encodes and resizes photos on
+    // purpose, so this pass only has a loose threshold.
+    const refPhotos = toPng(await ref.screenshot({ fullPage: true }));
+    const candPhotos = toPng(await cand.screenshot({ fullPage: true }));
+    writeFileSync(join(dir, "concept.png"), PNG.sync.write(refPhotos));
+    writeFileSync(join(dir, "candidate.png"), PNG.sync.write(candPhotos));
+    const photos = diffImages(refPhotos, candPhotos, dir, "photos");
+
+    // pass 2: photos hidden (layout kept), strict: type, shapes, colors, spacing
+    const hidePhotos = "img{visibility:hidden!important}";
+    await ref.addStyleTag({ content: hidePhotos });
+    await cand.addStyleTag({ content: hidePhotos });
     const refShot = toPng(await ref.screenshot({ fullPage: true }));
     const candShot = toPng(await cand.screenshot({ fullPage: true }));
-    writeFileSync(join(dir, "concept.png"), PNG.sync.write(refShot));
-    writeFileSync(join(dir, "candidate.png"), PNG.sync.write(candShot));
-    const full = diffImages(refShot, candShot, dir, "full");
+    writeFileSync(join(dir, "concept-design.png"), PNG.sync.write(refShot));
+    writeFileSync(join(dir, "candidate-design.png"), PNG.sync.write(candShot));
+    const full = diffImages(refShot, candShot, dir, "design");
     const sections = [];
     for (const sel of conf.sections) {
       const box = await ref.evaluate((s) => {
@@ -310,7 +338,9 @@ for (const pageName of pages) {
     if (deltas.length > limit) lines.push(`  … ${deltas.length - limit} more`);
     for (const b of missing.slice(0, limit)) lines.push(`  − missing ${b.path}  (${b.id})`);
     for (const b of extra.slice(0, limit)) lines.push(`  + extra   ${b.path}  (${b.id})`);
-    lines.push(`Pixels: full page ${full.toFixed(2)}%`);
+    lines.push(
+      `Photos: ${photos.toFixed(2)}% (limit ${PHOTO_LIMIT}%) · Design (photos hidden): full page ${full.toFixed(2)}%`,
+    );
     for (const s of sections)
       lines.push(`  ${s.pct < 0.5 ? "ok " : "!! "} ${s.sel}: ${s.pct.toFixed(2)}%`);
     lines.push(`Images: ${dir}`);
@@ -322,7 +352,8 @@ for (const pageName of pages) {
       deltas.length === 0 &&
       missing.length === 0 &&
       extra.length === 0 &&
-      sections.every((s) => s.pct < 0.5);
+      sections.every((s) => s.pct < 0.5) &&
+      photos < PHOTO_LIMIT;
     if (!pass) failed = true;
   }
 }

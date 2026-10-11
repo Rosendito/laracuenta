@@ -1,0 +1,30 @@
+---
+import { Image } from "astro:assets";
+
+import { strings } from "../config/strings";
+import { collectionList } from "../data/collections";
+---
+
+<section class="banner" aria-labelledby="archive-title">
+  <ul class="banner__cols" aria-label={strings.archive.collectionsNav}>
+    {collectionList.map((collection) => (
+      <li class={`col-${collection.id}`}>
+        <a href={`#${collection.id}`} data-filter-link="">
+          <Image
+            src={collection.bannerImage}
+            alt=""
+            widths={[400, 800]}
+            sizes="25vw"
+            loading="eager"
+          />
+          <span>{collection.banner}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <div class="wrap banner__content">
+    <span class="eyebrow">{strings.archive.eyebrow}</span>
+    <h1 id="archive-title">{strings.archive.heading}</h1>
+    <p>{strings.archive.intro}</p>
+  </div>
+</section>

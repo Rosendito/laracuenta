@@ -1,0 +1,40 @@
+---
+import ArchiveBanner from "../components/ArchiveBanner.astro";
+import Button from "../components/Button.astro";
+import CollectionGroup from "../components/CollectionGroup.astro";
+import CollectionNav from "../components/CollectionNav.astro";
+import { strings } from "../config/strings";
+import { collectionList, type CollectionId } from "../data/collections";
+import { getStories } from "../lib/stories";
+import Base from "../layouts/Base.astro";
+
+const stories = await getStories();
+
+const groups = collectionList.map((collection) => ({
+  collection,
+  stories: stories.filter((story) => story.data.collection === collection.id),
+}));
+
+const counts = Object.fromEntries(
+  groups.map(({ collection, stories }) => [collection.id, stories.length]),
+) as Record<CollectionId, number>;
+---
+
+<Base current="archive" title={strings.archive.title} description={strings.archive.description}>
+  <ArchiveBanner />
+
+  <div class="wrap" id="archivo-grid">
+    <CollectionNav counts={counts} />
+
+    {groups.map(({ collection, stories }) => (
+      <CollectionGroup collection={collection} stories={stories} />
+    ))}
+
+    <div class="load-more">
+      <Button variant="ghost" data-load-more="">
+        {strings.archive.loadMore}
+      </Button>
+      <small data-load-count=""></small>
+    </div>
+  </div>
+</Base>

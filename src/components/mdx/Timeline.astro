@@ -1,5 +1,17 @@
 ---
-// Stub: replaced by the MDX kit (phase 5).
+// A titled list of dated moments. Put <Moment> children inside.
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
 ---
 
-<div><slot /></div>
+<div class="timeline">
+  <h3>{title}</h3>
+  {description && <p>{description}</p>}
+  <ol>
+    <slot />
+  </ol>
+</div>

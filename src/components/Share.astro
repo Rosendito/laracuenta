@@ -1,0 +1,72 @@
+---
+import { strings } from "../config/strings";
+import Icon from "./Icon.astro";
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+
+const url = Astro.url.href;
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+
+const networks = [
+  {
+    name: "WhatsApp",
+    icon: "whatsapp",
+    href: `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}`,
+  },
+  {
+    name: "Facebook",
+    icon: "facebook",
+    href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+  },
+  {
+    name: "X",
+    icon: "x",
+    href: `https://x.com/intent/post?url=${encodedUrl}&text=${encodedTitle}`,
+  },
+] as const;
+---
+
+<div class="share">
+  <span>{strings.article.share}</span>
+  <ul>
+    {networks.map((network) => (
+      <li>
+        <a href={network.href} aria-label={strings.article.shareOn(network.name)}>
+          <Icon name={network.icon} />
+          {network.name}
+        </a>
+      </li>
+    ))}
+    <li>
+      <button type="button" data-copy-link="">
+        <Icon name="link" />
+        <span>{strings.article.copyLink}</span>
+      </button>
+    </li>
+  </ul>
+</div>
+
+<script>
+  // Copy the link: handles every [data-copy-link] on the page (share row and ⋮ menu).
+  import { strings } from "../config/strings";
+
+  document.querySelectorAll<HTMLButtonElement>("[data-copy-link]").forEach((btn) => {
+    const label = btn.querySelector("span") ?? btn;
+    const original = label.textContent;
+
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(location.href);
+        label.textContent = strings.article.linkCopied;
+      } catch {
+        label.textContent = strings.article.copyFailed;
+      }
+      setTimeout(() => (label.textContent = original), 1800);
+    });
+  });
+</script>

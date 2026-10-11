@@ -1,0 +1,33 @@
+---
+import { Image } from "astro:assets";
+
+import { strings } from "../config/strings";
+import Button from "./Button.astro";
+import photo8852 from "../assets/photos/img-8852.webp";
+import photo8876 from "../assets/photos/img-8876.webp";
+import photo8857 from "../assets/photos/img-8857.webp";
+import photo8843 from "../assets/photos/img-8843.webp";
+import photo8894 from "../assets/photos/img-8894.webp";
+import photo8863 from "../assets/photos/img-8863.webp";
+
+// Decorative scatter of photos, in the concept's order.
+const scatter = [photo8852, photo8876, photo8857, photo8843, photo8894, photo8863];
+---
+
+<section class="about" id="nosotros" aria-labelledby="about-title">
+  <ul class="about__scatter" aria-hidden="true">
+    {scatter.map((src) => (
+      <li>
+        <Image src={src} alt="" loading="lazy" width={400} />
+      </li>
+    ))}
+  </ul>
+  <div class="wrap about__inner">
+    <span class="eyebrow">{strings.about.eyebrow}</span>
+    <h2 id="about-title">{strings.about.title}</h2>
+    <p>{strings.about.text}</p>
+    <Button variant="sun" href="/archivo" icon="arrow-right">
+      {strings.about.cta}
+    </Button>
+  </div>
+</section>

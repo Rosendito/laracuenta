@@ -1,0 +1,103 @@
+---
+import { strings } from "../config/strings";
+import { collectionList, type CollectionId } from "../data/collections";
+
+interface Props {
+  /** Story count per collection, used for the chip badges. */
+  counts: Record<CollectionId, number>;
+}
+
+const { counts } = Astro.props;
+const total = Object.values(counts).reduce((sum, n) => sum + n, 0);
+---
+
+<nav class="collection-nav" aria-label={strings.archive.collectionsNav}>
+  <ul>
+    <li>
+      <a class="chip chip--all" href="#" data-filter="all" aria-current="true">
+        {strings.archive.all} <span class="count">{total}</span>
+      </a>
+    </li>
+    {collectionList.map((collection) => (
+      <li>
+        <a
+          class={`chip col-${collection.id}`}
+          href={`#${collection.id}`}
+          data-filter={collection.id}
+          aria-current="false"
+        >
+          {collection.name} <span class="count">{counts[collection.id]}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  /* Archive: collection filter chips, deep links and "load more". */
+  import { strings } from "../config/strings";
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const chips = document.querySelectorAll<HTMLAnchorElement>(".chip[data-filter]");
+  const groups = document.querySelectorAll<HTMLElement>(".collection[data-collection]");
+
+  if (chips.length && groups.length) {
+    const apply = (key: string) => {
+      chips.forEach((chip) =>
+        chip.setAttribute("aria-current", String(chip.dataset.filter === key)),
+      );
+      groups.forEach((group) => {
+        group.hidden = key !== "all" && group.dataset.collection !== key;
+      });
+      document.querySelector<HTMLElement>("#archivo-grid")?.setAttribute("data-filter", key);
+    };
+
+    chips.forEach((chip) =>
+      chip.addEventListener("click", (event) => {
+        event.preventDefault();
+        const key = chip.dataset.filter ?? "all";
+        apply(key);
+        history.replaceState(null, "", key === "all" ? "#" : `#${key}`);
+        if (key !== "all") {
+          document
+            .getElementById(key)
+            ?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
+        }
+      }),
+    );
+
+    // Deep links from other pages (/archivo#gente) land on a filtered view.
+    const initial = location.hash.replace("#", "");
+    if (initial && Array.from(groups).some((group) => group.dataset.collection === initial)) {
+      apply(initial);
+    }
+  }
+
+  /* Archive: "load more" reveals the hidden cards three at a time. */
+  const loadMore = document.querySelector<HTMLButtonElement>("[data-load-more]");
+
+  if (loadMore) {
+    const extras = Array.from(document.querySelectorAll<HTMLElement>(".card.is-extra"));
+    const counter = document.querySelector<HTMLElement>("[data-load-count]");
+    const total = document.querySelectorAll(".card").length;
+
+    const update = () => {
+      const shown = document.querySelectorAll(".card:not([hidden])").length;
+      if (counter) counter.textContent = strings.archive.showing(shown, total);
+    };
+
+    update();
+    loadMore.addEventListener("click", () => {
+      extras.splice(0, 3).forEach((card) => {
+        card.hidden = false;
+        card.classList.remove("is-extra");
+      });
+      update();
+      if (!extras.length) {
+        loadMore.disabled = true;
+        loadMore.textContent = strings.archive.noMore;
+      }
+    });
+  }
+</script>

@@ -1,5 +1,26 @@
 ---
-// Stub: replaced by the MDX kit (phase 5).
+// Same as Quote, for a reader's first-person testimony.
+import Avatar from "../Avatar.astro";
+
+interface Props {
+  by: string;
+  detail?: string;
+  tone?: "sun" | "terracotta" | "orange" | "none";
+}
+
+const { by, detail, tone } = Astro.props;
+
+const text = (await Astro.slots.render("default")).trim();
+const paragraph = text.startsWith("<p") ? text : `<p>${text}</p>`;
 ---
 
-<div><slot /></div>
+<div class="quote quote--testimony">
+  <Fragment set:html={paragraph} />
+  <footer>
+    <Avatar name={by} tone={tone} />
+    <span>
+      <strong>{by}</strong>
+      {detail && `, ${detail}`}
+    </span>
+  </footer>
+</div>

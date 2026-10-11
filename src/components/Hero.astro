@@ -1,0 +1,198 @@
+---
+import { getImage } from "astro:assets";
+
+import { strings } from "../config/strings";
+import { archiveHref, collections } from "../data/collections";
+import { getStories, storyHref } from "../lib/stories";
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+import Tag from "./Tag.astro";
+
+// Featured stories, in the order set by their `featured.order`.
+const featured = (await getStories())
+  .flatMap((story) => (story.data.featured ? [{ story, ...story.data.featured }] : []))
+  .sort((a, b) => a.order - b.order);
+
+const slides = await Promise.all(
+  featured.map(async (item, index) => {
+    const { story } = item;
+    const collection = collections[story.data.collection];
+    const image = await getImage({ src: item.image, width: 1800 });
+    const mobile = item.imageMobile
+      ? await getImage({ src: item.imageMobile, width: 900 })
+      : undefined;
+    const thumb = await getImage({
+      src: item.thumb ?? item.image,
+      width: 300,
+      height: 300,
+      fit: "cover",
+    });
+    return {
+      index,
+      title: story.data.title,
+      alt: item.alt,
+      credit: item.credit,
+      href: storyHref(story),
+      collection,
+      archive: archiveHref(story.data.collection),
+      image,
+      mobile,
+      thumb,
+    };
+  }),
+);
+
+const first = slides[0];
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__bg" id="hero-photo" aria-live="polite">
+    {slides.map((slide) => (
+      <picture data-active={slide.index === 0 ? "true" : "false"}>
+        {slide.mobile && <source media="(max-width: 700px)" srcset={slide.mobile.src} />}
+        <img
+          src={slide.image.src}
+          alt={slide.alt}
+          width={slide.image.attributes.width}
+          height={slide.image.attributes.height}
+          fetchpriority={slide.index === 0 ? "high" : undefined}
+          loading={slide.index === 0 ? undefined : "lazy"}
+        />
+      </picture>
+    ))}
+  </div>
+  <span class="hero__credit" data-field="credit">
+    {first?.credit}
+  </span>
+
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <span class="eyebrow">{strings.hero.eyebrow}</span>
+      <h1 id="hero-title" class="rise">
+        <span set:html={strings.hero.titleLines[0]} />
+        <span>{strings.hero.titleLines[1]}</span>
+        <span>{strings.hero.titleLines[2]}</span>
+      </h1>
+      <p class="lead">{strings.hero.lead}</p>
+      <div class="hero__actions">
+        <Button variant="sun" href="/archivo" icon="arrow-right">
+          {strings.hero.primaryCta}
+        </Button>
+        <Button variant="ghost-light" href="#nosotros">
+          {strings.hero.secondaryCta}
+        </Button>
+      </div>
+    </div>
+
+    <!-- Thumbnail gallery: switches the background photo (script below). -->
+    <div class="hero__gallery bubble bubble--right">
+      <div class="hero__gallery-head">
+        <span id="hero-gallery-label">{strings.hero.galleryLabel}</span>
+        <div class="gallery-arrows">
+          <button
+            class="arrow-btn"
+            type="button"
+            data-gallery="prev"
+            aria-label={strings.hero.previous}
+          >
+            <Icon name="chevron-left" />
+          </button>
+          <button
+            class="arrow-btn"
+            type="button"
+            data-gallery="next"
+            aria-label={strings.hero.next}
+          >
+            <Icon name="chevron-right" />
+          </button>
+        </div>
+      </div>
+      <ul class="hero__thumbs" aria-labelledby="hero-gallery-label">
+        {slides.map((slide) => (
+          <li>
+            <button
+              class="thumb"
+              type="button"
+              aria-pressed={slide.index === 0 ? "true" : "false"}
+              data-index={slide.index}
+              data-title={slide.title}
+              data-tag={slide.collection.short}
+              data-col={`col-${slide.collection.id}`}
+              data-href={slide.archive}
+              data-story-href={slide.href}
+              data-credit={slide.credit}
+            >
+              <img src={slide.thumb.src} alt="" width="300" height="300" />
+              <span class="visually-hidden">{slide.title}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+      <div class="hero__current">
+        <Tag
+          label={first?.collection.short ?? ""}
+          collection={first?.collection.id}
+          href={first?.archive}
+          data-field="tag"
+        />
+        <h2>
+          <a href={first?.href} data-field="title">
+            {first?.title}
+          </a>
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* Hero: thumbnail gallery. Thumbs and arrows switch the background photo. */
+  const hero = document.querySelector<HTMLElement>(".hero");
+  const heroPhoto = hero?.querySelector<HTMLElement>("#hero-photo");
+
+  if (hero && heroPhoto) {
+    const images = Array.from(heroPhoto.querySelectorAll<HTMLElement>("picture"));
+    const thumbs = Array.from(hero.querySelectorAll<HTMLButtonElement>(".thumb"));
+    const titleEl = hero.querySelector<HTMLAnchorElement>('[data-field="title"]');
+    const tagEl = hero.querySelector<HTMLAnchorElement>('[data-field="tag"]');
+    const creditEl = hero.querySelector<HTMLElement>('[data-field="credit"]');
+    let current = 0;
+
+    const select = (index: number) => {
+      if (!thumbs.length) return;
+      current = (index + thumbs.length) % thumbs.length;
+      const thumb = thumbs[current];
+      images.forEach((img, i) => img.setAttribute("data-active", String(i === current)));
+      thumbs.forEach((t, i) => t.setAttribute("aria-pressed", String(i === current)));
+      if (titleEl) {
+        titleEl.textContent = thumb.dataset.title ?? "";
+        titleEl.href = thumb.dataset.storyHref ?? titleEl.href;
+      }
+      if (tagEl) {
+        tagEl.textContent = thumb.dataset.tag ?? "";
+        tagEl.href = thumb.dataset.href ?? tagEl.href;
+        tagEl.className = "tag " + (thumb.dataset.col ?? "");
+      }
+      if (creditEl) creditEl.textContent = thumb.dataset.credit ?? "";
+    };
+
+    thumbs.forEach((t) => t.addEventListener("click", () => select(Number(t.dataset.index))));
+    hero
+      .querySelectorAll<HTMLButtonElement>("[data-gallery]")
+      .forEach((btn) =>
+        btn.addEventListener("click", () =>
+          select(current + (btn.dataset.gallery === "next" ? 1 : -1)),
+        ),
+      );
+
+    // Arrow keys inside the thumbnail strip.
+    hero.querySelector(".hero__thumbs")?.addEventListener("keydown", (e) => {
+      const event = e as KeyboardEvent;
+      if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+        event.preventDefault();
+        select(current + (event.key === "ArrowRight" ? 1 : -1));
+        thumbs[current]?.focus();
+      }
+    });
+  }
+</script>

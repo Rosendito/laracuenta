@@ -1,0 +1,21 @@
+---
+import { Image } from "astro:assets";
+
+import { type Story } from "../lib/stories";
+
+interface Props {
+  story: Story;
+}
+
+const { story } = Astro.props;
+const { data } = story;
+---
+
+<figure class="article__cover">
+  <Image src={data.cover} alt={data.coverAlt} widths={[900, 1800]} sizes="100vw" loading="eager" />
+  {data.coverCaption && (
+    <figcaption class="wrap">
+      {data.coverCaption} {data.coverCredit && <span class="credit">{data.coverCredit}</span>}
+    </figcaption>
+  )}
+</figure>

@@ -1,0 +1,109 @@
+---
+import { site } from "../config/site";
+import { strings } from "../config/strings";
+import { archiveHref, collections } from "../data/collections";
+import { formatDate, isoDate, readingTime, type Story } from "../lib/stories";
+import Avatar from "./Avatar.astro";
+import Icon from "./Icon.astro";
+import Tag from "./Tag.astro";
+
+interface Props {
+  story: Story;
+}
+
+const { story } = Astro.props;
+const { data } = story;
+const collection = collections[data.collection];
+---
+
+<header class="article__col">
+  <div class="article__meta">
+    <Icon name="calendar" />
+    <time datetime={isoDate(data.date)}>{formatDate(data.date)}</time>
+    <span class="dot" aria-hidden="true"></span>
+    <Icon name="clock" />
+    <span data-reading-time="">{strings.article.readingTime(readingTime(story))}</span>
+    <div class="overflow">
+      <button
+        type="button"
+        aria-expanded="false"
+        aria-haspopup="true"
+        aria-controls="menu-articulo"
+      >
+        <span class="visually-hidden">{strings.article.moreOptions}</span>
+        <Icon name="more" />
+      </button>
+      <ul class="overflow__menu" id="menu-articulo" hidden>
+        <li>
+          <button type="button" data-copy-link="">
+            <Icon name="link" />
+            <span>{strings.article.copyLink}</span>
+          </button>
+        </li>
+        <li>
+          <button type="button">
+            <Icon name="bookmark" />
+            <span>{strings.article.saveForLater}</span>
+          </button>
+        </li>
+        <li>
+          <button type="button">
+            <Icon name="camera" />
+            <span>{strings.article.photoCredits}</span>
+          </button>
+        </li>
+        <li>
+          <button type="button">
+            <Icon name="flag" />
+            <span>{strings.article.reportError}</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <h1 class="article__title">{data.title}</h1>
+  <div class="article__collection">
+    <Tag collection={data.collection} href={archiveHref(data.collection)} label={collection.name} />
+  </div>
+  <p class="article__lead">{data.lead}</p>
+  <div class="article__byline">
+    <Avatar initials={site.author.initial} tone={collection.avatarTone} />
+    <span>
+      <strong>{site.author.name}</strong>
+      {site.author.role}
+    </span>
+  </div>
+</header>
+
+<script>
+  // Article overflow menu (⋮): toggles the menu, closes on outside click and Escape.
+  document.querySelectorAll<HTMLElement>(".overflow").forEach((wrap) => {
+    const btn = wrap.querySelector<HTMLButtonElement>("button");
+    const menu = wrap.querySelector<HTMLElement>(".overflow__menu");
+    if (!btn || !menu) return;
+
+    const close = () => {
+      menu.hidden = true;
+      btn.setAttribute("aria-expanded", "false");
+    };
+
+    btn.addEventListener("click", () => {
+      const open = btn.getAttribute("aria-expanded") === "true";
+      menu.hidden = open;
+      btn.setAttribute("aria-expanded", String(!open));
+      if (!open) menu.querySelector<HTMLButtonElement>("button")?.focus();
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!wrap.contains(event.target as Node)) close();
+    });
+
+    wrap.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        close();
+        btn.focus();
+      }
+    });
+  });
+</script>

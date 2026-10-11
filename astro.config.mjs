@@ -9,6 +9,7 @@ export default defineConfig({
   // Set to the production domain once it is bought (needed for the sitemap).
   site: "https://example.com",
   integrations: [mdx(), sitemap()],
+  devToolbar: { enabled: false },
   markdown: { processor: satteri({ mdastPlugins: [unwrapImages] }) },
   vite: {
     css: {

@@ -1,0 +1,38 @@
+---
+import { strings } from "../config/strings";
+import type { Collection } from "../data/collections";
+import type { Story } from "../lib/stories";
+import StoryCard from "./StoryCard.astro";
+
+interface Props {
+  collection: Collection;
+  /** Newest first. */
+  stories: Story[];
+}
+
+const { collection, stories } = Astro.props;
+const headingId = `col-${collection.id}`;
+---
+
+<section
+  class={`collection col-${collection.id}`}
+  id={collection.id}
+  data-collection={collection.id}
+  aria-labelledby={headingId}
+>
+  <div class="collection__head">
+    <span class="collection__num" aria-hidden="true">
+      {collection.number}
+    </span>
+    <div>
+      <h2 id={headingId}>{collection.name}</h2>
+      <p>{collection.description}</p>
+    </div>
+    <span class="collection__count">{strings.archive.storyCount(stories.length)}</span>
+  </div>
+  <div class="card-grid">
+    {stories.map((story, index) => (
+      <StoryCard story={story} variant="archive" extra={index >= 3} />
+    ))}
+  </div>
+</section>

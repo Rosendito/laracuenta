@@ -1,5 +1,97 @@
 ---
-// Stub: replaced by the MDX kit (phase 5).
+// Horizontal strip of Markdown images with arrows, dots and scroll sync.
+import Icon from "../Icon.astro";
+import { strings } from "../../config/strings";
+import { carouselSizes, figureSizes } from "./sizes";
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Accessible name of the scrolling track. Defaults to the title. */
+  label?: string;
+}
+
+const { title, description, label = title } = Astro.props;
+
+// Images inside the strip use the narrower carousel size.
+const html = (await Astro.slots.render("default"))
+  .replaceAll('class="article__figure"', 'class="carousel__item"')
+  .replaceAll(`sizes="${figureSizes}"`, `sizes="${carouselSizes}"`);
 ---
 
-<div><slot /></div>
+<div class="carousel">
+  <div class="carousel__head">
+    <div>
+      <h3>{title}</h3>
+      {description && <p>{description}</p>}
+    </div>
+    <div class="gallery-arrows">
+      <button
+        class="arrow-btn"
+        type="button"
+        data-carousel="prev"
+        aria-label={strings.article.previousPhoto}
+      >
+        <Icon name="chevron-left" />
+      </button>
+      <button
+        class="arrow-btn"
+        type="button"
+        data-carousel="next"
+        aria-label={strings.article.nextPhoto}
+      >
+        <Icon name="chevron-right" />
+      </button>
+    </div>
+  </div>
+  <div class="carousel__track" tabindex="0" aria-label={label}>
+    <Fragment set:html={html} />
+  </div>
+  <div class="carousel__dots" aria-hidden="true"></div>
+</div>
+
+<script>
+  import { strings } from "../../config/strings";
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const scrollBehavior = (): ScrollBehavior => (reducedMotion ? "auto" : "smooth");
+
+  document.querySelectorAll<HTMLElement>(".carousel").forEach((carousel) => {
+    const track = carousel.querySelector<HTMLElement>(".carousel__track");
+    const items = Array.from(carousel.querySelectorAll<HTMLElement>(".carousel__item"));
+    const dots = carousel.querySelector<HTMLElement>(".carousel__dots");
+    if (!track || !items.length) return;
+
+    if (dots) {
+      items.forEach((item, i) => {
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.setAttribute("aria-label", strings.article.photoOf(i + 1, items.length));
+        dot.setAttribute("aria-current", String(i === 0));
+        dot.addEventListener("click", () =>
+          item.scrollIntoView({ behavior: scrollBehavior(), block: "nearest", inline: "start" }),
+        );
+        dots.appendChild(dot);
+      });
+
+      const update = () => {
+        const x = track.scrollLeft + track.clientWidth * 0.25;
+        let active = 0;
+        items.forEach((item, i) => {
+          if (item.offsetLeft - track.offsetLeft <= x) active = i;
+        });
+        dots
+          .querySelectorAll("button")
+          .forEach((dot, i) => dot.setAttribute("aria-current", String(i === active)));
+      };
+      track.addEventListener("scroll", update, { passive: true });
+    }
+
+    carousel.querySelectorAll<HTMLElement>("[data-carousel]").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const dir = btn.dataset.carousel === "next" ? 1 : -1;
+        track.scrollBy({ left: dir * items[0].clientWidth, behavior: scrollBehavior() });
+      }),
+    );
+  });
+</script>
