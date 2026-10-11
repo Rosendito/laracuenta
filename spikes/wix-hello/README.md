@@ -23,6 +23,8 @@ jsDelivr.
 | `/about` when `about.html` exists (clean URLs) | ❌ 404 |
 | Custom `_wix/pages.json` declaring `/about` | ❌ ignored for routing |
 | Custom `404.html` | ❌ Wix serves its own 404 page |
+| Astro's `_astro/` asset folder | ✅ 200 `text/css` (real build subset) |
+| `ExecuteWixAPI` fetching an external URL (to pull a build) | ❌ 403, only Wix domains allowed |
 
 ## Decisions
 
@@ -33,3 +35,6 @@ jsDelivr.
   `https://cdn.jsdelivr.net/gh/Rosendito/laracuenta@<sha>/...`, pinned to the pushed
   commit so caches never serve stale files.
 - Wix generates `_wix/pages.json` itself from the uploaded `.html` files.
+- An MCP upload means the agent writes every file into the call (~110 KB for the
+  current build). Fine occasionally; for frequent deploys use the Wix CLI token + `curl`
+  drop from the terminal, or a client whose attachments travel as files (ChatGPT).

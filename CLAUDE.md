@@ -62,3 +62,7 @@ live at https://headless-zwosrbmivru-mariangellou27-140e.wix-site-host.com
    `siteId` above and the contents of `dist-mcp-bundle.txt` as `files`. Each upload
    replaces the whole site.
 3. Check a few URLs with `curl -sI` (home, `/blog.html`, one post, one image).
+
+An MCP upload means writing the whole bundle (~110 KB) into the tool call, so deploy
+when a milestone is ready, not after every tweak; iterate locally with `npm run dev`.
+The Wix script runtime can't fetch external URLs, so a build can't be pulled from GitHub.
