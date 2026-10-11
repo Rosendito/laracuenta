@@ -1,11 +1,11 @@
 import mdx from "@astrojs/mdx";
+import sitemap from "@astrojs/sitemap";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
-import remarkMedia from "./src/lib/remark-media.mjs";
-
 export default defineConfig({
-  // Wix static hosting only serves explicit .html paths (see spikes/wix-hello).
-  build: { format: "file" },
-  markdown: { remarkPlugins: [remarkMedia] },
-  integrations: [mdx()],
+  // Set to the production domain once it is bought (needed for the sitemap).
+  site: "https://example.com",
+  integrations: [mdx(), sitemap()],
+  vite: { plugins: [tailwindcss()] },
 });

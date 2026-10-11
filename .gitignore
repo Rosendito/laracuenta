@@ -1,12 +1,19 @@
-.venv/
 node_modules/
 dist/
+.astro/
+.venv/
 .env
+.wrangler/
+
+# Local overrides for UI copy (see messages.default.json).
 messages.json
 
-# Source assignment and raw text extracts contain personal data; keep them local.
+# Local work: design concepts, scratch files.
+.local/
+
+# Source assignment, identity sheet and raw photos contain personal data; keep them local.
 wireframes.pdf
+identidad-grafica.png
 docs/wireframes/pages/
 docs/wireframes/images/fgu-logo.png
-.astro/
-dist-mcp-bundle.txt
+public/photos/

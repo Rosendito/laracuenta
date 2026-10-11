@@ -1,17 +1,14 @@
 ---
 import "../styles/global.css";
 
-import Footer from "../components/Footer.astro";
-import Header from "../components/Header.astro";
 import { t } from "../lib/messages";
 
 interface Props {
   title?: string;
   description?: string;
-  image?: string;
 }
 
-const { title, description = t.siteDescription, image } = Astro.props;
+const { title, description = t.siteDescription } = Astro.props;
 const fullTitle = title ? `${title} · ${t.siteName}` : t.siteName;
 ---
 
@@ -22,20 +19,15 @@ const fullTitle = title ? `${title} · ${t.siteName}` : t.siteName;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
-    {image && <meta property="og:image" content={image} />}
     <link rel="icon" href="/laracuenta-isotipo.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Montserrat:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Montserrat:wght@400;500;600;700&display=swap"
     />
   </head>
   <body>
-    <Header />
-    <main><slot /></main>
-    <Footer />
+    <slot />
   </body>
 </html>

@@ -2,52 +2,5 @@
   "locale": "en",
   "siteName": "Lara Cuenta",
   "siteDescription": "Stories, memory and heritage of Lara.",
-  "nav": { "home": "Home", "blog": "Blog", "about": "About", "contact": "Contact" },
-  "categories": {
-    "then-and-now": "Lara then and now",
-    "heritage-and-places": "Heritage and memory of places",
-    "our-people": "Stories of our people",
-    "customs-and-culture": "Customs and cultural memory"
-  },
-  "hero": {
-    "title": "The stories Lara tells",
-    "text": "Photographs, voices and places that keep the memory of our region alive.",
-    "cta": "Read the stories"
-  },
-  "recent": { "title": "Recent posts", "seeAll": "See all", "read": "Read more" },
-  "about": {
-    "title": "About Lara Cuenta",
-    "text": "Lara Cuenta is a nano-outlet that collects the stories, places and customs of Lara, told through the people who live them.",
-    "cta": "Learn more",
-    "body": "We document how Lara has changed, the places that hold its memory, the people who shape it and the customs that define it. Every story starts with a photograph."
-  },
-  "contact": {
-    "title": "Contact",
-    "text": "Have a question, a story to share or a topic we should cover? Write to us.",
-    "firstName": "First name",
-    "lastName": "Last name",
-    "email": "Email",
-    "subject": "Subject",
-    "message": "Message",
-    "send": "Send",
-    "mailto": "Write to us"
-  },
-  "blog": {
-    "title": "Blog",
-    "intro": "Stories from Lara, organized by theme.",
-    "all": "All",
-    "loadMore": "Load more",
-    "empty": "No posts yet."
-  },
-  "post": { "minRead": "min read", "share": "Share", "copyLink": "Copy link", "copied": "Copied", "back": "Back to the blog" },
-  "footer": {
-    "links": "Explore",
-    "policies": "Policies",
-    "privacy": "Privacy policy",
-    "terms": "Terms of use",
-    "newsletter": "Get new stories by email",
-    "subscribe": "Subscribe",
-    "rights": "All rights reserved."
-  },
-  "notFound": { "title": "Page not found", "back": "Back home" }
+  "comingSoon": "A new home for the stories of Lara is on its way."
 }

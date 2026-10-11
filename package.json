@@ -3,18 +3,25 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "media": "node scripts/optimize-media.mjs",
-    "dev": "npm run media && astro dev",
-    "build": "npm run media && astro build",
+    "dev": "astro dev",
+    "build": "astro check && astro build",
     "preview": "astro preview",
-    "new": "node scripts/new-post.mjs",
-    "bundle": "node scripts/mcp-bundle.mjs",
-    "release": "npm run media && PUBLIC_MEDIA_BASE=$(node scripts/publish-media.mjs) astro build && npm run bundle"
+    "check": "astro check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@astrojs/markdown-remark": "^7.3.2",
     "@astrojs/mdx": "^8.0.3",
+    "@astrojs/sitemap": "^3.7.4",
+    "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.8",
-    "sharp": "^0.35.5"
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "typescript": "^6.0.3"
   }
 }

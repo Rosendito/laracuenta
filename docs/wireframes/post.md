@@ -4,18 +4,18 @@
 
 Single centered column with wide side margins, focused on reading.
 
-| # | Section | Content |
-|---|---|---|
-| 1 | Header | Same as Home |
-| 2 | Meta row | Publish date · estimated reading time · overflow menu (⋮) on the right |
-| 3 | Title | Main title (up to 2 lines) |
-| 4 | Category | Category label |
-| 5 | Lead | Short intro or a quote from the story |
-| 6 | Featured image | Wide image after the intro |
-| 7 | Body | Text blocks with subheadings; shape depends on the journalistic genre. May include extra images, subheadings or testimonies |
-| 8 | Share | Social share icons, after the article |
-| 9 | Comments | Title + count/avatar · comment box with avatar · submit button |
-| 10 | Footer | Same as Home |
+| #   | Section        | Content                                                                                                                     |
+| --- | -------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Header         | Same as Home                                                                                                                |
+| 2   | Meta row       | Publish date · estimated reading time · overflow menu (⋮) on the right                                                      |
+| 3   | Title          | Main title (up to 2 lines)                                                                                                  |
+| 4   | Category       | Category label                                                                                                              |
+| 5   | Lead           | Short intro or a quote from the story                                                                                       |
+| 6   | Featured image | Wide image after the intro                                                                                                  |
+| 7   | Body           | Text blocks with subheadings; shape depends on the journalistic genre. May include extra images, subheadings or testimonies |
+| 8   | Share          | Social share icons, after the article                                                                                       |
+| 9   | Comments       | Title + count/avatar · comment box with avatar · submit button                                                              |
+| 10  | Footer         | Same as Home                                                                                                                |
 
 ## Intent
 
