@@ -211,7 +211,7 @@ colors. An authoring guide (`docs/writing-stories.md`) ships with phase 5.
 `scripts/visual/compare.mjs` (devDependencies: `playwright-core`, `pixelmatch`,
 `pngjs`; uses the installed Google Chrome via `channel: "chrome"`, no browser download).
 
-- Pairs: `index.html ↔ /`, `archive.html ↔ /archivo`, `post.html ↔ /historias/el-obelisco`.
+- Pairs: `index.html ↔ /`, `archive.html ↔ /historias`, `post.html ↔ /historias/el-obelisco`.
 - Viewports: 1440×900 and 390×844 (plus 360×780 as a sanity pass).
 - Stabilization: `reducedMotion: "reduce"`, wait for `document.fonts.ready`, force lazy
   images to load, hide the caret, fixed clock for "hace 2 días".
