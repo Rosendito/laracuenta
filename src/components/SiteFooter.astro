@@ -1,0 +1,65 @@
+---
+import Button from "./Button.astro";
+import SocialLinks from "./SocialLinks.astro";
+import { site } from "../config/site";
+import { strings } from "../config/strings";
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="site-footer__grid">
+      <div class="footer-brand">
+        <img src="/laracuenta-isotipo.svg" alt="" width="64" height="66" />
+        <div>
+          <strong>{site.name}</strong>
+          <p>{strings.footer.about}</p>
+        </div>
+      </div>
+      <div>
+        <h3>{strings.footer.navigate}</h3>
+        <ul>
+          {site.nav.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3>{strings.footer.policies}</h3>
+        <ul>
+          {site.policies.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="newsletter">
+        <h3>{strings.footer.newsletter}</h3>
+        <p>{strings.footer.newsletterText}</p>
+        <form action={site.forms.newsletter} method="post">
+          <label class="visually-hidden" for="nl-email">
+            {strings.footer.emailLabel}
+          </label>
+          <input
+            id="nl-email"
+            name="email"
+            type="email"
+            placeholder={strings.footer.emailPlaceholder}
+            autocomplete="email"
+            required
+          />
+          <Button size="sm" type="submit">
+            {strings.footer.subscribe}
+          </Button>
+        </form>
+        <SocialLinks />
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>{strings.footer.copyright}</span>
+      <span class="mockup-note">{strings.footer.mockupNote}</span>
+    </div>
+  </div>
+</footer>

@@ -1,17 +1,21 @@
 ---
 import "../styles/main.css";
 
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
 import SvgDefs from "../components/SvgDefs.astro";
-import { site } from "../config/site";
+import { site, type NavId } from "../config/site";
 import { strings } from "../config/strings";
 
 interface Props {
   /** Page title; the site name is appended. Omit on the home page. */
   title?: string;
   description?: string;
+  /** Nav entry of the current page, marked in the header. */
+  current?: NavId;
 }
 
-const { title, description = site.description } = Astro.props;
+const { title, description = site.description, current } = Astro.props;
 const fullTitle = title ? `${title} — ${site.name}` : site.title;
 ---
 
@@ -37,12 +41,12 @@ const fullTitle = title ? `${title} — ${site.name}` : site.title;
 
     <SvgDefs />
 
-    <slot name="header" />
+    <SiteHeader current={current} />
 
     <main id="contenido">
       <slot />
     </main>
 
-    <slot name="footer" />
+    <SiteFooter />
   </body>
 </html>

@@ -1,0 +1,64 @@
+---
+import Icon from "./Icon.astro";
+import SocialLinks from "./SocialLinks.astro";
+import { site, type NavId } from "../config/site";
+import { strings } from "../config/strings";
+
+interface Props {
+  /** Nav entry of the current page, marked with aria-current. */
+  current?: NavId;
+}
+
+const { current } = Astro.props;
+---
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand" href="/" aria-label={strings.homeLabel}>
+      <img src="/laracuenta-logo.svg" alt={site.name} width="200" height="96" />
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principal">
+      <span class="visually-hidden">{strings.menu}</span>
+      <Icon name="menu" class="icon--open" />
+      <Icon name="close" class="icon--close" />
+    </button>
+
+    <nav class="site-nav" id="nav-principal" aria-label={strings.mainNav}>
+      <ul>
+        {site.nav.map((item) => (
+          <li>
+            <a href={item.href} aria-current={item.id === current ? "page" : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <SocialLinks />
+    </nav>
+
+    <SocialLinks />
+  </div>
+</header>
+
+<script>
+  /* Mobile nav: toggles the menu and closes it with Escape. */
+  const navToggle = document.querySelector<HTMLButtonElement>(".nav-toggle");
+  const nav = document.querySelector<HTMLElement>("#nav-principal");
+
+  if (navToggle && nav) {
+    navToggle.addEventListener("click", () => {
+      const open = navToggle.getAttribute("aria-expanded") === "true";
+      navToggle.setAttribute("aria-expanded", String(!open));
+      nav.classList.toggle("is-open", !open);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && nav.classList.contains("is-open")) {
+        nav.classList.remove("is-open");
+        navToggle.setAttribute("aria-expanded", "false");
+        navToggle.focus();
+      }
+    });
+  }
+</script>

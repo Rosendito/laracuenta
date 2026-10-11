@@ -120,6 +120,15 @@ async function prepare(browser, url, viewport, state) {
   // load every lazy image and wait for fonts, so both sides are complete
   await page.evaluate(async () => {
     document.querySelectorAll('img[loading="lazy"]').forEach((img) => (img.loading = "eager"));
+    // fonts.ready ignores faces nobody has requested yet: load every face in use
+    const faces = ["Montserrat", '"DM Serif Display"'];
+    const styles = ["", "italic "];
+    const weights = ["400", "500", "600", "700"];
+    await Promise.all(
+      faces.flatMap((f) =>
+        styles.flatMap((s) => weights.map((w) => document.fonts.load(`${s}${w} 1em ${f}`, "aÁ"))),
+      ),
+    );
     await document.fonts.ready;
     await Promise.all(
       [...document.images].map((img) => (img.complete ? null : img.decode().catch(() => null))),

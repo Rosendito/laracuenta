@@ -1,0 +1,15 @@
+---
+import Icon from "./Icon.astro";
+import { site } from "../config/site";
+import { strings } from "../config/strings";
+---
+
+<ul class="social" aria-label={strings.socialNav}>
+  {site.social.map((item) => (
+    <li>
+      <a href={item.href} aria-label={item.label}>
+        <Icon name={item.id} />
+      </a>
+    </li>
+  ))}
+</ul>

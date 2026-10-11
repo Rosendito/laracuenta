@@ -1,0 +1,81 @@
+---
+import { Image } from "astro:assets";
+
+import { site } from "../config/site";
+import { strings } from "../config/strings";
+import { archiveHref, collections } from "../data/collections";
+import { formatDate, isoDate, readingTime, storyHref, type Story } from "../lib/stories";
+import Avatar from "./Avatar.astro";
+import Icon from "./Icon.astro";
+
+interface Props {
+  story: Story;
+  variant: "home" | "archive";
+  /** Archive only: hidden until "Cargar más" is pressed. */
+  extra?: boolean;
+}
+
+const { story, variant, extra = false } = Astro.props;
+const { data } = story;
+const collection = collections[data.collection];
+const image = data.card?.image ?? data.cover;
+const alt = data.card?.alt ?? data.coverAlt;
+const isArchive = variant === "archive";
+---
+
+<article
+  class:list={["card", `col-${data.collection}`, isArchive && extra && "is-extra"]}
+  hidden={isArchive && extra}
+>
+  <div class="card__media">
+    <Image
+      src={image}
+      alt={alt}
+      widths={[400, 800, 1200]}
+      sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 400px"
+      loading="lazy"
+    />
+    <div class="card__tag">
+      {isArchive ? (
+        <a class="tag" href={`#${data.collection}`} data-filter-link="">
+          {collection.short}
+        </a>
+      ) : (
+        <a class="tag" href={archiveHref(data.collection)}>
+          {collection.short}
+        </a>
+      )}
+    </div>
+  </div>
+  <div class="card__body">
+    <div class="card__meta">
+      <time datetime={isoDate(data.date)}>{formatDate(data.date)}</time>
+      <span class="dot" aria-hidden="true"></span>
+      <span>{strings.card.minutes(readingTime(story))}</span>
+    </div>
+    <h3>
+      <a href={storyHref(story)}>{data.title}</a>
+    </h3>
+    <p>{data.description}</p>
+    {isArchive ? (
+      <div class="card__foot">
+        <span class="byline">
+          <Avatar initials={site.author.initial} tone={collection.avatarTone} />
+          <span>
+            {site.author.name}
+            {data.commentCount !== undefined && ` · ${strings.card.comments(data.commentCount)}`}
+          </span>
+        </span>
+        <span class="card__cta">
+          {strings.card.read} <Icon name="arrow-right" />
+        </span>
+      </div>
+    ) : (
+      <div class="card__foot">
+        <span class="card__cta">
+          {strings.card.readStory} <Icon name="arrow-right" />
+        </span>
+      </div>
+    )}
+  </div>
+</article>
