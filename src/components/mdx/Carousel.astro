@@ -62,16 +62,6 @@ const html = (await Astro.slots.render("default"))
     const dots = carousel.querySelector<HTMLElement>(".carousel__dots");
     if (!track || !items.length) return;
 
-    // fade only the edges that hide photos
-    const updateEdges = () => {
-      const max = track.scrollWidth - track.clientWidth;
-      track.dataset.atStart = String(track.scrollLeft <= 1);
-      track.dataset.atEnd = String(track.scrollLeft >= max - 1);
-    };
-    updateEdges();
-    track.addEventListener("scroll", updateEdges, { passive: true });
-    window.addEventListener("resize", updateEdges);
-
     if (dots) {
       items.forEach((item, i) => {
         const dot = document.createElement("button");
