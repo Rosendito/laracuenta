@@ -3,6 +3,7 @@ import Icon from "./Icon.astro";
 import SocialLinks from "./SocialLinks.astro";
 import { site, type NavId } from "../config/site";
 import { strings } from "../config/strings";
+import { archiveHref, collectionList } from "../data/collections";
 
 interface Props {
   /** Nav entry of the current page, marked with aria-current. */
@@ -25,7 +26,7 @@ const { current } = Astro.props;
     </button>
 
     <nav class="site-nav" id="nav-principal" aria-label={strings.mainNav}>
-      <ul>
+      <ul class="site-nav__list">
         {site.nav.map((item) => (
           <li>
             <a href={item.href} aria-current={item.id === current ? "page" : undefined}>
@@ -34,6 +35,21 @@ const { current } = Astro.props;
           </li>
         ))}
       </ul>
+      <!-- Mobile menu only: shortcuts to the four collections. -->
+      <div class="site-nav__collections">
+        <span class="eyebrow" id="nav-collections-label">
+          {strings.menuCollections}
+        </span>
+        <ul aria-labelledby="nav-collections-label">
+          {collectionList.map((collection) => (
+            <li>
+              <a class={`col-${collection.id}`} href={archiveHref(collection.id)}>
+                {collection.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
       <SocialLinks />
     </nav>
 
@@ -47,19 +63,28 @@ const { current } = Astro.props;
   const nav = document.querySelector<HTMLElement>("#nav-principal");
 
   if (navToggle && nav) {
-    navToggle.addEventListener("click", () => {
-      const open = navToggle.getAttribute("aria-expanded") === "true";
-      navToggle.setAttribute("aria-expanded", String(!open));
-      nav.classList.toggle("is-open", !open);
-    });
+    // While the menu is open, the page behind it is out of reach (focus, clicks, screen readers).
+    const behind = Array.from(document.querySelectorAll<HTMLElement>("main, .site-footer"));
+
+    const setOpen = (open: boolean) => {
+      navToggle.setAttribute("aria-expanded", String(open));
+      nav.classList.toggle("is-open", open);
+      behind.forEach((el) => (el.inert = open));
+    };
+
+    navToggle.addEventListener("click", () =>
+      setOpen(navToggle.getAttribute("aria-expanded") !== "true"),
+    );
 
     // Close the mobile menu after picking a link (anchors on the same page)
-    nav.querySelectorAll("a").forEach((link) =>
-      link.addEventListener("click", () => {
-        nav.classList.remove("is-open");
-        navToggle.setAttribute("aria-expanded", "false");
-      }),
-    );
+    nav
+      .querySelectorAll("a")
+      .forEach((link) => link.addEventListener("click", () => setOpen(false)));
+
+    // Growing past the mobile layout closes the menu, so nothing stays inert.
+    window
+      .matchMedia("(min-width: 861px)")
+      .addEventListener("change", (event) => event.matches && setOpen(false));
 
     // Home: mark the item of the section in view (Nosotros, Contacto), Inicio otherwise.
     if (location.pathname === "/") {
@@ -107,8 +132,7 @@ const { current } = Astro.props;
 
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && nav.classList.contains("is-open")) {
-        nav.classList.remove("is-open");
-        navToggle.setAttribute("aria-expanded", "false");
+        setOpen(false);
         navToggle.focus();
       }
     });

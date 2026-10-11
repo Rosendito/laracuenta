@@ -4,6 +4,7 @@ export const strings = {
   skipLink: "Saltar al contenido",
   homeLabel: "Lara Cuenta, inicio",
   menu: "Menú",
+  menuCollections: "Colecciones",
   mainNav: "Principal",
   socialNav: "Redes sociales",
 
