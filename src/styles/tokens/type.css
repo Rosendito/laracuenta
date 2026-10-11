@@ -12,7 +12,7 @@
   --text-h1: clamp(2.4rem, 1.7rem + 3.4vw, 4.4rem);
 
   /* fixed sizes for labels and UI */
-  --text-label-2xs: 0.68rem;
+  --text-label-2xs: 0.75rem;
   --text-label-xs: 0.74rem;
   --text-label: 0.78rem;
   --text-label-lg: 0.8rem;
@@ -37,7 +37,7 @@
   --tracking-ui: 0.01em;
   --tracking-label: 0.02em;
   --tracking-tag: 0.06em;
-  --tracking-caps-tight: 0.08em;
-  --tracking-caps: 0.12em;
-  --tracking-caps-wide: 0.14em;
+  --tracking-caps-tight: 0.05em;
+  --tracking-caps: 0.06em;
+  --tracking-caps-wide: 0.08em;
 }

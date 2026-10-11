@@ -26,7 +26,8 @@
   --color-accent-hover: #8f4421;
   --color-accent-text: #8f4421; /* small text on cream 5.8:1 */
   --color-sun-hover: #e7a62a;
-  --color-focus: #1f5fa6; /* cool ring, visible on every warm surface */
+  --color-focus: #1f5fa6; /* cool ring on light surfaces (>= 5.4:1 on page and cream) */
+  --color-focus-on-dark: var(--color-sun); /* night, ink and photos (>= 7:1 on night) */
 
   /* collections: hue = decorative, deep = text and tags on cream (>= 4.5:1) */
   --col-antes-hue: var(--color-sun);

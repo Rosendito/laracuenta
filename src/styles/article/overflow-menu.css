@@ -16,9 +16,14 @@
   place-items: center;
 }
 
-.overflow > button:hover,
 .overflow > button[aria-expanded="true"] {
   background: var(--color-card);
+}
+
+@media (--hover) {
+  .overflow > button:hover {
+    background: var(--color-card);
+  }
 }
 
 .overflow__menu {
@@ -58,6 +63,8 @@
   font-weight: var(--weight-medium);
 }
 
-.overflow__menu button:hover {
-  background: var(--color-card);
+@media (--hover) {
+  .overflow__menu button:hover {
+    background: var(--color-card);
+  }
 }

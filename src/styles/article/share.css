@@ -47,11 +47,13 @@
     border-color var(--duration-fast) var(--ease);
 }
 
-.share a:hover,
-.share button:hover {
-  background: var(--color-text);
-  border-color: var(--color-text);
-  color: var(--color-text-inverse);
+@media (--hover) {
+  .share a:hover,
+  .share button:hover {
+    background: var(--color-text);
+    border-color: var(--color-text);
+    color: var(--color-text-inverse);
+  }
 }
 
 .share .icon {

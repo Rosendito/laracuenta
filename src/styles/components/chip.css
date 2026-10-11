@@ -30,8 +30,10 @@
   border: var(--border-thin) solid var(--color-ink-a15);
 }
 
-.chip:hover {
-  border-color: var(--col-deep, var(--color-text));
+@media (--hover) {
+  .chip:hover {
+    border-color: var(--col-deep, var(--color-text));
+  }
 }
 
 .chip[aria-current="true"] {
@@ -54,6 +56,6 @@
 .chip .count {
   --chip-count-font-size: 0.75em;
   font-size: var(--chip-count-font-size);
-  opacity: 0.7;
+  font-weight: var(--weight-medium);
   font-variant-numeric: tabular-nums;
 }

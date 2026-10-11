@@ -78,8 +78,10 @@
   text-decoration: none;
 }
 
-.site-footer ul a:hover {
-  text-decoration: underline;
+@media (--hover) {
+  .site-footer ul a:hover {
+    text-decoration: underline;
+  }
 }
 
 .newsletter p {
@@ -115,8 +117,10 @@
   color: var(--color-text);
 }
 
-.newsletter .btn:hover {
-  background: var(--color-sun-hover);
+@media (--hover) {
+  .newsletter .btn:hover {
+    background: var(--color-sun-hover);
+  }
 }
 
 .site-footer .social {
@@ -130,10 +134,12 @@
   border: var(--border-hair) solid var(--color-cream-a25);
 }
 
-.site-footer .social a:hover {
-  background: var(--color-sun);
-  color: var(--color-text);
-  border-color: var(--color-sun);
+@media (--hover) {
+  .site-footer .social a:hover {
+    background: var(--color-sun);
+    color: var(--color-text);
+    border-color: var(--color-sun);
+  }
 }
 
 .site-footer__bottom {

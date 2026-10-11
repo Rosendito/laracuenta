@@ -29,14 +29,6 @@
   text-wrap: pretty;
 }
 
-.about__inner .eyebrow {
-  justify-content: center;
-}
-
-.about__inner .eyebrow::before {
-  display: none;
-}
-
 /* the scattered photos: six bubbles floating left and right */
 .about__scatter {
   position: absolute;

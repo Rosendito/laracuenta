@@ -12,9 +12,11 @@
     box-shadow var(--duration-card) var(--ease);
 }
 
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lift);
+@media (--hover) {
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+  }
 }
 
 .card:focus-within {
@@ -35,8 +37,10 @@
   transition: transform var(--duration-slow) var(--ease);
 }
 
-.card:hover .card__media img {
-  transform: scale(1.04);
+@media (--hover) {
+  .card:hover .card__media img {
+    transform: scale(1.04);
+  }
 }
 
 /* the "bite": the tag sits in a cream notch cut from the photo's corner,
@@ -124,8 +128,10 @@
   z-index: var(--z-raised);
 }
 
-.card h3 a:hover {
-  color: var(--col-deep, var(--color-accent-text));
+@media (--hover) {
+  .card h3 a:hover {
+    color: var(--col-deep, var(--color-accent-text));
+  }
 }
 
 .card p {
@@ -161,8 +167,10 @@
   transition: transform var(--duration-fast) var(--ease);
 }
 
-.card:hover .card__cta .icon {
-  transform: translateX(4px);
+@media (--hover) {
+  .card:hover .card__cta .icon {
+    transform: translateX(4px);
+  }
 }
 
 /* interaction row (archive): author avatar + meta */

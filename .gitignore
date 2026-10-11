@@ -17,3 +17,7 @@ identidad-grafica.png
 docs/wireframes/pages/
 docs/wireframes/images/fgu-logo.png
 public/photos/
+
+# Agent skills installed locally (npx skills add).
+.claude/skills/
+skills-lock.json

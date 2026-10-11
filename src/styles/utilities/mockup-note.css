@@ -1,7 +1,6 @@
 /* Mockup notice. */
 
 .mockup-note {
-  --mockup-note-font-size: 0.72rem;
-  font-size: var(--mockup-note-font-size);
+  font-size: var(--text-label-xs);
   color: var(--color-text-inverse-55);
 }

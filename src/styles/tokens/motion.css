@@ -1,7 +1,10 @@
 /* Motion. prefers-reduced-motion collapses every duration (base/accessibility.css). */
 :root {
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-out: ease-out;
+  --ease-icon: cubic-bezier(0.2, 0, 0, 1); /* icon cross-fades */
   --duration-instant: 0.01ms; /* reduced motion */
+  --duration-press: 150ms; /* button press */
   --duration-fast: 0.2s;
   --duration-card: 0.25s;
   --duration-fade: 0.3s;
@@ -11,4 +14,6 @@
   --duration-rise: 800ms;
   --delay-step-1: 110ms;
   --delay-step-2: 220ms;
+
+  --scale-press: 0.96;
 }

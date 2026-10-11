@@ -20,9 +20,11 @@
     color var(--duration-fast) var(--ease);
 }
 
-.social a:hover {
-  background: var(--color-text);
-  color: var(--color-text-inverse);
+@media (--hover) {
+  .social a:hover {
+    background: var(--color-text);
+    color: var(--color-text-inverse);
+  }
 }
 
 .social .icon {

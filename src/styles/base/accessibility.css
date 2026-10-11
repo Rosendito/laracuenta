@@ -6,6 +6,13 @@
   border-radius: var(--radius-xs);
 }
 
+/* dark surfaces: the blue ring drops below 3:1 there */
+.site-footer,
+.hero__copy,
+.banner {
+  --color-focus: var(--color-focus-on-dark);
+}
+
 ::selection {
   background: var(--color-sun);
   color: var(--color-text);

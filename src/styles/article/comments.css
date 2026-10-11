@@ -113,8 +113,10 @@
   color: var(--color-text-soft);
 }
 
-.comment__actions button:hover {
-  color: var(--color-accent-text);
+@media (--hover) {
+  .comment__actions button:hover {
+    color: var(--color-accent-text);
+  }
 }
 
 .comment--reply {
@@ -167,7 +169,7 @@
 }
 
 .comment-form textarea:focus-visible {
-  outline: none;
+  outline-color: transparent; /* forced colors repaint it */
   border-color: var(--color-accent);
   box-shadow: var(--ring-sun);
 }

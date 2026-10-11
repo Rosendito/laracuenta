@@ -16,26 +16,32 @@
   line-height: var(--leading-tight);
   transition:
     background-color var(--duration-fast) var(--ease),
-    transform var(--duration-fast) var(--ease),
-    box-shadow var(--duration-fast) var(--ease);
+    border-color var(--duration-fast) var(--ease),
+    color var(--duration-fast) var(--ease),
+    scale var(--duration-press) var(--ease-out);
 }
 
-.btn:hover {
-  background: var(--color-accent-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-soft);
+@media (--hover) {
+  .btn:hover {
+    background: var(--color-accent-hover);
+  }
 }
 
-.btn:active {
-  transform: translateY(0);
+/* press feedback: a small scale, never on a disabled button */
+@media (--motion-ok) {
+  .btn:not(:disabled):active {
+    scale: var(--scale-press);
+  }
 }
 
 .btn .icon {
   transition: transform var(--duration-fast) var(--ease);
 }
 
-.btn:hover .icon {
-  transform: translateX(3px);
+@media (--hover) {
+  .btn:hover .icon {
+    transform: translateX(3px);
+  }
 }
 
 .btn--ghost {
@@ -44,9 +50,11 @@
   border-color: var(--color-text);
 }
 
-.btn--ghost:hover {
-  background: var(--color-text);
-  color: var(--color-text-inverse);
+@media (--hover) {
+  .btn--ghost:hover {
+    background: var(--color-text);
+    color: var(--color-text-inverse);
+  }
 }
 
 .btn--sun {
@@ -54,8 +62,10 @@
   color: var(--color-text);
 }
 
-.btn--sun:hover {
-  background: var(--color-sun-hover);
+@media (--hover) {
+  .btn--sun:hover {
+    background: var(--color-sun-hover);
+  }
 }
 
 .btn--sm {
@@ -73,8 +83,17 @@
   border-color: var(--color-cream-a70);
 }
 
-.btn--ghost-light:hover {
-  background: var(--color-text-inverse);
-  color: var(--color-text);
-  border-color: var(--color-text-inverse);
+@media (--hover) {
+  .btn--ghost-light:hover {
+    background: var(--color-text-inverse);
+    color: var(--color-text);
+    border-color: var(--color-text-inverse);
+  }
+}
+
+.btn:disabled {
+  background: var(--color-line);
+  border-color: transparent;
+  color: var(--color-text-soft);
+  cursor: not-allowed;
 }

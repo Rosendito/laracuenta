@@ -19,9 +19,11 @@
     color var(--duration-fast) var(--ease);
 }
 
-.arrow-btn:hover {
-  background: var(--color-text);
-  color: var(--color-text-inverse);
+@media (--hover) {
+  .arrow-btn:hover {
+    background: var(--color-text);
+    color: var(--color-text-inverse);
+  }
 }
 
 .arrow-btn .icon {

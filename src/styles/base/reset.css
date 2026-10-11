@@ -9,7 +9,10 @@
 html {
   color-scheme: light;
   scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height);
   -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -20,7 +23,6 @@ body {
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: var(--leading-body);
-  font-feature-settings: "kern", "liga";
   text-rendering: optimizeLegibility;
 }
 
@@ -51,8 +53,10 @@ a {
   text-decoration-color: var(--color-orange);
 }
 
-a:hover {
-  text-decoration-color: var(--color-text);
+@media (--hover) {
+  a:hover {
+    text-decoration-color: var(--color-text);
+  }
 }
 
 img {
@@ -75,9 +79,4 @@ button {
 
 figure {
   margin: 0;
-}
-
-/* anchors stop below the sticky header (zero specificity: components can override) */
-:where([id]) {
-  scroll-margin-top: var(--header-height);
 }

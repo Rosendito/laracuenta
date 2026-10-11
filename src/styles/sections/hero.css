@@ -56,11 +56,10 @@
 }
 
 .hero__credit {
-  --hero-credit-font-size: 0.66rem;
   position: absolute;
   left: calc(var(--gutter) / 2);
   top: var(--space-10);
-  font-size: var(--hero-credit-font-size);
+  font-size: var(--text-label-2xs);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-caps-wide);
   text-transform: uppercase;
@@ -89,10 +88,6 @@
 
 .hero__copy .eyebrow {
   color: var(--color-sun);
-}
-
-.hero__copy .eyebrow::before {
-  background: var(--color-sun);
 }
 
 .hero__copy h1 {
@@ -215,9 +210,14 @@
   transition: border-color var(--duration-fast) var(--ease);
 }
 
-.thumb:hover img,
 .thumb[aria-pressed="true"] img {
   filter: none;
+}
+
+@media (--hover) {
+  .thumb:hover img {
+    filter: none;
+  }
 }
 
 .thumb[aria-pressed="true"]::after {
@@ -247,9 +247,11 @@
   text-decoration: none;
 }
 
-.hero__current h2 a:hover {
-  text-decoration: underline;
-  text-decoration-color: var(--color-orange);
+@media (--hover) {
+  .hero__current h2 a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--color-orange);
+  }
 }
 
 @media (--upto-xl) {

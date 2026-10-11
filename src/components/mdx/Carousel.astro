@@ -44,10 +44,10 @@ const html = (await Astro.slots.render("default"))
       </button>
     </div>
   </div>
-  <div class="carousel__track" tabindex="0" aria-label={label}>
+  <div class="carousel__track" role="region" tabindex="0" aria-label={label}>
     <Fragment set:html={html} />
   </div>
-  <div class="carousel__dots" aria-hidden="true"></div>
+  <div class="carousel__dots"></div>
 </div>
 
 <script>

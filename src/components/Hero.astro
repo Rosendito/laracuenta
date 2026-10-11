@@ -46,9 +46,12 @@ const first = slides[0];
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <div class="hero__bg" id="hero-photo" aria-live="polite">
+  <div class="hero__bg" id="hero-photo">
     {slides.map((slide) => (
-      <picture data-active={slide.index === 0 ? "true" : "false"}>
+      <picture
+        data-active={slide.index === 0 ? "true" : "false"}
+        aria-hidden={slide.index === 0 ? undefined : "true"}
+      >
         {slide.mobile && <source media="(max-width: 700px)" srcset={slide.mobile.src} />}
         <img
           src={slide.image.src}
@@ -128,7 +131,7 @@ const first = slides[0];
           </li>
         ))}
       </ul>
-      <div class="hero__current">
+      <div class="hero__current" aria-live="polite">
         <Tag
           label={first?.collection.short ?? ""}
           collection={first?.collection.id}
@@ -162,7 +165,12 @@ const first = slides[0];
       if (!thumbs.length) return;
       current = (index + thumbs.length) % thumbs.length;
       const thumb = thumbs[current];
-      images.forEach((img, i) => img.setAttribute("data-active", String(i === current)));
+      images.forEach((img, i) => {
+        img.setAttribute("data-active", String(i === current));
+        // only the visible photo is exposed to assistive technology
+        if (i === current) img.removeAttribute("aria-hidden");
+        else img.setAttribute("aria-hidden", "true");
+      });
       thumbs.forEach((t, i) => t.setAttribute("aria-pressed", String(i === current)));
       if (titleEl) {
         titleEl.textContent = thumb.dataset.title ?? "";
