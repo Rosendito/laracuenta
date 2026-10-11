@@ -13,10 +13,26 @@ interface Props {
   description?: string;
   /** Nav entry of the current page, marked in the header. */
   current?: NavId;
+  /** Link-preview image (see src/pages/og/); defaults to the site-wide card. */
+  image?: string;
+  imageAlt?: string;
+  /** Open Graph type: "article" for stories. */
+  type?: "website" | "article";
 }
 
-const { title, description = site.description, current } = Astro.props;
+const {
+  title,
+  description = site.description,
+  current,
+  image,
+  imageAlt,
+  type = "website",
+} = Astro.props;
 const fullTitle = title ? `${title} | ${site.name}` : site.title;
+
+// social networks need absolute URLs
+const ogImageUrl = new URL(image ?? "/og.jpg", Astro.site).href;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!doctype html>
@@ -26,6 +42,19 @@ const fullTitle = title ? `${title} | ${site.name}` : site.title;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="es_VE" />
+    <meta property="og:title" content={title ?? site.title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt ?? site.title} />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/laracuenta-isotipo.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

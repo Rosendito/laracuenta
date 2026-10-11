@@ -23,7 +23,14 @@ const { story } = Astro.props;
 const { Content } = await render(story);
 ---
 
-<Base current="archive" title={story.data.title} description={story.data.description}>
+<Base
+  current="archive"
+  title={story.data.title}
+  description={story.data.description}
+  image={`/og/${story.id}.jpg`}
+  imageAlt={story.data.coverAlt}
+  type="article"
+>
   <article class:list={["article", `col-${story.data.collection}`]}>
     <ArticleHeader story={story} />
     <ArticleCover story={story} />

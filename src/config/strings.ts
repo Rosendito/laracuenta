@@ -2,6 +2,7 @@
 
 export const strings = {
   skipLink: "Saltar al contenido",
+  ogTagline: "Memoria, patrimonio y gente de Lara, contadas desde Barquisimeto.",
   homeLabel: "Lara Cuenta, inicio",
   menu: "Menú",
   menuCollections: "Colecciones",

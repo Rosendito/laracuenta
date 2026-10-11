@@ -21,10 +21,14 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@fontsource/dm-serif-display": "^5.3.0",
+    "@fontsource/montserrat": "^5.3.0",
+    "@resvg/resvg-js": "^2.6.2",
     "lightningcss": "^1.33.0",
     "postcss": "^8.5.29",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.1",
+    "satori": "^0.47.1",
     "sharp": "^0.35.5",
     "typescript": "^6.0.3"
   }
