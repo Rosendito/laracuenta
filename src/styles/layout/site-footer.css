@@ -120,6 +120,8 @@
 }
 
 .site-footer .social {
+  /* .site-footer ul turns every list into a grid; social icons stay in a row */
+  display: flex;
   margin-top: var(--space-8);
 }
 

@@ -22,7 +22,7 @@ const { story } = Astro.props;
 const { Content } = await render(story);
 ---
 
-<Base title={story.data.title} description={story.data.description}>
+<Base current="archive" title={story.data.title} description={story.data.description}>
   <article class:list={["article", `col-${story.data.collection}`]}>
     <ArticleHeader story={story} />
     <ArticleCover story={story} />

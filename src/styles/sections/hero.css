@@ -258,7 +258,7 @@
   }
 
   .hero__grid {
-    --hero-grid-padding-top: clamp(14rem, 50vh, 24rem);
+    --hero-grid-padding-top: clamp(8rem, 28svh, 14rem);
     grid-template-columns: minmax(0, 1fr);
     padding-top: var(--hero-grid-padding-top);
   }

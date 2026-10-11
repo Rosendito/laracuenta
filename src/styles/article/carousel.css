@@ -29,6 +29,11 @@
 }
 
 .carousel__track {
+  /* edges fade where more photos are hidden (data-at-start/end set by the script;
+     without JS only the end fades) */
+  --carousel-fade-size: var(--space-14);
+  --carousel-fade-start: 0px;
+  --carousel-fade-end: var(--carousel-fade-size);
   display: flex;
   gap: var(--space-7);
   overflow-x: auto;
@@ -38,6 +43,21 @@
   padding-bottom: var(--space-4);
   margin-inline: calc(-1 * var(--gutter));
   scrollbar-width: none;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black var(--carousel-fade-start),
+    black calc(100% - var(--carousel-fade-end)),
+    transparent
+  );
+}
+
+.carousel__track[data-at-start="false"] {
+  --carousel-fade-start: var(--carousel-fade-size);
+}
+
+.carousel__track[data-at-end="true"] {
+  --carousel-fade-end: 0px;
 }
 
 .carousel__track::-webkit-scrollbar {

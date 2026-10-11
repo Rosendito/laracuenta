@@ -6,6 +6,7 @@
   top: var(--header-height);
   z-index: var(--z-sticky-nav);
   margin-top: var(--space-9);
+  margin-inline: calc(-1 * var(--gutter));
   padding-block: var(--space-6);
   background: var(--color-nav-glass);
   backdrop-filter: blur(10px);
@@ -16,9 +17,10 @@
   display: flex;
   gap: var(--space-4);
   margin: 0;
-  padding: 0;
+  padding: 0 var(--gutter);
   list-style: none;
   overflow-x: auto;
+  scroll-padding-inline: var(--gutter);
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }

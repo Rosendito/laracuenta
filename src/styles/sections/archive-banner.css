@@ -166,7 +166,7 @@
     font-size: var(--banner-cols-span-font-size);
   }
 
-  .banner__cols li:nth-child(-n + 2) span {
+  .banner__cols span {
     display: none;
   }
 
