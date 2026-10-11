@@ -26,7 +26,7 @@ reviews every task; Haiku agents implement components from self-contained task c
 | JS          | No framework islands. Each `main.js` block becomes a `<script>` inside its component (Astro bundles and dedupes it). Every page works without JS.                                                                                                                                      |
 | Comments    | Static mockup, as in the concept.                                                                                                                                                                                                                                                      |
 | Forms       | Post to an external endpoint configured in `src/config/site.ts`.                                                                                                                                                                                                                       |
-| Routes      | `/` · `/historias` (archive) · `/historias/[slug]` · collection anchors `#antes`, `#patrimonio`, `#gente`, `#costumbres`.                                                                                                                                                                          |
+| Routes      | `/` · `/historias` (archive) · `/historias/[slug]` · collection anchors `#antes`, `#patrimonio`, `#gente`, `#costumbres`.                                                                                                                                                              |
 
 ## 2. Styles architecture
 
@@ -119,7 +119,7 @@ Everything else is plain markup inside the section that uses it (for example
 | Page    | Components                                                                                                                                                                                                                         |
 | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Home    | `Hero` (background `<picture>` with mobile source, credit, bubble panel with 4 thumbs; script = gallery) · `RecentStories` (section head + 3 latest cards) · `About` (six scattered photos) · `Contact` (copy, note, contact form) |
-| Archive | `ArchiveBanner` (four tinted collection columns) · `CollectionNav` (sticky chips; script = filter, deep links and "Cargar más") · `CollectionGroup` (header + grid, 3 visible, rest `hidden`, load-more button)                    |
+| Archive | `ArchiveBanner` (four tinted collection columns) · `CollectionNav` (sticky chips; script = filter and deep links) · `CollectionGroup` (header + grid with every story of the collection)                                           |
 | Article | `ArticleHeader` (meta row, ⋮ menu with its script, title, tag, lead, byline) · `ArticleCover` (full-bleed cover + caption) · `Share` (copy link script) · `Comments` (mockup data + local append script)                           |
 
 ### MDX kit
@@ -223,7 +223,7 @@ colors. An authoring guide (`docs/writing-stories.md`) ships with phase 5.
   contact, footer, …); writes `concept.png`, `astro.png`, `diff.png` and a mismatch
   percentage to `.local/visual/<page>-<viewport>/`.
 - Interaction states: nav open (390), hero thumb 2 active, ⋮ menu open, archive filtered
-  to "patrimonio", "Cargar más" expanded, a comment appended.
+  to "patrimonio", a comment appended.
 - Two pixel passes: **design** (photos hidden with `visibility: hidden`, layout kept):
   < 0.5 % per section; **photos** (visible): < 2 % of the page, since `astro:assets`
   resizes and re-encodes on purpose (responsive `srcset`, not the 1800 px originals).

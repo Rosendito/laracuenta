@@ -31,8 +31,8 @@ const headingId = `col-${collection.id}`;
     <span class="collection__count">{strings.archive.storyCount(stories.length)}</span>
   </div>
   <div class="card-grid">
-    {stories.map((story, index) => (
-      <StoryCard story={story} variant="archive" extra={index >= 3} />
+    {stories.map((story) => (
+      <StoryCard story={story} variant="archive" />
     ))}
   </div>
 </section>

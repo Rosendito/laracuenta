@@ -1,6 +1,5 @@
 ---
 import ArchiveBanner from "../../components/ArchiveBanner.astro";
-import Button from "../../components/Button.astro";
 import CollectionGroup from "../../components/CollectionGroup.astro";
 import CollectionNav from "../../components/CollectionNav.astro";
 import { strings } from "../../config/strings";
@@ -29,12 +28,5 @@ const counts = Object.fromEntries(
     {groups.map(({ collection, stories }) => (
       <CollectionGroup collection={collection} stories={stories} />
     ))}
-
-    <div class="load-more">
-      <Button variant="ghost" data-load-more="">
-        {strings.archive.loadMore}
-      </Button>
-      <small data-load-count="" role="status"></small>
-    </div>
   </div>
 </Base>

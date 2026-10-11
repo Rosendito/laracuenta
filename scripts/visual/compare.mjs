@@ -50,7 +50,6 @@ const PAGES = {
       "#patrimonio",
       "#gente",
       "#costumbres",
-      ".load-more",
       "footer.site-footer",
     ],
   },
@@ -87,7 +86,6 @@ const STATES = {
     pages: ["archive"],
     run: (p) => p.click('.chip[data-filter="patrimonio"]'),
   },
-  "load-more": { pages: ["archive"], run: (p) => p.click(".load-more button") },
   comment: {
     pages: ["post"],
     run: async (p) => {

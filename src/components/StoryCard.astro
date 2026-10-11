@@ -11,11 +11,9 @@ import Icon from "./Icon.astro";
 interface Props {
   story: Story;
   variant: "home" | "archive";
-  /** Archive only: hidden until "Cargar más" is pressed. */
-  extra?: boolean;
 }
 
-const { story, variant, extra = false } = Astro.props;
+const { story, variant } = Astro.props;
 const { data } = story;
 const collection = collections[data.collection];
 const image = data.card?.image ?? data.cover;
@@ -23,10 +21,7 @@ const alt = data.card?.alt ?? data.coverAlt;
 const isArchive = variant === "archive";
 ---
 
-<article
-  class:list={["card", `col-${data.collection}`, isArchive && extra && "is-extra"]}
-  hidden={isArchive && extra}
->
+<article class:list={["card", `col-${data.collection}`]}>
   <div class="card__media">
     <Image
       src={image}

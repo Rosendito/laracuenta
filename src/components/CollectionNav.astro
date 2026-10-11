@@ -34,8 +34,7 @@ const total = Object.values(counts).reduce((sum, n) => sum + n, 0);
 </nav>
 
 <script>
-  /* Archive: collection filter chips, deep links and "load more". */
-  import { strings } from "../config/strings";
+  /* Archive: collection filter chips and deep links. */
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -72,32 +71,5 @@ const total = Object.values(counts).reduce((sum, n) => sum + n, 0);
     if (initial && Array.from(groups).some((group) => group.dataset.collection === initial)) {
       apply(initial);
     }
-  }
-
-  /* Archive: "load more" reveals the hidden cards three at a time. */
-  const loadMore = document.querySelector<HTMLButtonElement>("[data-load-more]");
-
-  if (loadMore) {
-    const extras = Array.from(document.querySelectorAll<HTMLElement>(".card.is-extra"));
-    const counter = document.querySelector<HTMLElement>("[data-load-count]");
-    const total = document.querySelectorAll(".card").length;
-
-    const update = () => {
-      const shown = document.querySelectorAll(".card:not([hidden])").length;
-      if (counter) counter.textContent = strings.archive.showing(shown, total);
-    };
-
-    update();
-    loadMore.addEventListener("click", () => {
-      extras.splice(0, 3).forEach((card) => {
-        card.hidden = false;
-        card.classList.remove("is-extra");
-      });
-      update();
-      if (!extras.length) {
-        loadMore.disabled = true;
-        loadMore.textContent = strings.archive.noMore;
-      }
-    });
   }
 </script>

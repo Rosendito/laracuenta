@@ -74,9 +74,6 @@ export const strings = {
     collectionsNav: "Colecciones",
     all: "Todas",
     storyCount: (n: number) => `${n} historias`,
-    loadMore: "Cargar más historias",
-    noMore: "No hay más historias por ahora",
-    showing: (shown: number, total: number) => `Mostrando ${shown} de ${total} historias`,
   },
 
   article: {

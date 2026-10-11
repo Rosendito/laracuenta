@@ -1,4 +1,4 @@
-/* Archive: collection group and load more. */
+/* Archive: collection group. */
 
 /* a collection group: header strip + grid */
 .collection {
@@ -57,24 +57,6 @@
 
 .collection .card {
   --col-deep: var(--col-deep);
-}
-
-.card.is-extra[hidden] {
-  display: none;
-}
-
-.load-more {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-6);
-  padding-top: var(--space-13);
-  text-align: center;
-}
-
-.load-more small {
-  color: var(--color-text-soft);
-  font-size: var(--text-label-lg);
 }
 
 @media (--upto-sm) {
