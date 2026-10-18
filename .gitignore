@@ -6,6 +6,9 @@ __pycache__/
 .env
 .wrangler/
 
+# Machine-specific notes for agents (read by CLAUDE.md and AGENTS.md).
+USER_PREFERENCE.md
+
 # Local overrides for UI copy (see messages.default.json).
 messages.json
 

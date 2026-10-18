@@ -5,6 +5,14 @@ people of Lara (Venezuela). University assignment (digital journalism). Built wi
 MDX and plain CSS (BEM + design tokens, no Tailwind); it will be hosted on **Cloudflare**
 (Pages or Workers static assets) with the domain bought through Cloudflare Registrar.
 
+## Local preferences
+
+Always read `USER_PREFERENCE.md` at the start of a session when it exists. It is
+git-ignored and holds machine-specific notes (GitHub account, deploys). It wins over this
+file where they disagree.
+
+@USER_PREFERENCE.md
+
 ## Status
 
 The design concept "Conversación" (`.local/design/2-conversacion/`, git-ignored) is
