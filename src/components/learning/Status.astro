@@ -1,0 +1,12 @@
+---
+// "Aplicado" or "Pendiente" chip for the report's working copy; hidden in print.
+interface Props {
+  done: boolean;
+}
+
+const { done } = Astro.props;
+---
+
+<span class:list={["status", done ? "status--done" : "status--pending"]}>
+  {done ? "Aplicado" : "Pendiente"}
+</span>

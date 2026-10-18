@@ -15,5 +15,6 @@
   --z-popover: 20;
   --z-sticky-nav: 40;
   --z-header: 50;
+  --z-tooltip: 60; /* glossary cards, above the sticky header */
   --z-skip-link: 100;
 }

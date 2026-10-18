@@ -1,0 +1,688 @@
+---
+// The SEO report, ready to read, present and print to PDF. Glossary terms show their
+// definition on hover or tap. Private: served under /_learning/, never indexed.
+import Evidence from "../../../components/learning/Evidence.astro";
+import Status from "../../../components/learning/Status.astro";
+import Term from "../../../components/learning/Term.astro";
+import { site } from "../../../config/site";
+import { seoGlossary } from "../../../data/seo-glossary";
+import { reportStories, siteTechniques } from "../../../data/seo-report";
+import Learning from "../../../layouts/Learning.astro";
+import { learningPaths } from "../../../lib/learning";
+
+export const getStaticPaths = learningPaths;
+
+const siteUrl = Astro.site!.href.replace(/\/$/, "");
+const storyUrl = (slug: string) => `${siteUrl}/historias/${slug}/`;
+
+const allChanges = [
+  ...siteTechniques.map((t) => t.done),
+  ...reportStories.flatMap((s) => [
+    s.title.done,
+    s.description.done,
+    ...s.h2.filter((h) => h.before !== h.after).map((h) => h.done),
+    ...s.internalLinks.map((l) => l.done),
+    s.images.done,
+  ]),
+];
+const doneCount = allChanges.filter(Boolean).length;
+
+const glossary = Object.entries(seoGlossary).sort(([, a], [, b]) =>
+  a.term.localeCompare(b.term, "es"),
+);
+
+const toc = [
+  ["introduccion", "1. Introducción"],
+  ["palabras-clave", "2. Selección de palabras clave"],
+  ["tecnicas", "3. Técnicas aplicadas"],
+  ["justificacion", "4. Justificación estratégica"],
+  ["evidencia", "5. Evidencia visual"],
+  ["conclusiones", "6. Conclusiones"],
+  ["referencias", "Referencias"],
+  ["glosario", "Anexo: glosario"],
+];
+---
+
+<Learning
+  title="Informe SEO"
+  description="Informe técnico de optimización SEO On-Page de Lara Cuenta."
+>
+  <header class="report-bar">
+    <a class="report-bar__brand" href="/">
+      <img src="/laracuenta-isotipo.svg" alt="" width="28" height="28" />
+      <span>Aprender · Informe SEO</span>
+    </a>
+    <div class="report-bar__actions">
+      <a class="btn btn--ghost btn--sm" href="../">
+        Volver a la guía
+      </a>
+      <button class="btn btn--sm" type="button" data-print>
+        Guardar PDF
+      </button>
+    </div>
+  </header>
+
+  <div class="report">
+    <nav class="report__toc" aria-label="Contenido del informe">
+      <details open>
+        <summary>Contenido</summary>
+        <ol>
+          {toc.map(([id, label]) => (
+            <li>
+              <a href={`#${id}`}>{label}</a>
+            </li>
+          ))}
+        </ol>
+      </details>
+      <div class="report__progress">
+        <p>
+          <strong>
+            {doneCount} de {allChanges.length}
+          </strong>{" "}
+          acciones aplicadas
+        </p>
+        <p>
+          Las marcas <Status done /> y <Status done={false} /> son de trabajo: no salen al guardar
+          el PDF.
+        </p>
+      </div>
+    </nav>
+
+    <main class="report__doc" id="contenido">
+      <p class="report__hint">
+        Pasa el cursor (o toca) sobre las <span class="term term--sample">palabras subrayadas</span>{" "}
+        para ver su definición.
+      </p>
+
+      {/* ───────────── Portada ───────────── */}
+
+      <section class="cover">
+        <p class="cover__kicker">Informe técnico</p>
+        <h1>Optimización SEO On-Page del blog Lara Cuenta</h1>
+        <p class="cover__subtitle">
+          Palabras clave, técnicas aplicadas y justificación estratégica
+        </p>
+        <dl class="cover__meta">
+          <div>
+            <dt>Autora</dt>
+            <dd>{site.author.name}</dd>
+          </div>
+          <div>
+            <dt>Programa</dt>
+            <dd>
+              Maestría en Innovación Digital, mención Periodismo Digital · Florida Global University
+            </dd>
+          </div>
+          <div>
+            <dt>Asignatura</dt>
+            <dd class="fill">[Nombre de la asignatura]</dd>
+          </div>
+          <div>
+            <dt>Docente</dt>
+            <dd class="fill">[Nombre de la profesora o el profesor]</dd>
+          </div>
+          <div>
+            <dt>Fecha</dt>
+            <dd class="fill">[Fecha de entrega]</dd>
+          </div>
+          <div>
+            <dt>URL del blog</dt>
+            <dd>
+              <a href={siteUrl}>{siteUrl}</a>
+            </dd>
+          </div>
+        </dl>
+      </section>
+
+      {/* ───────────── 1 ───────────── */}
+
+      <section id="introduccion">
+        <h2>1. Introducción</h2>
+        <p>
+          <strong>Lara Cuenta</strong> es un nano-medio digital dedicado a la memoria, el patrimonio
+          y la gente del estado Lara, en Venezuela. Publica crónicas con fotografía propia
+          organizadas en cuatro colecciones: patrimonio y memoria de los lugares, historias de
+          nuestra gente, costumbres y memoria cultural, y Lara antes y ahora.
+        </p>
+        <p>
+          Un contenido de valor solo cumple su función si el público lo encuentra. Por eso, el
+          objetivo de este informe es documentar la optimización para motores de búsqueda (
+          <Term k="seo">SEO</Term>) aplicada al blog, de modo que Google pueda{" "}
+          <Term k="rastreo">rastrearlo</Term>, <Term k="indexacion">indexarlo</Term> y{" "}
+          <Term k="posicionamiento">posicionarlo</Term> de forma orgánica entre las búsquedas de su{" "}
+          <Term k="nicho">nicho</Term>.
+        </p>
+        <p>
+          El trabajo abarca dos niveles: la <strong>configuración general del sitio</strong> y la
+          optimización <Term k="onpage">On-Page</Term> de <strong>tres entradas publicadas</strong>:
+        </p>
+        <ul>
+          {reportStories.map((story) => (
+            <li>
+              <strong>{story.name}</strong> ({story.collection}):{" "}
+              <a href={storyUrl(story.slug)}>{storyUrl(story.slug)}</a>
+            </li>
+          ))}
+        </ul>
+        <p>
+          Una aclaración de método: Lara Cuenta no usa un <Term k="cms">CMS</Term> como WordPress.
+          Es un <Term k="estatico">sitio estático</Term> construido con <Term k="astro">Astro</Term>{" "}
+          y publicado en la red de Cloudflare. Por eso no hay un plugin como Yoast o RankMath: cada
+          optimización se hace y se comprueba directamente en el código, y así se documenta en la
+          evidencia visual.
+        </p>
+      </section>
+
+      {/* ───────────── 2 ───────────── */}
+
+      <section id="palabras-clave">
+        <h2>2. Selección de palabras clave</h2>
+
+        <h3>2.1 Metodología</h3>
+        <p>
+          Las <Term k="keyword">palabras clave</Term> se definieron en cuatro pasos:
+        </p>
+        <ol>
+          <li>
+            <strong>Pensar como el público.</strong> Se anotaron las búsquedas que haría una persona
+            larense, o un migrante con nostalgia de su ciudad, para encontrar cada tema.
+          </li>
+          <li>
+            <strong>Validar con Google.</strong> Se contrastaron con el autocompletar, el bloque
+            «Otras preguntas de los usuarios» y las «Búsquedas relacionadas».
+          </li>
+          <li>
+            <strong>Filtrar por intención.</strong> Se conservaron solo las de{" "}
+            <Term k="intencion">intención</Term> informativa, que es la que un medio de crónica y
+            memoria puede satisfacer.
+          </li>
+          <li>
+            <strong>Elegir por competencia.</strong> Se priorizaron las búsquedas{" "}
+            <Term k="longtail">long-tail</Term>: tienen menos volumen, pero menos competencia y un
+            público que sabe exactamente lo que quiere, condiciones en las que un medio pequeño
+            puede ganar frente a Wikipedia o los grandes diarios.
+          </li>
+        </ol>
+
+        <h3>2.2 Palabras clave del nicho</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Tipo</th>
+                <th scope="col">Palabras clave</th>
+                <th scope="col">Por qué</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Principales</th>
+                <td>historia de Barquisimeto · patrimonio de Lara</td>
+                <td>Resumen el tema del medio y lo sitúan geográficamente.</td>
+              </tr>
+              <tr>
+                <th scope="row">Secundarias</th>
+                <td>
+                  lugares históricos de Barquisimeto · memoria de Lara · crónicas de Barquisimeto
+                </td>
+                <td>Variantes con las que el público describe el mismo interés.</td>
+              </tr>
+              <tr>
+                <th scope="row">Long-tail</th>
+                <td>Una familia por entrada (ver 2.3).</td>
+                <td>Cada historia responde preguntas concretas sobre un lugar.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>2.3 Palabras clave por entrada</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Entrada</th>
+                <th scope="col">Principal</th>
+                <th scope="col">Secundarias (long-tail)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {reportStories.map((story) => (
+                <tr>
+                  <th scope="row">{story.name}</th>
+                  <td>{story.keyword.main}</td>
+                  <td>
+                    <ul class="plain">
+                      {story.keyword.longTail.map((kw) => (
+                        <li>{kw}</li>
+                      ))}
+                    </ul>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p>
+          En los tres casos, la palabra clave principal es el{" "}
+          <strong>nombre propio del lugar</strong>, tal como lo escribe la gente, y las long-tail
+          son las preguntas que cada crónica ya responde: cuándo se construyó, quién lo diseñó, qué
+          se vive allí. Así, la optimización no obliga a cambiar el texto periodístico: solo hace
+          visible para el buscador lo que el contenido ya ofrece.
+        </p>
+      </section>
+
+      {/* ───────────── 3 ───────────── */}
+
+      <section id="tecnicas">
+        <h2>3. Técnicas aplicadas</h2>
+
+        <h3>3.1 Configuración general del sitio</h3>
+        <dl class="techniques">
+          <div>
+            <dt>
+              <Term k="dominio">Dominio propio</Term> <Status done={siteTechniques[0].done} />
+            </dt>
+            <dd>
+              Migración de la dirección gratuita <code>laracuenta.marilouzz.workers.dev</code> a un
+              dominio propio, registrado en Cloudflare. Da identidad de medio, inspira confianza en
+              la página de resultados y conserva a nombre del blog todo el valor que gane en el
+              buscador.
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <Term k="https">HTTPS</Term> <Status done={siteTechniques[1].done} />
+            </dt>
+            <dd>Todo el sitio se sirve cifrado, con certificado gestionado por Cloudflare.</dd>
+          </div>
+          <div>
+            <dt>
+              <Term k="sitemap">Sitemap XML</Term> <Status done={siteTechniques[2].done} />
+            </dt>
+            <dd>
+              Se genera en cada publicación (<code>/sitemap-index.xml</code>) e incluye todas las
+              páginas públicas. Las páginas privadas de estudio se excluyen y llevan{" "}
+              <Term k="noindex">noindex</Term>.
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <Term k="robots">robots.txt</Term> <Status done={siteTechniques[3].done} />
+            </dt>
+            <dd>Permite el rastreo de todo el sitio público e indica la ubicación del sitemap.</dd>
+          </div>
+          <div>
+            <dt>
+              <Term k="searchconsole">Google Search Console</Term>{" "}
+              <Status done={siteTechniques[4].done} />
+            </dt>
+            <dd>
+              Verificación del dominio, envío del sitemap y solicitud de indexación de las tres
+              entradas. Permite comprobar qué páginas están indexadas y con qué búsquedas aparecen.
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <Term k="canonical">URL canónica</Term> <Status done={siteTechniques[5].done} />
+            </dt>
+            <dd>Cada página declara su dirección oficial para evitar contenido duplicado.</dd>
+          </div>
+          <div>
+            <dt>
+              <Term k="opengraph">Open Graph</Term> <Status done={siteTechniques[6].done} />
+            </dt>
+            <dd>
+              Cada historia tiene título, descripción e imagen de vista previa propios (1200 × 630
+              px) para cuando se comparte en WhatsApp, Instagram o X.
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <Term k="responsive">Diseño responsive</Term> e idioma{" "}
+              <Status done={siteTechniques[7].done} />
+            </dt>
+            <dd>
+              El diseño se adapta del móvil al escritorio, y el código declara el idioma (
+              <code>lang="es"</code>), de modo que Google sirve el sitio al público hispanohablante.
+            </dd>
+          </div>
+          <div>
+            <dt>
+              Rendimiento <Status done={siteTechniques[8].done} />
+            </dt>
+            <dd>
+              Las páginas se sirven ya generadas desde la <Term k="cdn">CDN</Term> de Cloudflare.
+              Las fotos se convierten a <Term k="webp">WebP</Term>, se entregan en varios tamaños
+              según la pantalla y usan <Term k="lazy">carga diferida</Term>. Esto favorece las{" "}
+              <Term k="cwv">Core Web Vitals</Term>.
+            </dd>
+          </div>
+          <div>
+            <dt>
+              Autoría y fuentes (<Term k="eeat">E-E-A-T</Term>){" "}
+              <Status done={siteTechniques[9].done} />
+            </dt>
+            <dd>
+              Cada historia muestra a su autora, con una página propia de credenciales, y cierra con
+              las fuentes consultadas. Las fotografías son originales.
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <Term k="datosestructurados">Datos estructurados</Term>{" "}
+              <Status done={siteTechniques[10].done} />
+            </dt>
+            <dd>
+              Marcado <code>Article</code> en JSON-LD con título, autora, fecha e imagen de cada
+              historia.
+            </dd>
+          </div>
+        </dl>
+
+        <h3>3.2 Optimización de las tres entradas</h3>
+        <p>
+          A cada entrada se le aplicó la misma lista de comprobación. El titular visible (
+          <Term k="encabezados">H1</Term>) se conserva como titular periodístico; la palabra clave
+          se lleva al <Term k="metatitle">meta title</Term>, que es el que lee Google y no tiene por
+          qué coincidir con el titular.
+        </p>
+
+        {reportStories.map((story, index) => (
+          <article class="story-card">
+            <h4>
+              3.2.{index + 1} {story.name}
+              <span class="story-card__kw">Palabra clave: {story.keyword.main}</span>
+            </h4>
+            <dl class="story-card__rows">
+              <div>
+                <dt>
+                  <Term k="slug">Slug</Term>
+                </dt>
+                <dd>
+                  <code>/historias/{story.slug}/</code> · corto, en minúsculas, con guiones y la
+                  palabra clave. Se conserva para no perder enlaces.
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  Meta title <Status done={story.title.done} />
+                </dt>
+                <dd>
+                  <p class="before">
+                    Antes ({story.title.before.length} caracteres): {story.title.before}
+                  </p>
+                  <p class="after">
+                    Ahora ({story.title.after.length} caracteres): {story.title.after}
+                  </p>
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <Term k="metadescription">Meta description</Term>{" "}
+                  <Status done={story.description.done} />
+                </dt>
+                <dd>
+                  <p class="before">
+                    Antes ({story.description.before.length} caracteres): {story.description.before}
+                  </p>
+                  <p class="after">
+                    Ahora ({story.description.after.length} caracteres): {story.description.after}
+                  </p>
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  Encabezados <Status done={story.h2.every((h) => h.done)} />
+                </dt>
+                <dd>
+                  <p>
+                    <span class="tag-h">H1</span> {story.h1} <em>(uno solo, sin cambios)</em>
+                  </p>
+                  {story.h2.map((h) => (
+                    <p>
+                      <span class="tag-h">H2</span>{" "}
+                      {h.before === h.after ? (
+                        <>{h.after}</>
+                      ) : (
+                        <>
+                          <s>{h.before}</s> → {h.after}
+                        </>
+                      )}
+                    </p>
+                  ))}
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <Term k="interno">Enlaces internos</Term>{" "}
+                  <Status done={story.internalLinks.every((l) => l.done)} />
+                </dt>
+                <dd>
+                  {story.internalLinks.map((link) => (
+                    <p>
+                      Hacia <strong>{link.to}</strong>, con el <Term k="anchor">texto</Term> «
+                      {link.anchor}».
+                    </p>
+                  ))}
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <Term k="externo">Enlaces externos</Term> <Status done />
+                </dt>
+                <dd>
+                  {story.externalSources} fuentes citadas al final (diarios, archivos,
+                  instituciones), que respaldan los datos históricos.
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  Imágenes <Status done={story.images.done} />
+                </dt>
+                <dd>
+                  {story.images.files} fotografías, todas con <Term k="alt">texto alternativo</Term>{" "}
+                  descriptivo, en WebP y con carga diferida. La variante más pesada pesaba{" "}
+                  {story.images.heaviest}; se recomprimen para que ninguna supere los 300 KB.
+                </dd>
+              </div>
+            </dl>
+          </article>
+        ))}
+      </section>
+
+      {/* ───────────── 4 ───────────── */}
+
+      <section id="justificacion">
+        <h2>4. Justificación estratégica</h2>
+        <p>
+          Según la documentación de Google Search Central, el buscador trabaja en tres etapas:{" "}
+          <strong>rastreo</strong>, <strong>indexación</strong> y{" "}
+          <strong>publicación de resultados</strong>. Cada técnica aplicada actúa sobre una de
+          ellas.
+        </p>
+
+        <h3>4.1 Que Google encuentre las páginas (rastreo)</h3>
+        <p>
+          <Term k="googlebot">Googlebot</Term> descubre páginas siguiendo enlaces y leyendo
+          sitemaps. El <strong>sitemap</strong> le entrega la lista completa de historias;{" "}
+          <strong>Search Console</strong> le avisa de que existen y permite pedir su indexación; y
+          los <strong>enlaces internos</strong> entre crónicas crean caminos para que ninguna quede
+          aislada. El <strong>robots.txt</strong> confirma que el sitio público se puede rastrear.
+        </p>
+
+        <h3>4.2 Que Google entienda de qué tratan (indexación)</h3>
+        <p>
+          Al indexar, Google analiza el texto y el código. El <strong>meta title</strong> y el{" "}
+          <strong>H1</strong> son las señales más fuertes del tema; los <strong>H2</strong>{" "}
+          describen cada apartado; el <strong>slug</strong> y el <strong>texto alternativo</strong>{" "}
+          de las imágenes refuerzan la palabra clave, y este último permite además que las fotos
+          aparezcan en Google Imágenes. La <Term k="canonical">URL canónica</Term> evita que se
+          cuenten versiones duplicadas y la declaración del idioma orienta la página al público
+          correcto.
+        </p>
+
+        <h3>4.3 Que Google las prefiera (posicionamiento)</h3>
+        <ul>
+          <li>
+            <strong>Relevancia.</strong> Usar las palabras que el público escribe, sin{" "}
+            <Term k="stuffing">repetirlas a la fuerza</Term>, alinea la página con la búsqueda. Las
+            long-tail permiten competir donde un medio pequeño tiene opciones reales.
+          </li>
+          <li>
+            <strong>Calidad y confianza.</strong> Google valora el contenido según criterios de{" "}
+            <Term k="eeat">E-E-A-T</Term>. La autoría visible, la fotografía propia y las fuentes
+            citadas mediante enlaces externos demuestran experiencia y rigor.
+          </li>
+          <li>
+            <strong>Experiencia de uso.</strong> Las <Term k="cwv">Core Web Vitals</Term> forman
+            parte de las señales de experiencia de página. Un sitio estático, imágenes livianas y un
+            diseño adaptado al móvil reducen el tiempo de carga y el abandono, sobre todo en las
+            conexiones lentas habituales en Venezuela.
+          </li>
+          <li>
+            <strong>Clics.</strong> Un meta title con la palabra clave al inicio y una meta
+            description atractiva aumentan el <Term k="ctr">CTR</Term> en la{" "}
+            <Term k="serp">página de resultados</Term>. Más clics significan más lectores, aunque la
+            descripción no sea por sí misma un factor de ranking.
+          </li>
+        </ul>
+        <p>
+          En conjunto, estas técnicas no buscan engañar al algoritmo, sino lo contrario: hacer que
+          la calidad periodística del blog sea legible para la máquina, que es lo que Google
+          recomienda en su guía de introducción al SEO.
+        </p>
+      </section>
+
+      {/* ───────────── 5 ───────────── */}
+
+      <section id="evidencia">
+        <h2>5. Evidencia visual</h2>
+        <p>
+          Como el sitio no tiene panel de administración, la evidencia muestra el código fuente
+          publicado, los archivos de contenido y las herramientas de Google. Todo puede verificarse
+          en <a href={siteUrl}>{siteUrl}</a>.
+        </p>
+        <Evidence
+          number={1}
+          caption="Código fuente de la entrada del Obelisco: meta title, meta description y URL canónica."
+          how="Abre la entrada, clic derecho → «Ver código fuente de la página» (Ctrl+U o ⌥⌘U). Captura las primeras líneas del <head>."
+        />
+        <Evidence
+          number={2}
+          caption="Frontmatter del archivo MDX de una entrada: título, descripción y texto alternativo de la portada."
+          how="Abre src/content/stories/el-obelisco-larense/index.mdx en el editor y captura el bloque inicial."
+        />
+        <Evidence
+          number={3}
+          caption="Texto alternativo de las imágenes dentro de una entrada."
+          how="En el mismo archivo, captura dos o tres imágenes con su descripción entre corchetes."
+        />
+        <Evidence
+          number={4}
+          caption="Estructura de encabezados (H1 y H2) de una entrada."
+          how="Instala la extensión gratuita «HeadingsMap» en Chrome, abre una entrada y captura su panel."
+        />
+        <Evidence
+          number={5}
+          caption="Sitemap XML generado automáticamente."
+          how="Abre /sitemap-0.xml en el navegador y captura la lista de URLs."
+        />
+        <Evidence
+          number={6}
+          caption="Google Search Console: sitemap enviado y procesado."
+          how="Search Console → Sitemaps. Captura la fila con el estado «Correcto»."
+        />
+        <Evidence
+          number={7}
+          caption="Google Search Console: páginas indexadas."
+          how="Search Console → Páginas. Captura el gráfico de páginas indexadas."
+        />
+        <Evidence
+          number={8}
+          caption="PageSpeed Insights: puntuaciones de rendimiento y SEO de una entrada (móvil)."
+          how="Entra en pagespeed.web.dev, analiza la URL de una entrada y captura las cuatro notas."
+        />
+      </section>
+
+      {/* ───────────── 6 ───────────── */}
+
+      <section id="conclusiones">
+        <h2>6. Conclusiones</h2>
+        <p>
+          La optimización aplicada a Lara Cuenta combina una base técnica sólida, presente desde el
+          diseño del sitio, con ajustes concretos en cada entrada. El hallazgo principal fue que los
+          titulares periodísticos, aunque atractivos, no siempre contenían el nombre del lugar que
+          la gente busca. Separar el titular visible del meta title resolvió esa tensión sin
+          sacrificar la voz editorial.
+        </p>
+        <p>
+          El SEO es un proceso continuo. Los próximos pasos son medir en Search Console qué
+          búsquedas traen lectores, ajustar las palabras clave según esos datos y aplicar la misma
+          lista de comprobación a cada nueva publicación.
+        </p>
+      </section>
+
+      {/* ───────────── Referencias ───────────── */}
+
+      <section id="referencias">
+        <h2>Referencias</h2>
+        <ul class="references">
+          <li>
+            Google Search Central. <em>Guía detallada sobre cómo funciona la Búsqueda de Google</em>
+            . https://developers.google.com/search/docs/fundamentals/how-search-works
+          </li>
+          <li>
+            Google Search Central.{" "}
+            <em>Guía de optimización para buscadores (SEO) para principiantes</em>.
+            https://developers.google.com/search/docs/fundamentals/seo-starter-guide
+          </li>
+          <li>
+            Google Search Central.{" "}
+            <em>Enlaces de título en los resultados de la Búsqueda de Google</em>.
+            https://developers.google.com/search/docs/appearance/title-link
+          </li>
+          <li>
+            Google Search Central.{" "}
+            <em>Cómo controlar los fragmentos en los resultados de búsqueda</em>.
+            https://developers.google.com/search/docs/appearance/snippet
+          </li>
+          <li>
+            Google Search Central. <em>Prácticas recomendadas de SEO para Google Imágenes</em>.
+            https://developers.google.com/search/docs/appearance/google-images
+          </li>
+          <li>
+            Google Search Central. <em>Información sobre los sitemaps</em>.
+            https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview
+          </li>
+          <li>
+            Google Search Central. <em>Crear contenido útil, fiable y centrado en las personas</em>.
+            https://developers.google.com/search/docs/fundamentals/creating-helpful-content
+          </li>
+          <li>
+            web.dev. <em>Métricas web esenciales (Core Web Vitals)</em>.
+            https://web.dev/articles/vitals
+          </li>
+        </ul>
+      </section>
+
+      {/* ───────────── Glosario ───────────── */}
+
+      <section id="glosario" class="glossary">
+        <h2>Anexo: glosario</h2>
+        <dl>
+          {glossary.map(([key, entry]) => (
+            <div>
+              <dt>{entry.term}</dt>
+              <dd id={`glosario-${key}`}>{entry.definition}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    </main>
+  </div>
+</Learning>
+
+<script>
+  document.querySelector("[data-print]")?.addEventListener("click", () => print());
+</script>
