@@ -6,6 +6,7 @@ import SiteHeader from "../components/SiteHeader.astro";
 import SvgDefs from "../components/SvgDefs.astro";
 import { site, type NavId } from "../config/site";
 import { strings } from "../config/strings";
+import { websiteData } from "../lib/structured-data";
 
 interface Props {
   /** Page title; the site name is appended. Omit on the home page. */
@@ -18,6 +19,8 @@ interface Props {
   imageAlt?: string;
   /** Open Graph type: "article" for stories. */
   type?: "website" | "article";
+  /** schema.org JSON-LD for the page; defaults to the WebSite description. */
+  structuredData?: object;
 }
 
 const {
@@ -27,12 +30,14 @@ const {
   image,
   imageAlt,
   type = "website",
+  structuredData,
 } = Astro.props;
 const fullTitle = title ? `${title} | ${site.name}` : site.title;
 
 // social networks need absolute URLs
 const ogImageUrl = new URL(image ?? "/og.jpg", Astro.site).href;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const jsonLd = JSON.stringify(structuredData ?? websiteData(Astro.site!));
 ---
 
 <!doctype html>
@@ -55,6 +60,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={imageAlt ?? site.title} />
     <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline type="application/ld+json" set:html={jsonLd} />
     <link rel="icon" href="/laracuenta-isotipo.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

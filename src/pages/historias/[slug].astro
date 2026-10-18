@@ -8,6 +8,7 @@ import Comments from "../../components/Comments.astro";
 import PhotoZoom from "../../components/PhotoZoom.astro";
 import Share from "../../components/Share.astro";
 import { mdxComponents } from "../../components/mdx";
+import { articleData } from "../../lib/structured-data";
 import { getStories, type Story } from "../../lib/stories";
 
 export async function getStaticPaths() {
@@ -25,11 +26,12 @@ const { Content } = await render(story);
 
 <Base
   current="archive"
-  title={story.data.title}
+  title={story.data.seoTitle ?? story.data.title}
   description={story.data.description}
   image={`/og/${story.id}.jpg`}
   imageAlt={story.data.coverAlt}
   type="article"
+  structuredData={articleData(story, Astro.site!)}
 >
   <article class:list={["article", `col-${story.data.collection}`]}>
     <ArticleHeader story={story} />

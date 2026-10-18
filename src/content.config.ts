@@ -9,6 +9,9 @@ const stories = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      /** Search-result title (<title>), when the headline lacks the keyword. The site
+          name is appended; keep the whole thing under ~60 characters. */
+      seoTitle: z.string().optional(),
       /** Card excerpt and meta description. */
       description: z.string(),
       /** Serif lead under the title. */

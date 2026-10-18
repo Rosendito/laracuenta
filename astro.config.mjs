@@ -15,6 +15,13 @@ export default defineConfig({
     sitemap({ filter: (page) => !page.includes("/_learning/") }),
   ],
   devToolbar: { enabled: false },
+  // WebP at quality 72 keeps the 1400 px photos under ~300 KB with no visible loss
+  image: {
+    service: {
+      entrypoint: "astro/assets/services/sharp",
+      config: { webp: { quality: 72, effort: 6, smartSubsample: true } },
+    },
+  },
   markdown: { processor: satteri({ mdastPlugins: [unwrapImages] }) },
   vite: {
     css: {
