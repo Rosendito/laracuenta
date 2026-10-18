@@ -234,12 +234,6 @@
   margin: 0;
 }
 
-/* fields she still has to fill in */
-.fill {
-  color: var(--color-sun);
-  font-style: italic;
-}
-
 /* tables */
 .table-wrap {
   overflow-x: auto;
@@ -524,10 +518,6 @@
 
   .cover__meta {
     border-top-color: var(--color-line);
-  }
-
-  .fill {
-    color: var(--color-wrong);
   }
 
   .term {

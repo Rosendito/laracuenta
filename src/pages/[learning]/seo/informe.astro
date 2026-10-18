@@ -115,15 +115,15 @@ const toc = [
           </div>
           <div>
             <dt>Asignatura</dt>
-            <dd class="fill">[Nombre de la asignatura]</dd>
+            <dd>Medios Digitales I: Principios y prácticas del diseño</dd>
           </div>
           <div>
             <dt>Docente</dt>
-            <dd class="fill">[Nombre de la profesora o el profesor]</dd>
+            <dd>Jorge Marchena</dd>
           </div>
           <div>
             <dt>Fecha</dt>
-            <dd class="fill">[Fecha de entrega]</dd>
+            <dd>18 de octubre de 2026</dd>
           </div>
           <div>
             <dt>URL del blog</dt>
@@ -374,8 +374,8 @@ const toc = [
               <Status done={siteTechniques[10].done} />
             </dt>
             <dd>
-              Marcado <code>Article</code> en JSON-LD con título, autora, fecha e imagen de cada
-              historia.
+              Marcado <code>NewsArticle</code> en JSON-LD con título, autora, fecha e imagen de cada
+              historia, y <code>WebSite</code> con los datos del medio en el resto de páginas.
             </dd>
           </div>
         </dl>
@@ -483,7 +483,8 @@ const toc = [
                 <dd>
                   {story.images.files} fotografías, todas con <Term k="alt">texto alternativo</Term>{" "}
                   descriptivo, en WebP y con carga diferida. La variante más pesada pesaba{" "}
-                  {story.images.heaviest}; se recomprimen para que ninguna supere los 300 KB.
+                  {story.images.heaviest}; tras recomprimirlas (WebP, calidad 72) pesa{" "}
+                  {story.images.heaviestAfter}, por debajo del objetivo de 300 KB.
                 </dd>
               </div>
             </dl>
