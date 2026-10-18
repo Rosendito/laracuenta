@@ -1,0 +1,62 @@
+---
+// A multiple-choice question. A wrong pick shows its hint and leaves the others open,
+// so the reader keeps trying (retrieval practice); the right pick shows the slot.
+interface Option {
+  text: string;
+  /** Shown when this wrong option is picked. */
+  hint?: string;
+  correct?: boolean;
+}
+
+interface Props {
+  question: string;
+  options: Option[];
+}
+
+const { question, options } = Astro.props;
+---
+
+<div class="activity choice" data-choice>
+  <p class="activity__prompt">{question}</p>
+  <div class="choice__options">
+    {options.map((option) => (
+      <button
+        class="choice__option"
+        type="button"
+        data-correct={option.correct ? "" : undefined}
+        data-hint={option.hint}
+      >
+        {option.text}
+      </button>
+    ))}
+  </div>
+  <p class="activity__feedback" aria-live="polite" data-choice-feedback></p>
+  <div class="activity__answer" hidden data-choice-answer>
+    <slot />
+  </div>
+</div>
+
+<script>
+  for (const choice of document.querySelectorAll<HTMLElement>("[data-choice]")) {
+    const feedback = choice.querySelector<HTMLElement>("[data-choice-feedback]")!;
+    const answer = choice.querySelector<HTMLElement>("[data-choice-answer]")!;
+    const options = [...choice.querySelectorAll<HTMLButtonElement>(".choice__option")];
+
+    for (const option of options) {
+      option.addEventListener("click", () => {
+        if (option.hasAttribute("data-correct")) {
+          option.classList.add("is-right");
+          options.forEach((o) => (o.disabled = true));
+          feedback.textContent = "¡Correcto!";
+          feedback.dataset.state = "right";
+          answer.hidden = false;
+        } else {
+          option.classList.add("is-wrong");
+          option.disabled = true;
+          feedback.textContent = option.dataset.hint ?? "No es esa. Prueba otra vez.";
+          feedback.dataset.state = "wrong";
+        }
+      });
+    }
+  }
+</script>

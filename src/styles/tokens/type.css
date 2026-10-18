@@ -2,6 +2,8 @@
 :root {
   --font-serif: "DM Serif Display", Georgia, serif;
   --font-sans: "Montserrat", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; /* code samples */
+  --font-serp: Arial, Helvetica, sans-serif; /* mock Google results */
 
   /* fluid scale */
   --text-sm: clamp(0.8rem, 0.76rem + 0.2vw, 0.875rem);

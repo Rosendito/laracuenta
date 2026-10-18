@@ -1,0 +1,29 @@
+---
+// A hidden answer behind a button: think first, then look.
+interface Props {
+  label?: string;
+}
+
+const { label = "Ver respuesta" } = Astro.props;
+---
+
+<div class="reveal" data-reveal>
+  <button class="btn btn--ghost btn--sm" type="button" aria-expanded="false">
+    {label}
+  </button>
+  <div class="reveal__body" hidden>
+    <slot />
+  </div>
+</div>
+
+<script>
+  for (const reveal of document.querySelectorAll<HTMLElement>("[data-reveal]")) {
+    const button = reveal.querySelector("button")!;
+    const body = reveal.querySelector<HTMLElement>(".reveal__body")!;
+    button.addEventListener("click", () => {
+      const open = body.hidden;
+      body.hidden = !open;
+      button.setAttribute("aria-expanded", String(open));
+    });
+  }
+</script>

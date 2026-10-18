@@ -39,6 +39,15 @@
   --col-costumbres-hue: var(--color-brown);
   --col-costumbres-deep: #54331c;
 
+  /* study pages (/_learning/): answer feedback and the mock Google result */
+  --color-right: #2f6a32; /* 6.2:1 on page */
+  --color-right-tint: color-mix(in srgb, var(--color-right) 12%, var(--color-page));
+  --color-wrong: #a3352a; /* 5.9:1 on page */
+  --color-wrong-tint: color-mix(in srgb, var(--color-wrong) 12%, var(--color-page));
+  --color-serp-title: #1a0dab;
+  --color-serp-text: #474747;
+  --color-serp-url: #202124;
+
   /* translucent night (45 26 15) */
   --color-night-a0: rgba(45, 26, 15, 0);
   --color-night-a05: rgba(45, 26, 15, 0.05);

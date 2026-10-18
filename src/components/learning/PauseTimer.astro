@@ -1,0 +1,48 @@
+---
+// A break countdown.
+interface Props {
+  minutes: number;
+}
+
+const { minutes } = Astro.props;
+const clock = `${minutes}:00`;
+---
+
+<div class="timer" data-timer={minutes * 60}>
+  <p class="timer__clock" data-timer-clock>
+    {clock}
+  </p>
+  <button class="btn btn--sun" type="button" data-timer-start>
+    Empezar la pausa
+  </button>
+  <p class="timer__done" aria-live="polite" data-timer-done></p>
+</div>
+
+<script>
+  const format = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+
+  for (const timer of document.querySelectorAll<HTMLElement>("[data-timer]")) {
+    const total = Number(timer.dataset.timer);
+    const clock = timer.querySelector<HTMLElement>("[data-timer-clock]")!;
+    const start = timer.querySelector<HTMLButtonElement>("[data-timer-start]")!;
+    const done = timer.querySelector<HTMLElement>("[data-timer-done]")!;
+
+    start.addEventListener("click", () => {
+      const end = Date.now() + total * 1000;
+      start.disabled = true;
+      done.textContent = "";
+      const tick = () => {
+        const left = Math.max(0, Math.round((end - Date.now()) / 1000));
+        clock.textContent = format(left);
+        if (left > 0) {
+          setTimeout(tick, 1000);
+        } else {
+          done.textContent = "Listo. Vuelve cuando quieras y sigamos.";
+          start.disabled = false;
+          start.textContent = "Otra pausa";
+        }
+      };
+      tick();
+    });
+  }
+</script>

@@ -1,0 +1,852 @@
+---
+// Study deck: basic SEO, about one hour, built around the site's own stories.
+// Private: served under /_learning/ and never indexed (see src/lib/learning.ts).
+import { Image } from "astro:assets";
+
+import Choice from "../../../components/learning/Choice.astro";
+import Deck from "../../../components/learning/Deck.astro";
+import Flashcard from "../../../components/learning/Flashcard.astro";
+import OrderQuiz from "../../../components/learning/OrderQuiz.astro";
+import PauseTimer from "../../../components/learning/PauseTimer.astro";
+import Practice from "../../../components/learning/Practice.astro";
+import Reveal from "../../../components/learning/Reveal.astro";
+import Serp from "../../../components/learning/Serp.astro";
+import Slide from "../../../components/learning/Slide.astro";
+import Spot from "../../../components/learning/Spot.astro";
+import SpotGame from "../../../components/learning/SpotGame.astro";
+import icecream from "../../../content/stories/el-obelisco-larense/carro-de-helados.webp";
+import Learning from "../../../layouts/Learning.astro";
+import { learningPaths } from "../../../lib/learning";
+
+export const getStaticPaths = learningPaths;
+
+const part = {
+  intro: "Bienvenida · 2 min",
+  m1: "1 · Cómo te encuentra Google · 10 min",
+  m2: "2 · Palabras clave · 12 min",
+  pause: "Pausa · 5 min",
+  m3: "3 · SEO en cada artículo · 18 min",
+  m4: "4 · El informe · 8 min",
+  end: "Cierre · 2 min",
+};
+
+const headCode = `<title>74 años de historias en el Obelisco larense | Lara Cuenta</title>
+<meta name="description" content="El monumento que celebró los 400 años
+  de Barquisimeto sigue siendo un punto de encuentro…">`;
+
+const headingsCode = `H1  74 años de historias en el Obelisco larense
+ H2  Una obra de 45 días
+ H2  Memorias desde el mirador
+ H2  Lo que se vive alrededor`;
+
+const altCode = `![El Obelisco visto desde abajo, con la inscripción
+1552 · 1952 y la escultura roja en la base.](./img-8847.webp)`;
+---
+
+<Learning title="SEO básico" description="Guía de estudio: SEO básico para Lara Cuenta.">
+  <Deck id="seo" label="Aprender · SEO">
+    {/* ───────────── Bienvenida ───────────── */}
+
+    <Slide
+      part={part.intro}
+      variant="cover"
+      kicker="Guía de estudio"
+      title="SEO básico para Lara Cuenta"
+    >
+      <p class="slide__lead">
+        Lo justo para que Google encuentre tus historias, y para que puedas explicar por qué.
+      </p>
+      <ul class="meta-row">
+        <li>Unos 55 minutos</li>
+        <li>4 módulos cortos</li>
+        <li>Una pausa a mitad de camino</li>
+      </ul>
+      <p class="slide__hint">
+        Avanza con las flechas del teclado, deslizando en el celular o con el botón de abajo.
+      </p>
+    </Slide>
+
+    <Slide part={part.intro} title="Cómo funciona esta guía">
+      <ol class="loop">
+        <li>
+          <strong>Pregunta.</strong> Antes de explicar algo, te pregunto. Responde aunque no sepas.
+        </li>
+        <li>
+          <strong>Idea.</strong> Una sola idea por pantalla, con un ejemplo.
+        </li>
+        <li>
+          <strong>Tu sitio.</strong> Los ejemplos salen de Lara Cuenta, no de un blog inventado.
+        </li>
+        <li>
+          <strong>Practica.</strong> Escribes tú. Lo que escribas se guarda en este navegador.
+        </li>
+        <li>
+          <strong>Pausa.</strong> Descansar también es parte de aprender.
+        </li>
+      </ol>
+      <p class="note">
+        Equivocarte en las preguntas está bien: intentar recordar, aunque falles, fija más que
+        releer.
+      </p>
+    </Slide>
+
+    <Slide part={part.intro} variant="hook" kicker="Pregunta" title="¿Qué es el SEO?">
+      <p>
+        Imagina que alguien escribe en Google <q>obelisco de Barquisimeto</q>. Salen diez
+        resultados. ¿Por qué esos y no otros?
+      </p>
+      <Practice id="why-results" label="Tu respuesta, en una línea" />
+      <Reveal label="Ver la idea">
+        <p>
+          <strong>SEO</strong> (<em>Search Engine Optimization</em>, optimización para motores de
+          búsqueda) es el trabajo de hacer que Google <strong>entienda</strong> tu página y la
+          considere <strong>la mejor respuesta</strong> para lo que alguien busca.
+        </p>
+        <p>
+          Hablamos de resultados <strong>orgánicos</strong>: los que no se pagan. Los anuncios son
+          otra cosa.
+        </p>
+      </Reveal>
+    </Slide>
+
+    {/* ───────────── Módulo 1 ───────────── */}
+
+    <Slide
+      part={part.m1}
+      variant="hook"
+      kicker="Pregunta"
+      title="¿Google lee tu blog cuando alguien busca?"
+    >
+      <Choice
+        question="Alguien busca «historia del estadio de Barquisimeto». En ese segundo, Google…"
+        options={[
+          {
+            text: "…entra a todas las páginas del mundo y las lee.",
+            hint: "Imposible en medio segundo: hay miles de millones de páginas. Piensa en una biblioteca.",
+          },
+          { text: "…busca en un índice que armó antes.", correct: true },
+          {
+            text: "…le pregunta a los dueños de los blogs.",
+            hint: "No: nadie le contesta a Google. Él hace el trabajo por su cuenta, y con antelación.",
+          },
+        ]}
+      >
+        <p>
+          Google ya visitó tu página antes, la leyó y la guardó. Cuando alguien busca, solo consulta
+          lo que guardó.
+        </p>
+      </Choice>
+    </Slide>
+
+    <Slide part={part.m1} title="Tres pasos: rastrear, indexar, posicionar">
+      <ol class="steps">
+        <li class="steps__item">
+          <span class="steps__num">1</span>
+          <h3>Rastrear</h3>
+          <p>
+            Un programa de Google (<em>Googlebot</em>) visita páginas y salta de enlace en enlace
+            para descubrir otras nuevas.
+          </p>
+          <p class="steps__analogy">
+            El bibliotecario recorre las librerías buscando libros nuevos.
+          </p>
+        </li>
+        <li class="steps__item">
+          <span class="steps__num">2</span>
+          <h3>Indexar</h3>
+          <p>Lee cada página, entiende de qué trata y la guarda en su gran índice.</p>
+          <p class="steps__analogy">Cataloga el libro y lo pone en su estante.</p>
+        </li>
+        <li class="steps__item">
+          <span class="steps__num">3</span>
+          <h3>Posicionar</h3>
+          <p>Cuando alguien busca, ordena las páginas guardadas de la más útil a la menos útil.</p>
+          <p class="steps__analogy">Te recomienda el mejor libro para tu pregunta.</p>
+        </li>
+      </ol>
+      <p class="note">
+        Si una página falla en el paso 1 o 2, no existe para Google, por muy buena que sea.
+      </p>
+    </Slide>
+
+    <Slide part={part.m1} title="Cómo le facilitamos el trabajo a Google">
+      <dl class="cards">
+        <div class="cards__item">
+          <dt>Sitemap</dt>
+          <dd>
+            Una lista con todas las páginas del sitio. Es el índice del libro: Google no tiene que
+            adivinar qué existe. Lara Cuenta ya genera el suyo solo.
+          </dd>
+        </div>
+        <div class="cards__item">
+          <dt>Google Search Console</dt>
+          <dd>
+            La ventanilla gratuita para hablar con Google: le entregas el sitemap, ves qué páginas
+            indexó y con qué búsquedas te encuentran.
+          </dd>
+        </div>
+        <div class="cards__item">
+          <dt>Un dominio propio</dt>
+          <dd>
+            Hoy el sitio vive en <code>laracuenta.marilouzz.workers.dev</code>, una dirección
+            prestada. Con <code>laracuenta.com</code> el sitio se ve como un medio, y todo lo que
+            gane en Google queda a su nombre.
+          </dd>
+        </div>
+      </dl>
+    </Slide>
+
+    <Slide part={part.m1} kicker="Comprueba" title="Ordena los pasos">
+      <OrderQuiz
+        question="Toca los pasos en el orden en que ocurren."
+        items={["Rastrear", "Indexar", "Posicionar"]}
+        shown={[2, 0, 1]}
+      >
+        <p>
+          Primero Google <strong>descubre</strong> la página, luego la <strong>guarda</strong> y
+          solo entonces puede <strong>mostrarla</strong> cuando alguien busca.
+        </p>
+      </OrderQuiz>
+    </Slide>
+
+    <Slide part={part.m1} kicker="Comprueba" title="Una historia nueva">
+      <Choice
+        question="Publicas una historia hoy. ¿Qué ayuda más a que Google la descubra pronto?"
+        options={[
+          {
+            text: "Cambiar los colores del sitio.",
+            hint: "Google no ve los colores como pistas. Piensa en cómo descubre páginas nuevas (paso 1).",
+          },
+          {
+            text: "Que esté en el sitemap y enlazada desde otras historias.",
+            correct: true,
+          },
+          {
+            text: "Ponerle más fotos.",
+            hint: "Las fotos ayudan al lector, pero no le avisan a Google que la página existe.",
+          },
+        ]}
+      >
+        <p>
+          El sitemap le dice a Google que la página existe, y los enlaces son los caminos por los
+          que Googlebot llega a ella.
+        </p>
+      </Choice>
+    </Slide>
+
+    {/* ───────────── Módulo 2 ───────────── */}
+
+    <Slide part={part.m2} variant="hook" kicker="Pregunta" title="¿Qué escribiría tu tía?">
+      <p>
+        Tu tía quiere saber más del Obelisco. Abre Google en el celular. ¿Qué escribe exactamente?
+        Anota tres búsquedas posibles, tal como las escribiría ella.
+      </p>
+      <Practice id="aunt" label="Tres búsquedas, una por línea" rows={3} />
+      <Reveal label="¿Qué acabas de escribir?">
+        <p>
+          Eso son <strong>palabras clave</strong> (<em>keywords</em>): las palabras que la gente
+          escribe de verdad en el buscador. El SEO empieza por saber cuáles son, y usarlas en tu
+          página.
+        </p>
+      </Reveal>
+    </Slide>
+
+    <Slide part={part.m2} title="Principal y long-tail">
+      <div class="compare">
+        <div class="compare__item">
+          <p class="compare__label">Palabra clave principal</p>
+          <p class="compare__example">obelisco de Barquisimeto</p>
+          <ul>
+            <li>Corta, 2 o 3 palabras.</li>
+            <li>La busca mucha gente.</li>
+            <li>Compites con Wikipedia, la Alcaldía, los periódicos.</li>
+          </ul>
+        </div>
+        <div class="compare__item compare__item--accent">
+          <p class="compare__label">Long-tail (cola larga)</p>
+          <p class="compare__example">cuándo se construyó el obelisco de Barquisimeto</p>
+          <ul>
+            <li>Más larga, casi una pregunta.</li>
+            <li>La busca menos gente, pero sabe muy bien qué quiere.</li>
+            <li>Mucha menos competencia: aquí un medio pequeño puede ganar.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">
+        Cada historia tiene <strong>una</strong> principal y varias long-tail que la acompañan.
+      </p>
+    </Slide>
+
+    <Slide part={part.m2} title="La intención: qué quiere quien busca">
+      <dl class="cards cards--three">
+        <div class="cards__item">
+          <dt>Informativa</dt>
+          <dd>
+            Quiere aprender. <q>historia del aeropuerto de Barquisimeto</q>
+          </dd>
+        </div>
+        <div class="cards__item">
+          <dt>Navegacional</dt>
+          <dd>
+            Quiere llegar a un sitio. <q>Cardenales de Lara página oficial</q>
+          </dd>
+        </div>
+        <div class="cards__item">
+          <dt>Transaccional</dt>
+          <dd>
+            Quiere hacer algo: comprar, reservar. <q>entradas Cardenales de Lara</q>
+          </dd>
+        </div>
+      </dl>
+      <Choice
+        question="¿Qué intención tienen casi todas las búsquedas que puede ganar Lara Cuenta?"
+        options={[
+          { text: "Informativa", correct: true },
+          {
+            text: "Navegacional",
+            hint: "Quien busca la página de los Cardenales quiere esa página, no una crónica.",
+          },
+          { text: "Transaccional", hint: "Lara Cuenta no vende entradas ni boletos." },
+        ]}
+      >
+        <p>
+          Un medio de memoria y patrimonio responde preguntas. Elige palabras clave de quien quiere{" "}
+          <strong>saber</strong>.
+        </p>
+      </Choice>
+    </Slide>
+
+    <Slide part={part.m2} title="Cómo encontrarlas, gratis">
+      <ol class="loop">
+        <li>
+          <strong>El autocompletar de Google.</strong> Escribe <q>obelisco de barquisimeto</q> y
+          mira qué te sugiere antes de pulsar Enter.
+        </li>
+        <li>
+          <strong>«Otras preguntas de los usuarios».</strong> La caja de preguntas en los
+          resultados: son long-tail servidas en bandeja.
+        </li>
+        <li>
+          <strong>«Búsquedas relacionadas».</strong> Al final de la página de resultados.
+        </li>
+        <li>
+          <strong>Google Trends.</strong> Compara dos palabras y te dice cuál se busca más en
+          Venezuela.
+        </li>
+      </ol>
+      <p class="note">
+        Más adelante, Search Console te dirá las búsquedas reales con las que ya te encuentran.
+      </p>
+    </Slide>
+
+    <Slide part={part.m2} title="Dónde va la palabra clave">
+      <ul class="checks">
+        <li>
+          En el <strong>meta title</strong>, mejor al principio.
+        </li>
+        <li>
+          En el <strong>título visible</strong> (H1) o en un subtítulo (H2).
+        </li>
+        <li>
+          En el <strong>primer párrafo</strong>.
+        </li>
+        <li>
+          En la <strong>URL</strong> (el slug).
+        </li>
+        <li>
+          En la <strong>meta description</strong> y en el <strong>alt</strong> de alguna foto.
+        </li>
+      </ul>
+      <div class="bad">
+        <p class="bad__label">Lo que no hay que hacer</p>
+        <p>
+          <q>
+            Obelisco de Barquisimeto: el obelisco de Barquisimeto, el mejor obelisco de Barquisimeto
+          </q>
+        </p>
+        <p>
+          Repetir a la fuerza se llama <em>keyword stuffing</em>, y Google lo castiga. Escribe para
+          personas: la palabra debe aparecer de forma natural.
+        </p>
+      </div>
+    </Slide>
+
+    <Slide part={part.m2} kicker="Tu turno" title="Long-tail para el Obelisco">
+      <p>
+        Usa el autocompletar de Google (o tu intuición) y anota tres long-tail para la historia del
+        Obelisco.
+      </p>
+      <Practice id="longtail-obelisco" label="Tres long-tail, una por línea" rows={3} />
+      <Reveal label="Ver ejemplos">
+        <ul>
+          <li>historia del obelisco de Barquisimeto</li>
+          <li>cuánto mide el obelisco de Barquisimeto</li>
+          <li>quién diseñó el obelisco de Barquisimeto</li>
+          <li>mirador del obelisco de Barquisimeto</li>
+        </ul>
+        <p>
+          Fíjate: la historia ya responde a todas (altura, diseñador, mirador). Solo falta que
+          Google lo note.
+        </p>
+      </Reveal>
+    </Slide>
+
+    {/* ───────────── Pausa ───────────── */}
+
+    <Slide
+      part={part.pause}
+      variant="pause"
+      kicker="Pausa"
+      title="Cinco minutos lejos de la pantalla"
+    >
+      <p>Camina, toma agua, mira por la ventana. Mejor sin el teléfono.</p>
+      <p>
+        Mientras descansas, el cerebro sigue ordenando lo que acabas de ver, en lo que se llama
+        <strong>modo difuso</strong>. Por eso a veces las ideas se aclaran en la ducha.
+      </p>
+      <PauseTimer minutes={5} />
+    </Slide>
+
+    {/* ───────────── Módulo 3 ───────────── */}
+
+    <Slide part={part.m3} kicker="Repaso" title="Antes de seguir: ¿lo recuerdas?">
+      <p>Intenta responder en voz alta antes de tocar cada tarjeta.</p>
+      <div class="flashcards">
+        <Flashcard
+          front="¿Cuáles son los tres pasos de Google?"
+          back="Rastrear, indexar y posicionar."
+        />
+        <Flashcard
+          front="¿Qué es una long-tail?"
+          back="Una búsqueda larga y específica: menos gente, menos competencia, intención clara."
+        />
+        <Flashcard
+          front="¿Para qué sirve el sitemap?"
+          back="Le da a Google la lista de todas tus páginas."
+        />
+      </div>
+    </Slide>
+
+    <Slide part={part.m3} variant="hook" kicker="Pregunta" title="¿Harías clic aquí?">
+      <p>
+        Alguien busca <q>aeropuerto de Barquisimeto historia</q>. Así se ve hoy la historia del
+        aeropuerto en Google:
+      </p>
+      <Serp
+        url="laracuenta.com › historias › aeropuerto-jacinto-lara"
+        title="Un lugar de encuentros y despedidas | Lara Cuenta"
+        description="El Aeropuerto Internacional Jacinto Lara guarda seis décadas de historia y, hoy, las despedidas y los reencuentros de un país marcado por la migración."
+      />
+      <Reveal label="¿Qué le falta al título?">
+        <p>
+          Es un gran titular periodístico, pero no dice <strong>aeropuerto</strong> ni
+          <strong>Barquisimeto</strong>. Google y el lector tienen que adivinar de qué trata.
+        </p>
+        <p>
+          La buena noticia: la página puede tener dos títulos. El <strong>titular visible</strong>
+          puede seguir siendo poético, y el <strong>meta title</strong> (el de Google) lleva la
+          palabra clave.
+        </p>
+      </Reveal>
+    </Slide>
+
+    <Slide part={part.m3} title="Meta title y meta description">
+      <div class="compare">
+        <div class="compare__item">
+          <p class="compare__label">Meta title</p>
+          <ul>
+            <li>El título azul en Google y el texto de la pestaña.</li>
+            <li>
+              Hasta unos <strong>60 caracteres</strong>; si no, Google lo corta.
+            </li>
+            <li>La palabra clave cerca del inicio; la marca al final.</li>
+            <li>Es de lo que más pesa para posicionar.</li>
+          </ul>
+        </div>
+        <div class="compare__item">
+          <p class="compare__label">Meta description</p>
+          <ul>
+            <li>El texto gris bajo el título.</li>
+            <li>
+              Hasta unos <strong>155–160 caracteres</strong>.
+            </li>
+            <li>Resume la historia e invita a entrar.</li>
+            <li>No sube el ranking directamente, pero consigue más clics.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="code-caption">Así se ven en el código de tu sitio:</p>
+      <pre class="code"><code>{headCode}</code></pre>
+    </Slide>
+
+    <Slide part={part.m3} kicker="Tu turno" title="Reescribe el resultado del aeropuerto">
+      <p>Edita el título y la descripción. La vista previa cambia mientras escribes.</p>
+      <Serp
+        id="aeropuerto"
+        url="laracuenta.com › historias › aeropuerto-jacinto-lara"
+        title="Un lugar de encuentros y despedidas | Lara Cuenta"
+        description="El Aeropuerto Internacional Jacinto Lara guarda seis décadas de historia y, hoy, las despedidas y los reencuentros de un país marcado por la migración."
+      />
+      <Reveal label="Ver una propuesta">
+        <p>
+          <strong>Title:</strong> Aeropuerto Jacinto Lara: historia y despedidas | Lara Cuenta
+        </p>
+        <p>
+          <strong>Description:</strong> Seis décadas de historia del aeropuerto de Barquisimeto,
+          contadas entre las despedidas y los reencuentros de un país marcado por la migración.
+        </p>
+        <p>No es la única respuesta buena: si la tuya lleva la palabra clave y cabe, sirve.</p>
+      </Reveal>
+    </Slide>
+
+    <Slide part={part.m3} title="H1, H2 y H3: el índice de tu artículo">
+      <div class="split">
+        <div>
+          <ul class="checks">
+            <li>
+              <strong>H1</strong>: el título de la historia. <strong>Uno solo</strong> por página.
+            </li>
+            <li>
+              <strong>H2</strong>: los capítulos.
+            </li>
+            <li>
+              <strong>H3</strong>: subtemas dentro de un capítulo.
+            </li>
+          </ul>
+          <p>
+            Google los lee como el índice de un libro: le dicen de qué trata cada parte. Úsalos por
+            su orden, no por el tamaño de la letra.
+          </p>
+        </div>
+        <div>
+          <p class="code-caption">La historia del Obelisco, hoy:</p>
+          <pre class="code"><code>{headingsCode}</code></pre>
+          <p class="note">
+            Bien ordenada. Un H2 puede llevar una long-tail con naturalidad:{" "}
+            <q>Una obra de 45 días: así se construyó el Obelisco</q>.
+          </p>
+        </div>
+      </div>
+    </Slide>
+
+    <Slide part={part.m3} kicker="Comprueba" title="Encabezados">
+      <Choice
+        question="¿Cuántos H1 debería tener una historia?"
+        options={[
+          { text: "Uno", correct: true },
+          {
+            text: "Uno por cada sección",
+            hint: "Las secciones son capítulos: para eso está el H2.",
+          },
+          {
+            text: "Los que quieras, así se ven más grandes",
+            hint: "El tamaño se cambia con el diseño (CSS). El H1 dice qué es lo principal.",
+          },
+        ]}
+      >
+        <p>Un libro tiene un solo título. Si hay dos, Google no sabe cuál es el tema.</p>
+      </Choice>
+    </Slide>
+
+    <Slide part={part.m3} title="URLs amigables (slugs)">
+      <p>
+        El <strong>slug</strong> es la última parte de la dirección, la que identifica a cada
+        historia.
+      </p>
+      <ul class="urls">
+        <li class="urls__good">
+          <code>/historias/el-obelisco-larense</code>
+        </li>
+        <li class="urls__good">
+          <code>/historias/estadio-antonio-herrera-gutierrez</code>
+        </li>
+        <li class="urls__bad">
+          <code>/historias/post?id=8838</code>
+        </li>
+        <li class="urls__bad">
+          <code>/historias/74-años-de-historias-en-el-obelisco-larense-y-sus-memorias</code>
+        </li>
+      </ul>
+      <ul class="checks">
+        <li>Corto, en minúsculas y con guiones.</li>
+        <li>Sin tildes ni ñ, y con la palabra clave.</li>
+        <li>
+          No se cambia después de publicar: si cambia, hay que redirigir la dirección vieja (una
+          <em>redirección 301</em>).
+        </li>
+      </ul>
+    </Slide>
+
+    <Slide part={part.m3} title="Enlaces internos y externos">
+      <div class="compare">
+        <div class="compare__item">
+          <p class="compare__label">Internos: de tu sitio a tu sitio</p>
+          <p>
+            Son los pasillos entre tus historias. Ayudan a Googlebot a rastrear y al lector a
+            quedarse.
+          </p>
+          <p>
+            Ejemplo real: el Obelisco y el aeropuerto mencionan los{" "}
+            <strong>400 años de Barquisimeto</strong>, en 1952. Ahí cabe un enlace entre las dos
+            historias.
+          </p>
+        </div>
+        <div class="compare__item">
+          <p class="compare__label">Externos: hacia otras fuentes</p>
+          <p>
+            Tus fuentes (El Impulso, la Fundación Arquitectura y Ciudad) muestran que la historia
+            está investigada. Eso da confianza, a Google y al lector.
+          </p>
+          <p>Tus historias ya los tienen en la sección de fuentes.</p>
+        </div>
+      </div>
+      <p class="note">
+        El texto del enlace (<em>anchor text</em>) debe decir adónde lleva. Nada de «clic aquí».
+      </p>
+    </Slide>
+
+    <Slide part={part.m3} kicker="Comprueba" title="El mejor texto de enlace">
+      <Choice
+        question="En la historia del aeropuerto, ¿qué texto enlazarías hacia la historia del Obelisco?"
+        options={[
+          {
+            text: "Para saber más, haz clic aquí.",
+            hint: "«Aquí» no le dice nada a Google ni al lector sobre la página de destino.",
+          },
+          { text: "el Obelisco que celebró los 400 años de Barquisimeto", correct: true },
+          {
+            text: "https://laracuenta.com/historias/el-obelisco-larense",
+            hint: "Funciona, pero una URL suelta no describe el contenido ni se lee bien.",
+          },
+        ]}
+      >
+        <p>Describe el destino y lleva palabras clave de la otra historia, sin forzarlas.</p>
+      </Choice>
+    </Slide>
+
+    <Slide part={part.m3} title="Imágenes: texto alt y peso">
+      <div class="compare">
+        <div class="compare__item">
+          <p class="compare__label">Texto alternativo (alt)</p>
+          <p>
+            Describe la foto para quien no puede verla: personas ciegas con lector de pantalla, y
+            Google, que no «ve» fotos.
+          </p>
+          <pre class="code"><code>{altCode}</code></pre>
+          <p>
+            Nada de <code>alt="foto"</code> ni <code>alt="IMG_8847"</code>.
+          </p>
+        </div>
+        <div class="compare__item">
+          <p class="compare__label">Peso</p>
+          <p>
+            Una foto del celular pesa 3 a 5 MB. En la web, cada imagen debería pesar unos cientos de
+            KB como mucho.
+          </p>
+          <p>
+            Fotos pesadas = página lenta = lectores que se van. Google mide esa velocidad y la tiene
+            en cuenta.
+          </p>
+          <p>
+            Lara Cuenta ya convierte las fotos a <strong>WebP</strong>, un formato liviano. Algunas
+            todavía pesan casi 1 MB: las vamos a ajustar.
+          </p>
+        </div>
+      </div>
+    </Slide>
+
+    <Slide part={part.m3} kicker="Tu turno" title="Escribe el alt de esta foto">
+      <div class="split split--media">
+        <Image
+          class="practice-photo"
+          src={icecream}
+          alt=""
+          widths={[480, 800]}
+          sizes="(max-width: 700px) 100vw, 26rem"
+        />
+        <div>
+          <Practice
+            id="alt-icecream"
+            label="Texto alt: describe lo que se ve, en una frase"
+            rows={3}
+            limit={125}
+          />
+          <Reveal label="Ver el alt que tiene en la historia">
+            <p>
+              <q>Un triciclo de helados decorado con luces, frente al parque al atardecer.</q>
+            </p>
+            <p>
+              Corto, concreto y dice qué hay en la foto. En una foto clave también puede aparecer la
+              palabra clave, si encaja: <q>…frente al parque del Obelisco…</q>.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+    </Slide>
+
+    <Slide part={part.m3} kicker="Comprueba" title="Encuentra los 5 errores">
+      <p>Esta es una historia inventada, mal optimizada. Toca cada parte que esté mal.</p>
+      <SpotGame total={5}>
+        <p class="mock__url">
+          laracuenta.com/historias/
+          <Spot note="La URL es un número: no dice de qué trata la historia.">post?id=123</Spot>
+        </p>
+        <p class="mock__title">
+          <Spot note="El meta title no tiene palabra clave: ¿«recuerdos» de qué, y dónde?">
+            Recuerdos | Lara Cuenta
+          </Spot>
+        </p>
+        <p class="mock__h">
+          <span class="mock__tag">H1</span> La catedral de Barquisimeto, una flor de concreto
+        </p>
+        <p class="mock__h">
+          <span class="mock__tag">H1</span>
+          <Spot note="Hay dos H1: las secciones deben ser H2.">Su construcción</Spot>
+        </p>
+        <p class="mock__img">
+          <span class="mock__tag">img</span>
+          <Spot note="El alt es el nombre del archivo: no describe la foto.">alt="IMG_4021"</Spot>
+        </p>
+        <p>
+          La obra se inspiró en otras iglesias modernas de la época. Si quieres saber más,
+          <Spot note="«Haz clic aquí» no describe adónde lleva el enlace.">haz clic aquí</Spot>.
+        </p>
+      </SpotGame>
+    </Slide>
+
+    {/* ───────────── Módulo 4 ───────────── */}
+
+    <Slide part={part.m4} title="Qué evalúa la profesora">
+      <ul class="rubric">
+        <li style="--share: 32%">
+          <span class="rubric__pts">8%</span>
+          <span>
+            <strong>Aplicación práctica:</strong> etiquetas, URLs, imágenes y metadatos bien hechos
+            en el blog.
+          </span>
+        </li>
+        <li style="--share: 32%">
+          <span class="rubric__pts">8%</span>
+          <span>
+            <strong>Análisis y justificación:</strong> explicar cómo funciona el posicionamiento y
+            por qué elegiste tus palabras clave.
+          </span>
+        </li>
+        <li style="--share: 28%">
+          <span class="rubric__pts">7%</span>
+          <span>
+            <strong>Calidad del informe:</strong> estructura, ortografía, redacción y capturas.
+          </span>
+        </li>
+        <li style="--share: 8%">
+          <span class="rubric__pts">2%</span>
+          <span>
+            <strong>Puntualidad y formato:</strong> a tiempo, en Word o PDF.
+          </span>
+        </li>
+      </ul>
+      <p class="note">
+        Fíjate: 15 de los 25 puntos salen del <strong>informe</strong>, de explicar y presentar
+        bien, no solo de hacer. Por eso estudiaste el porqué.
+      </p>
+    </Slide>
+
+    <Slide part={part.m4} title="Las partes del informe">
+      <ol class="loop">
+        <li>
+          <strong>Palabras clave.</strong> La principal y las long-tail del nicho, y por qué. →
+          Módulo 2.
+        </li>
+        <li>
+          <strong>Técnicas aplicadas.</strong> Lo que se hizo en todo el sitio (dominio, sitemap,
+          Search Console) y en cada una de las 3 historias (title, description, slug, encabezados,
+          enlaces, imágenes). → Módulos 1 y 3.
+        </li>
+        <li>
+          <strong>Justificación.</strong> Por qué cada técnica ayuda a rastrear, indexar y
+          posicionar. → Todo lo que viste.
+        </li>
+        <li>
+          <strong>Evidencia.</strong> Capturas de pantalla y la URL del blog.
+        </li>
+      </ol>
+      <p class="note">
+        Las 3 historias: el <strong>Obelisco</strong>, el <strong>Estadio</strong> y el
+        <strong>Aeropuerto</strong>.
+      </p>
+    </Slide>
+
+    <Slide part={part.m4} title="Capturas: tu sitio no usa Yoast, y está bien">
+      <p>
+        La tarea habla de WordPress y plugins como Yoast. Lara Cuenta está hecho con código (Astro),
+        así que la evidencia es aún más directa:
+      </p>
+      <ul class="checks">
+        <li>
+          <strong>El código de la página</strong>: clic derecho → «Ver código fuente» (Ctrl+U),
+          donde se ven el title y la description.
+        </li>
+        <li>
+          <strong>El archivo de cada historia</strong>: el título, la descripción y el alt de cada
+          foto.
+        </li>
+        <li>
+          <strong>Search Console</strong>: el sitemap enviado y las páginas indexadas.
+        </li>
+        <li>
+          <strong>PageSpeed Insights</strong>: la nota de velocidad y SEO.
+        </li>
+      </ul>
+      <p class="note">
+        En el informe lo explicas en una frase: el sitio no usa un CMS con plugins, y las
+        optimizaciones se ven directamente en el código.
+      </p>
+    </Slide>
+
+    <Slide part={part.m4} title="Lo que haremos juntos">
+      <ol class="loop">
+        <li>Comprar el dominio y conectarlo.</li>
+        <li>
+          Optimizar las 3 historias, con lo que escribiste en esta guía como punto de partida.
+        </li>
+        <li>Dar de alta Search Console y enviar el sitemap.</li>
+        <li>Tomar las capturas.</li>
+        <li>Armar el informe, con su propia página de apoyo y glosario.</li>
+      </ol>
+    </Slide>
+
+    {/* ───────────── Cierre ───────────── */}
+
+    <Slide part={part.end} kicker="Último ejercicio" title="Explícalo en tres frases">
+      <p>
+        Como si se lo contaras a tu mamá, sin palabras técnicas. Si puedes explicarlo simple, lo
+        entendiste. Este texto es la semilla de la justificación del informe.
+      </p>
+      <Practice id="feynman-1" label="1. ¿Qué hace Google con las páginas?" />
+      <Practice id="feynman-2" label="2. ¿Qué es una palabra clave y cómo elegiste las tuyas?" />
+      <Practice id="feynman-3" label="3. ¿Qué cambiaste en tus historias y por qué ayuda?" />
+    </Slide>
+
+    <Slide
+      part={part.end}
+      variant="cover"
+      kicker="Hasta aquí, por hoy"
+      title="El SEO es más que esto"
+    >
+      <p class="slide__lead">
+        Hoy aprendiste lo básico, y lo básico bien hecho ya pone a Lara Cuenta por delante de muchos
+        blogs. Otro día podemos profundizar en:
+      </p>
+      <ul class="tags">
+        <li>Datos estructurados</li>
+        <li>Velocidad y Core Web Vitals</li>
+        <li>Backlinks</li>
+        <li>SEO local y Google Business</li>
+        <li>E-E-A-T: autoría y confianza</li>
+        <li>Analítica</li>
+        <li>Google Discover y redes</li>
+      </ul>
+      <p class="slide__hint">¡Buen trabajo!</p>
+    </Slide>
+  </Deck>
+</Learning>

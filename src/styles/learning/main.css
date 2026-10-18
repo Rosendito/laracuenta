@@ -1,0 +1,20 @@
+/* Study pages under /_learning/ (src/layouts/Learning.astro): the site tokens and
+   base, plus the deck and its activities. */
+
+@import "../tokens/color.css";
+@import "../tokens/type.css";
+@import "../tokens/space.css";
+@import "../tokens/shape.css";
+@import "../tokens/elevation.css";
+@import "../tokens/motion.css";
+@import "../tokens/layout.css";
+@import "../tokens/media.css";
+
+@import "../base/reset.css";
+@import "../base/accessibility.css";
+@import "../components/icon.css";
+@import "../components/button.css";
+
+@import "./deck.css";
+@import "./content.css";
+@import "./activity.css";

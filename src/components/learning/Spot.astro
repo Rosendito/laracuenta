@@ -1,0 +1,13 @@
+---
+// A faulty part inside a <SpotGame>; `note` explains what is wrong with it.
+interface Props {
+  note: string;
+  class?: string;
+}
+
+const { note, class: className } = Astro.props;
+---
+
+<button class:list={["spot", className]} type="button" aria-pressed="false" data-spot={note}>
+  <slot />
+</button>

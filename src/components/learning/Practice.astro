@@ -1,0 +1,49 @@
+---
+// A text box for the reader's own answer, saved in this browser. With `limit`, a
+// counter shows the length against the recommended maximum.
+interface Props {
+  /** Storage key; unique on the page. */
+  id: string;
+  label: string;
+  rows?: number;
+  limit?: number;
+  placeholder?: string;
+}
+
+const { id, label, rows = 2, limit, placeholder } = Astro.props;
+const fieldId = `practice-${id}`;
+---
+
+<div class="practice" data-practice={id} data-limit={limit}>
+  <label class="practice__label" for={fieldId}>
+    {label}
+  </label>
+  <textarea class="practice__field" id={fieldId} rows={rows} placeholder={placeholder}></textarea>
+  {limit && <p class="practice__count" data-practice-count />}
+</div>
+
+<script>
+  import { readStore, writeStore } from "../../lib/learning-store";
+
+  for (const box of document.querySelectorAll<HTMLElement>("[data-practice]")) {
+    const field = box.querySelector("textarea")!;
+    const counter = box.querySelector<HTMLElement>("[data-practice-count]");
+    const limit = Number(box.dataset.limit);
+    const key = `practice:${box.dataset.practice}`;
+
+    const update = () => {
+      if (!counter) return;
+      const length = field.value.trim().length;
+      counter.textContent = `${length} / ${limit} caracteres`;
+      counter.dataset.state = length > limit ? "over" : length >= limit * 0.6 ? "ok" : "";
+    };
+
+    field.value = readStore(key) ?? "";
+    update();
+    field.addEventListener("input", () => {
+      writeStore(key, field.value);
+      update();
+      box.dispatchEvent(new CustomEvent("practice:input", { bubbles: true }));
+    });
+  }
+</script>

@@ -1,0 +1,98 @@
+---
+// A mock Google result. With `id`, the reader edits the title and description and the
+// preview follows, cut where Google would usually cut it.
+interface Props {
+  url: string;
+  title: string;
+  description: string;
+  /** Makes it editable; storage key. */
+  id?: string;
+}
+
+const { url, title, description, id } = Astro.props;
+const titleLimit = 60;
+const descriptionLimit = 160;
+---
+
+<div class="serp-block" data-serp={id}>
+  <div class="serp" aria-label="Vista previa del resultado en Google">
+    <p class="serp__site">
+      <img src="/laracuenta-isotipo.svg" alt="" width="18" height="18" />
+      <span>
+        <span class="serp__name">Lara Cuenta</span>
+        <span class="serp__url">{url}</span>
+      </span>
+    </p>
+    <p class="serp__title" data-serp-title>
+      {title}
+    </p>
+    <p class="serp__description" data-serp-description>
+      {description}
+    </p>
+  </div>
+
+  {id && (
+    <div class="serp-block__fields">
+      <label class="practice">
+        <span class="practice__label">Meta title</span>
+        <input
+          class="practice__field"
+          type="text"
+          data-serp-input="title"
+          data-limit={titleLimit}
+          value={title}
+        />
+        <span class="practice__count" data-serp-count="title" />
+      </label>
+      <label class="practice">
+        <span class="practice__label">Meta description</span>
+        <textarea
+          class="practice__field"
+          rows="3"
+          data-serp-input="description"
+          data-limit={descriptionLimit}
+        >
+            {description}
+          </textarea>
+        <span class="practice__count" data-serp-count="description" />
+      </label>
+    </div>
+  )}
+</div>
+
+<script>
+  import { readStore, writeStore } from "../../lib/learning-store";
+
+  const cut = (text: string, limit: number) =>
+    text.length > limit ? `${text.slice(0, limit - 1).trimEnd()}…` : text;
+
+  for (const block of document.querySelectorAll<HTMLElement>("[data-serp]")) {
+    const id = block.dataset.serp;
+    if (!id) continue;
+
+    for (const input of block.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
+      "[data-serp-input]",
+    )) {
+      const kind = input.dataset.serpInput!;
+      const limit = Number(input.dataset.limit);
+      const preview = block.querySelector<HTMLElement>(`[data-serp-${kind}]`)!;
+      const counter = block.querySelector<HTMLElement>(`[data-serp-count="${kind}"]`)!;
+      const key = `serp:${id}:${kind}`;
+
+      const update = () => {
+        const text = input.value.trim().replace(/\s+/g, " ");
+        preview.textContent = cut(text, limit) || "…";
+        counter.textContent = `${text.length} / ${limit} caracteres`;
+        counter.dataset.state =
+          text.length > limit ? "over" : text.length >= limit * 0.6 ? "ok" : "";
+      };
+
+      input.value = readStore(key) ?? input.value.trim();
+      update();
+      input.addEventListener("input", () => {
+        writeStore(key, input.value);
+        update();
+      });
+    }
+  }
+</script>

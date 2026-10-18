@@ -1,0 +1,28 @@
+---
+// One slide of a <Deck>. `part` is the module label shown in the top bar.
+interface Props {
+  part: string;
+  /** cover: dark title slide · hook: a question before the idea · pause: a break */
+  variant?: "cover" | "hook" | "pause";
+  /** Kicker above the heading, e.g. "Tu turno" or "Pregunta". */
+  kicker?: string;
+  title?: string;
+}
+
+const { part, variant, kicker, title } = Astro.props;
+// the cover carries the page heading
+const Heading = variant === "cover" ? "h1" : "h2";
+---
+
+<section
+  class:list={["slide", variant && `slide--${variant}`]}
+  data-part={part}
+  tabindex="-1"
+  aria-label={title}
+>
+  <div class="slide__body">
+    {kicker && <p class="slide__kicker">{kicker}</p>}
+    {title && <Heading class="slide__title">{title}</Heading>}
+    <slot />
+  </div>
+</section>

@@ -1,0 +1,119 @@
+---
+// A slide deck: one <Slide> on screen at a time, with keyboard, swipe and button
+// navigation. The current slide is kept in the URL hash and in localStorage, so a
+// reader who closes the tab picks up where they left off.
+import Icon from "../Icon.astro";
+
+interface Props {
+  /** Storage key; one per deck. */
+  id: string;
+  /** Short label for the top bar. */
+  label: string;
+}
+
+const { id, label } = Astro.props;
+---
+
+<div class="deck" data-deck={id}>
+  <header class="deck__bar">
+    <a class="deck__brand" href="/">
+      <img src="/laracuenta-isotipo.svg" alt="" width="28" height="28" />
+      <span>{label}</span>
+    </a>
+    <p class="deck__part" data-deck-part></p>
+  </header>
+
+  <main class="deck__stage" id="contenido">
+    <slot />
+  </main>
+
+  <nav class="deck__nav" aria-label="Navegación de la presentación">
+    <button class="deck__step" type="button" data-deck-prev aria-label="Diapositiva anterior">
+      <Icon name="chevron-left" />
+    </button>
+    <p class="deck__count" aria-live="polite" data-deck-count></p>
+    <button class="deck__step deck__step--next" type="button" data-deck-next>
+      <span>Siguiente</span>
+      <Icon name="chevron-right" />
+    </button>
+    <span class="deck__progress" aria-hidden="true">
+      <span data-deck-progress></span>
+    </span>
+  </nav>
+</div>
+
+<script>
+  import { readStore, writeStore } from "../../lib/learning-store";
+
+  const isField = (el: EventTarget | null) =>
+    el instanceof HTMLElement &&
+    (el.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName));
+
+  for (const deck of document.querySelectorAll<HTMLElement>("[data-deck]")) {
+    const key = `deck:${deck.dataset.deck}`;
+    const slides = [...deck.querySelectorAll<HTMLElement>(".slide")];
+    const part = deck.querySelector<HTMLElement>("[data-deck-part]")!;
+    const count = deck.querySelector<HTMLElement>("[data-deck-count]")!;
+    const bar = deck.querySelector<HTMLElement>("[data-deck-progress]")!;
+    const prev = deck.querySelector<HTMLButtonElement>("[data-deck-prev]")!;
+    const next = deck.querySelector<HTMLButtonElement>("[data-deck-next]")!;
+    let current = -1;
+    deck.classList.add("is-ready");
+
+    const show = (index: number, focus = true) => {
+      const target = Math.max(0, Math.min(slides.length - 1, index));
+      if (target === current) return;
+      current = target;
+      slides.forEach((slide, i) => (slide.hidden = i !== current));
+      const slide = slides[current];
+      part.textContent = slide.dataset.part ?? "";
+      count.textContent = `${current + 1} / ${slides.length}`;
+      bar.style.setProperty("--deck-progress", `${((current + 1) / slides.length) * 100}%`);
+      prev.disabled = current === 0;
+      next.disabled = current === slides.length - 1;
+      history.replaceState(null, "", `#${current + 1}`);
+      writeStore(key, String(current));
+      slide.scrollTop = 0;
+      if (focus) slide.focus({ preventScroll: true });
+    };
+
+    const fromHash = Number(location.hash.slice(1)) - 1;
+    const saved = Number(readStore(key));
+    show(fromHash >= 0 ? fromHash : Number.isFinite(saved) ? saved : 0, false);
+
+    prev.addEventListener("click", () => show(current - 1));
+    next.addEventListener("click", () => show(current + 1));
+    deck.addEventListener("deck:go", (event) => show((event as CustomEvent<number>).detail));
+
+    document.addEventListener("keydown", (event) => {
+      if (isField(event.target) || event.altKey || event.ctrlKey || event.metaKey) return;
+      const moves: Record<string, number> = {
+        ArrowRight: current + 1,
+        PageDown: current + 1,
+        ArrowLeft: current - 1,
+        PageUp: current - 1,
+        Home: 0,
+        End: slides.length - 1,
+      };
+      if (event.key in moves) {
+        event.preventDefault();
+        show(moves[event.key]);
+      }
+    });
+
+    // horizontal swipe, ignored inside form fields so text selection keeps working
+    let startX = 0;
+    let startY = 0;
+    deck.addEventListener(
+      "touchstart",
+      (event) => ({ clientX: startX, clientY: startY } = event.touches[0]),
+      { passive: true },
+    );
+    deck.addEventListener("touchend", (event) => {
+      if (isField(event.target)) return;
+      const dx = event.changedTouches[0].clientX - startX;
+      const dy = event.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > 70 && Math.abs(dy) < 50) show(current + (dx < 0 ? 1 : -1));
+    });
+  }
+</script>

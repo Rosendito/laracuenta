@@ -1,0 +1,25 @@
+---
+// A recall card: the question first, the answer on tap.
+interface Props {
+  front: string;
+  back: string;
+}
+
+const { front, back } = Astro.props;
+---
+
+<button class="flashcard" type="button" aria-pressed="false" data-flashcard>
+  <span class="flashcard__front">{front}</span>
+  <span class="flashcard__back">{back}</span>
+  <span class="flashcard__hint" aria-hidden="true">
+    Toca para ver
+  </span>
+</button>
+
+<script>
+  for (const card of document.querySelectorAll<HTMLButtonElement>("[data-flashcard]")) {
+    card.addEventListener("click", () => {
+      card.setAttribute("aria-pressed", String(card.getAttribute("aria-pressed") !== "true"));
+    });
+  }
+</script>

@@ -9,7 +9,11 @@ export default defineConfig({
   // Production URL: used for the sitemap, canonical links and link-preview images.
   // Change it here when the site moves to its own domain.
   site: "https://laracuenta.marilouzz.workers.dev",
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    // study pages under /_learning/ stay out of search engines (src/lib/learning.ts)
+    sitemap({ filter: (page) => !page.includes("/_learning/") }),
+  ],
   devToolbar: { enabled: false },
   markdown: { processor: satteri({ mdastPlugins: [unwrapImages] }) },
   vite: {

@@ -1,0 +1,63 @@
+---
+// Tap the items in the right order. `items` is the right order; `shown` is the order
+// they appear on screen (indexes into `items`). A wrong tap resets the attempt.
+interface Props {
+  question: string;
+  items: string[];
+  shown: number[];
+}
+
+const { question, items, shown } = Astro.props;
+---
+
+<div class="activity order" data-order>
+  <p class="activity__prompt">{question}</p>
+  <div class="order__items">
+    {shown.map((i) => (
+      <button class="order__item" type="button" data-step={i}>
+        <span class="order__num" aria-hidden="true" />
+        {items[i]}
+      </button>
+    ))}
+  </div>
+  <p class="activity__feedback" aria-live="polite" data-order-feedback></p>
+  <div class="activity__answer" hidden data-order-answer>
+    <slot />
+  </div>
+</div>
+
+<script>
+  for (const quiz of document.querySelectorAll<HTMLElement>("[data-order]")) {
+    const feedback = quiz.querySelector<HTMLElement>("[data-order-feedback]")!;
+    const answer = quiz.querySelector<HTMLElement>("[data-order-answer]")!;
+    const items = [...quiz.querySelectorAll<HTMLButtonElement>(".order__item")];
+    let next = 0;
+
+    for (const item of items) {
+      item.addEventListener("click", () => {
+        if (Number(item.dataset.step) === next) {
+          next++;
+          item.disabled = true;
+          item.classList.add("is-right");
+          item.querySelector(".order__num")!.textContent = String(next);
+          feedback.textContent = "";
+          if (next === items.length) {
+            feedback.textContent = "¡Exacto! Ese es el orden.";
+            feedback.dataset.state = "right";
+            answer.hidden = false;
+          }
+        } else {
+          next = 0;
+          feedback.textContent =
+            "Ese paso no va ahí. Empieza de nuevo: ¿qué tiene que pasar primero?";
+          feedback.dataset.state = "wrong";
+          for (const other of items) {
+            other.disabled = false;
+            other.classList.remove("is-right");
+            other.querySelector(".order__num")!.textContent = "";
+          }
+        }
+      });
+    }
+  }
+</script>

@@ -1,0 +1,45 @@
+---
+// "Find the mistakes": a mock page whose faulty parts are <Spot> buttons. Each find
+// shows its note; the counter tracks how many are left.
+interface Props {
+  total: number;
+}
+
+const { total } = Astro.props;
+---
+
+<div class="activity spot-game" data-spot-game={total}>
+  <div class="spot-game__page">
+    <slot />
+  </div>
+  <p class="activity__feedback" aria-live="polite" data-spot-count>
+    Encontrados: 0 de {total}
+  </p>
+  <ol class="spot-game__notes" data-spot-notes></ol>
+</div>
+
+<script>
+  for (const game of document.querySelectorAll<HTMLElement>("[data-spot-game]")) {
+    const total = Number(game.dataset.spotGame);
+    const count = game.querySelector<HTMLElement>("[data-spot-count]")!;
+    const notes = game.querySelector<HTMLElement>("[data-spot-notes]")!;
+    let found = 0;
+
+    for (const spot of game.querySelectorAll<HTMLButtonElement>("[data-spot]")) {
+      spot.addEventListener("click", () => {
+        if (spot.classList.contains("is-found")) return;
+        spot.classList.add("is-found");
+        spot.setAttribute("aria-pressed", "true");
+        found++;
+        const note = document.createElement("li");
+        note.textContent = spot.dataset.spot!;
+        notes.append(note);
+        count.textContent =
+          found === total
+            ? `¡Los encontraste todos! ${found} de ${total}.`
+            : `Encontrados: ${found} de ${total}`;
+        count.dataset.state = found === total ? "right" : "";
+      });
+    }
+  }
+</script>

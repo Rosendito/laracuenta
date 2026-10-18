@@ -1,0 +1,37 @@
+---
+// Shell for the private study pages under /_learning/ (see src/lib/learning.ts):
+// no site header or footer, never indexed.
+import "../styles/learning/main.css";
+
+import SvgDefs from "../components/SvgDefs.astro";
+import { site } from "../config/site";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang={site.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{`${title} | ${site.name}`}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="icon" href="/laracuenta-isotipo.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Montserrat:ital,wght@0,300..800;1,300..800&display=swap"
+    />
+  </head>
+  <body class="learning">
+    <SvgDefs />
+    <slot />
+  </body>
+</html>
