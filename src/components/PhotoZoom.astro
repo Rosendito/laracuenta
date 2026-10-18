@@ -12,7 +12,12 @@ import { strings } from "../config/strings";
   aria-label={strings.article.zoomedPhoto}
   tabindex="-1"
 >
-  <img class="lightbox__img" alt="" />
+  <!-- empty until a photo opens; the blank GIF keeps the markup valid (img needs a src) -->
+  <img
+    class="lightbox__img"
+    alt=""
+    src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+  />
 </div>
 
 <script>
