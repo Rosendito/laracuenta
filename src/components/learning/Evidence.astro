@@ -1,6 +1,7 @@
 ---
 // A numbered figure slot for a screenshot in the report. Until the image exists it
 // shows how to take it; pass `image` once the screenshot is in src/assets/report/.
+// Loaded eagerly so "Save as PDF" never prints an empty frame.
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 
@@ -8,7 +9,7 @@ interface Props {
   number: number;
   caption: string;
   /** How to take the screenshot; shown while it is missing. */
-  how: string;
+  how?: string;
   image?: ImageMetadata;
   alt?: string;
 }
@@ -18,7 +19,14 @@ const { number, caption, how, image, alt = caption } = Astro.props;
 
 <figure class="evidence" id={`figura-${number}`}>
   {image ? (
-    <Image class="evidence__img" src={image} alt={alt} widths={[800, 1400]} sizes="46rem" />
+    <Image
+      class="evidence__img"
+      src={image}
+      alt={alt}
+      widths={[1000, 2000]}
+      sizes="46rem"
+      loading="eager"
+    />
   ) : (
     <div class="evidence__slot">
       <p class="evidence__missing">Captura pendiente</p>

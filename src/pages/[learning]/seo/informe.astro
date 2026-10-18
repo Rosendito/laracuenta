@@ -1,6 +1,13 @@
 ---
 // The SEO report, ready to read, present and print to PDF. Glossary terms show their
 // definition on hover or tap. Private: served under /_learning/, never indexed.
+import frontmatter from "../../../assets/report/frontmatter.png";
+import headSource from "../../../assets/report/head-source.png";
+import imageAlts from "../../../assets/report/image-alts.png";
+import lighthouse from "../../../assets/report/lighthouse.png";
+import outline from "../../../assets/report/outline.png";
+import robots from "../../../assets/report/robots.png";
+import sitemap from "../../../assets/report/sitemap.png";
 import Evidence from "../../../components/learning/Evidence.astro";
 import Status from "../../../components/learning/Status.astro";
 import Term from "../../../components/learning/Term.astro";
@@ -318,8 +325,9 @@ const toc = [
               <Status done={siteTechniques[4].done} />
             </dt>
             <dd>
-              Verificación del dominio, envío del sitemap y solicitud de indexación de las tres
-              entradas. Permite comprobar qué páginas están indexadas y con qué búsquedas aparecen.
+              Se activará junto con el dominio propio, para verificarlo por DNS: envío del sitemap y
+              solicitud de indexación de las tres entradas. Permitirá comprobar qué páginas están
+              indexadas y con qué búsquedas aparecen. El sitio ya está preparado para ese paso.
             </dd>
           </div>
           <div>
@@ -339,7 +347,9 @@ const toc = [
           </div>
           <div>
             <dt>
-              <Term k="responsive">Diseño responsive</Term> e idioma{" "}
+              <span>
+                <Term k="responsive">Diseño responsive</Term> e idioma
+              </span>{" "}
               <Status done={siteTechniques[7].done} />
             </dt>
             <dd>
@@ -360,7 +370,9 @@ const toc = [
           </div>
           <div>
             <dt>
-              Autoría y fuentes (<Term k="eeat">E-E-A-T</Term>){" "}
+              <span>
+                Autoría y fuentes (<Term k="eeat">E-E-A-T</Term>)
+              </span>{" "}
               <Status done={siteTechniques[9].done} />
             </dt>
             <dd>
@@ -566,43 +578,43 @@ const toc = [
         </p>
         <Evidence
           number={1}
-          caption="Código fuente de la entrada del Obelisco: meta title, meta description y URL canónica."
-          how="Abre la entrada, clic derecho → «Ver código fuente de la página» (Ctrl+U o ⌥⌘U). Captura las primeras líneas del <head>."
+          image={headSource}
+          caption="Código fuente publicado de la entrada del Obelisco (fragmento del <head>, formateado para leerlo): meta title, meta description, URL canónica, Open Graph y datos estructurados NewsArticle."
         />
         <Evidence
           number={2}
-          caption="Frontmatter del archivo MDX de una entrada: título, descripción y texto alternativo de la portada."
-          how="Abre src/content/stories/el-obelisco-larense/index.mdx en el editor y captura el bloque inicial."
+          image={frontmatter}
+          caption="Frontmatter de la entrada en el repositorio: el titular (title), el meta title (seoTitle), la meta description y el texto alternativo de la portada. Abajo, un H2 con la palabra clave."
         />
         <Evidence
           number={3}
-          caption="Texto alternativo de las imágenes dentro de una entrada."
-          how="En el mismo archivo, captura dos o tres imágenes con su descripción entre corchetes."
+          image={imageAlts}
+          caption="Las imágenes de la entrada del Obelisco, cada una con su texto alternativo entre corchetes y su pie de foto entre comillas."
         />
         <Evidence
           number={4}
-          caption="Estructura de encabezados (H1 y H2) de una entrada."
-          how="Instala la extensión gratuita «HeadingsMap» en Chrome, abre una entrada y captura su panel."
+          image={outline}
+          caption="Validador HTML del W3C sobre la entrada del Obelisco: sin errores ni advertencias, y su estructura de encabezados, con un solo H1 y apartados H2 con la palabra clave."
         />
         <Evidence
           number={5}
-          caption="Sitemap XML generado automáticamente."
-          how="Abre /sitemap-0.xml en el navegador y captura la lista de URLs."
+          image={sitemap}
+          caption="Sitemap XML generado automáticamente, con todas las páginas públicas."
         />
         <Evidence
           number={6}
-          caption="Google Search Console: sitemap enviado y procesado."
-          how="Search Console → Sitemaps. Captura la fila con el estado «Correcto»."
+          image={robots}
+          caption="Archivo robots.txt: permite el rastreo del sitio e indica dónde está el sitemap."
         />
         <Evidence
           number={7}
-          caption="Google Search Console: páginas indexadas."
-          how="Search Console → Páginas. Captura el gráfico de páginas indexadas."
+          image={lighthouse}
+          caption="Auditoría Lighthouse (el motor de PageSpeed Insights) de la entrada del Obelisco en móvil, 18 de octubre de 2026: 100 en SEO y en prácticas recomendadas."
         />
         <Evidence
           number={8}
-          caption="PageSpeed Insights: puntuaciones de rendimiento y SEO de una entrada (móvil)."
-          how="Entra en pagespeed.web.dev, analiza la URL de una entrada y captura las cuatro notas."
+          caption="Google Search Console: sitemap enviado y páginas indexadas."
+          how="Se agregará cuando el sitio pase a su dominio propio: Search Console → Sitemaps (estado «Correcto») y Search Console → Páginas (gráfico de páginas indexadas)."
         />
       </section>
 
